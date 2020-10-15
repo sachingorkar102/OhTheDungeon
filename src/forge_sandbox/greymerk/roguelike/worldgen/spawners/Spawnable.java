@@ -20,7 +20,7 @@ import otd.MultiVersion;
 import shadow_lib.ZoneWorld;
 import shadow_lib.api.SpawnerApi;
 import shadow_lib.api.SpawnerDecryAPI;
-import shadow_lib.async.later.Spawnable_Later;
+import shadow_lib.async.later.roguelike.Spawnable_Later;
 //import net.minecraft.init.Blocks;
 //import net.minecraft.nbt.NBTTagCompound;
 //import net.minecraft.nbt.NBTTagList;

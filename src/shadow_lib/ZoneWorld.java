@@ -15,7 +15,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import shadow_lib.async.later.Later;
+import shadow_lib.async.later.roguelike.Later;
 
 /**
  *

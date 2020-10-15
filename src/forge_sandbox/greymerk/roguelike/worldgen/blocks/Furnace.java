@@ -13,7 +13,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import shadow_lib.ZoneWorld;
-import shadow_lib.async.later.Furnace_Later;
+import shadow_lib.async.later.roguelike.Furnace_Later;
 import zhehe.util.config.WorldConfig;
 //import net.minecraft.block.BlockFurnace;
 //import net.minecraft.init.Blocks;

@@ -5,11 +5,13 @@
  */
 package otd.event;
 
+import forge_sandbox.greymerk.roguelike.treasure.loot.BookBase;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,6 +27,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.spigotmc.SpigotConfig;
 import otd.Main;
@@ -55,6 +58,31 @@ public class Event implements Listener {
         return SpigotConfig.config.getBoolean("world-settings." + worldName + "." + path, SpigotConfig.config.getBoolean("world-settings.default." + path));
     }
     
+    private static class BookNotice extends BookBase{
+        public BookNotice(){
+            super("Shadow_Wind", "Warning in your Spawner Setting");
+            this.addPage(I18n.instance.Nerf_Msg);
+        }
+        
+        @Override
+	public ItemStack get(){
+            ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
+            BookMeta bookMeta = (BookMeta) book.getItemMeta();
+            String array_page[] = new String[pages.size()];
+            for(int i = 0; i < array_page.length; i++) {
+                array_page[i] = pages.get(i);
+            }
+            bookMeta.addPage(array_page);
+            bookMeta.setAuthor(this.author == null ? "Anonymous" : this.author);
+            bookMeta.setTitle(this.title == null ? "Book" : this.title);
+                
+            book.setItemMeta(bookMeta);		
+            return book;
+	}
+    }
+    
+    private final static BookNotice BOOK = new BookNotice();
+    
     @EventHandler
     public void onPlayerJoin_Updater(PlayerJoinEvent event) {
         Player p = event.getPlayer();
@@ -72,7 +100,10 @@ public class Event implements Listener {
                 b = b | getBoolean("nerf-spawner-mobs", false, world.getName());
             }
             if(b) {
-                p.sendMessage(ChatColor.RED + I18n.instance.Nerf_Msg);
+                p.openBook(BOOK.get());
+//                for(int i = 0; i < 5; i++) {
+//                    p.sendMessage(ChatColor.RED + I18n.instance.Nerf_Msg);
+//                }
             }
         }        
 //        p.sendMessage("[Oh The Dungeons You'll Go] New release site: https://ohthedungeon.com/down");

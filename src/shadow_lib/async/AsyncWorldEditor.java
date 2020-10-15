@@ -29,7 +29,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import shadow_lib.ZoneWorld;
-import shadow_lib.async.later.Later;
+import shadow_lib.async.later.roguelike.Later;
 
 /**
  *

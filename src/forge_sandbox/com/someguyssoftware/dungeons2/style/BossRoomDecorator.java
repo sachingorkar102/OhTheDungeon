@@ -26,7 +26,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import otd.loot_spawner.dungeons2.Chest_Later;
+import shadow_lib.async.later.dungeons2.Chest_Later;
 import shadow_lib.async.AsyncWorldEditor;
 
 /**

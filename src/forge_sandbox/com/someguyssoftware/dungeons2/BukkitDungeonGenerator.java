@@ -42,7 +42,7 @@ import shadow_lib.ZoneWorld;
 import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import shadow_lib.async.io.papermc.lib.PaperLib;
-import shadow_lib.async.later.Later;
+import shadow_lib.async.later.roguelike.Later;
 
 /**
  *
@@ -58,15 +58,20 @@ public class BukkitDungeonGenerator {
     
     private static void init() throws Exception {
         if(init) return;
-        init = true;
         generator = new DungeonGenerator();
         styleSheet = StyleSheetLoader.loadAll();
         configs = new DungeonConfigManager();
         spawnSheet = SpawnSheetLoader.loadAll();
+        init = true;
     }
     
     public static boolean generate(World world, Location location, Random random) throws Exception {
-        init();
+        try {
+            init();
+        } catch(Exception ex) {
+            init = false;
+            return false;
+        }
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             asyncGenerate(world, location, random);
         });

@@ -5,7 +5,7 @@
  */
 package otd.generator;
 
-import otd.battletower.BattleTower;
+import otd.dungeon.battletower.BattleTower;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;

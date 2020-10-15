@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 //import net.minecraft.util.ResourceLocation;
 import org.bukkit.loot.LootTable;
 import shadow_lib.ZoneWorld;
-import shadow_lib.async.later.Chest_Generate_Later;
+import shadow_lib.async.later.roguelike.Chest_Generate_Later;
 //import shadow_lib.async.later.Chest_SetRandomSlot_Later;
 //import shadow_lib.async.later.Chest_SetSlot_Later;
 

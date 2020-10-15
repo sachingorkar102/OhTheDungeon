@@ -11,7 +11,7 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import otd.Main;
-import zhehe.maze.SmoofyDungeonPopulator;
+import otd.dungeon.dungeonmaze.SmoofyDungeonPopulator;
 import zhehe.util.AsyncLog;
 import zhehe.util.config.SimpleWorldConfig;
 import zhehe.util.config.WorldConfig;

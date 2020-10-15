@@ -5,14 +5,14 @@
  */
 package otd.generator;
 
-import otd.battletower.BattleTower;
+import otd.dungeon.battletower.BattleTower;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import otd.draylar.data.BattleTowerSchematics;
+import otd.data.draylar.BattleTowerSchematics;
 import zhehe.util.AsyncLog;
 import zhehe.util.BiomeDictionary;
 import zhehe.util.BiomeDictionary.Type;

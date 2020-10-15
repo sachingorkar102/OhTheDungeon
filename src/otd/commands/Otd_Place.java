@@ -22,7 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import static otd.Main.instance;
-import otd.draylar.data.BattleTowerSchematics;
+import otd.data.draylar.BattleTowerSchematics;
 import otd.generator.BattleTowerGenerator;
 import otd.generator.SmoofyDungeonGenerator;
 import otd.util.ActualHeight;

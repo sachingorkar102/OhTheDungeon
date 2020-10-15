@@ -32,7 +32,7 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import otd.draylar.data.BattleTowerSchematics;
+import otd.data.draylar.BattleTowerSchematics;
 import otd.event.Event;
 import otd.event.SpawnerEvent;
 import otd.generator.DungeonPopulator;

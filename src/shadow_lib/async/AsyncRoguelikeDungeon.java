@@ -49,7 +49,7 @@ import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
 import otd.Main;
 import shadow_lib.ZoneWorld;
 import shadow_lib.async.io.papermc.lib.PaperLib;
-import shadow_lib.async.later.Later;
+import shadow_lib.async.later.roguelike.Later;
 import zhehe.util.ProtectBlock;
 import zhehe.util.config.SimpleWorldConfig;
 import zhehe.util.config.WorldConfig;

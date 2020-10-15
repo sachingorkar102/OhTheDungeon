@@ -13,7 +13,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import shadow_lib.ZoneWorld;
-import shadow_lib.async.later.Dispenser_Later;
+import shadow_lib.async.later.roguelike.Dispenser_Later;
 //import net.minecraft.block.BlockDispenser;
 //import net.minecraft.init.Blocks;
 //import net.minecraft.item.ItemStack;

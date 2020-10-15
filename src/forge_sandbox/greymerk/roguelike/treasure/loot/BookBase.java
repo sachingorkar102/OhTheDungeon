@@ -16,9 +16,9 @@ import org.bukkit.inventory.meta.BookMeta;
 
 public class BookBase implements IBook{
 
-	private List<String> pages;
-	private String author;
-	private String title;
+	protected List<String> pages;
+	protected String author;
+	protected String title;
 	
 	public BookBase(){
 		this.pages = new ArrayList<>();

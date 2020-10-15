@@ -36,6 +36,9 @@ public class ActualHeight {
         set.add(Material.OAK_LEAVES);
         set.add(Material.SPRUCE_LEAVES);
         
+        set.add(Material.VINE);
+        set.add(Material.BAMBOO);
+        
         set.add(Material.AIR);
     }
     
