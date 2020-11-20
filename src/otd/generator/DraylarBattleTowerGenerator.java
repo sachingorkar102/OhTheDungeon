@@ -12,12 +12,12 @@ import java.util.Set;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import otd.data.draylar.BattleTowerSchematics;
+import otd.dungeon.draylar.BattleTowerSchematics;
 import zhehe.util.AsyncLog;
 import zhehe.util.BiomeDictionary;
 import zhehe.util.BiomeDictionary.Type;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *

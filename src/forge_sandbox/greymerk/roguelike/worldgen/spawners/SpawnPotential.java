@@ -8,8 +8,8 @@ import forge_sandbox.greymerk.roguelike.treasure.loot.Equipment;
 import forge_sandbox.greymerk.roguelike.treasure.loot.Quality;
 import otd.Main;
 import otd.MultiVersion;
-import zhehe.util.config.WorldConfig;
-import zhehe.util.nbt.JsonToNBT;
+import otd.util.config.WorldConfig;
+import otd.util.nbt.JsonToNBT;
 
 public class SpawnPotential {
 	
@@ -100,6 +100,18 @@ public class SpawnPotential {
                 return sp.getPotential(sp.getRoguelike(level, name, nbt));
             }
         }
+        
+        private static class GetNBTTagCompound116R3 {
+            public Object get(int level, String name, Object inbt, SpawnPotential sp) {
+                Object nbt;
+                if(inbt == null) {
+                    nbt = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                } else {
+                    nbt = ((net.minecraft.server.v1_16_R3.NBTTagCompound) inbt).clone();
+                }
+                return sp.getPotential(sp.getRoguelike(level, name, nbt));
+            }
+        }
 
 	public Object getNBTTagCompound(int level){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -113,6 +125,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
                 return (new GetNBTTagCompound116R2()).get(level, name, this.nbt, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+                return (new GetNBTTagCompound116R3()).get(level, name, this.nbt, this);
             }
             return null;
 	}
@@ -296,6 +311,51 @@ public class SpawnPotential {
                 return potentials;
             }
         }
+        
+        private static class GetNBTTagList116R3 {
+            public Object get(Random rand, int level, SpawnPotential sp) {
+                net.minecraft.server.v1_16_R3.NBTTagList potentials = new net.minecraft.server.v1_16_R3.NBTTagList();
+                if(sp.name.equals(Spawner.getName(Spawner.ZOMBIE))){
+                    for(int i = 0; i < 24; ++i){
+                        net.minecraft.server.v1_16_R3.NBTTagCompound mob = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                        mob = (net.minecraft.server.v1_16_R3.NBTTagCompound) sp.getRoguelike(level, sp.name, mob);
+
+                        Equipment tool;
+                        switch(rand.nextInt(3)){
+                        case 0: tool = Equipment.SHOVEL; break;
+                        case 1: tool = Equipment.AXE; break;
+                        case 2: tool = Equipment.PICK; break;
+                        default: tool = Equipment.PICK; break;
+                        }
+
+                        mob = (net.minecraft.server.v1_16_R3.NBTTagCompound) sp.equipHands(mob, Equipment.getName(tool, Quality.getToolQuality(rand, level)), "minecraft:shield");
+                        mob = (net.minecraft.server.v1_16_R3.NBTTagCompound) sp.equipArmour(mob, rand, level);
+
+                        potentials.add((net.minecraft.server.v1_16_R3.NBTBase) 
+                                sp.getPotential(mob));
+                    }
+
+                    return potentials;
+		}
+                
+                if(sp.name.equals(Spawner.getName(Spawner.SKELETON))) {
+                    for(int i = 0; i < 12; ++i){
+                        net.minecraft.server.v1_16_R3.NBTTagCompound mob = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                        mob = (net.minecraft.server.v1_16_R3.NBTTagCompound) sp.getRoguelike(level, sp.name, mob);
+                        mob = (net.minecraft.server.v1_16_R3.NBTTagCompound) sp.equipHands(mob, "minecraft:bow", null);
+                        mob = (net.minecraft.server.v1_16_R3.NBTTagCompound) sp.equipArmour(mob, rand, level);
+                        potentials.add((net.minecraft.server.v1_16_R3.NBTBase)
+                                sp.getPotential(mob));
+                    }
+
+                    return potentials;
+                }
+
+                potentials.add((net.minecraft.server.v1_16_R3.NBTBase)
+                        sp.getPotential(sp.getRoguelike(level, sp.name, new net.minecraft.server.v1_16_R3.NBTTagCompound())));
+                return potentials;
+            }
+        }
 	
 	public Object getNBTTagList(Random rand, int level){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -309,6 +369,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
                 return (new GetNBTTagList116R2()).get(rand, level, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+                return (new GetNBTTagList116R3()).get(rand, level, this);
             }
             return null;
 	}
@@ -352,6 +415,16 @@ public class SpawnPotential {
 		return potential;
             }
         }
+        
+        private static class GetPotential116R3 {
+            public Object get(Object mob, SpawnPotential sp) {
+                net.minecraft.server.v1_16_R3.NBTTagCompound potential = 
+                        new net.minecraft.server.v1_16_R3.NBTTagCompound();
+		potential.set("Entity", (net.minecraft.server.v1_16_R3.NBTBase) mob);
+		potential.setInt("Weight", sp.weight);
+		return potential;
+            }
+        }
 	
 	private Object getPotential(Object mob){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -365,6 +438,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
 		return (new GetPotential116R2()).get(mob, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+		return (new GetPotential116R3()).get(mob, this);
             }
             return null;
 	}
@@ -412,6 +488,17 @@ public class SpawnPotential {
                 return mob;
             }
         }
+        
+        private static class EquipHands116R3 {
+            public Object get(Object mob, String weapon, String offhand, SpawnPotential sp) {
+                net.minecraft.server.v1_16_R3.NBTTagList hands = 
+                        new net.minecraft.server.v1_16_R3.NBTTagList();
+		hands.add((net.minecraft.server.v1_16_R3.NBTBase) sp.getItem(weapon));
+		hands.add((net.minecraft.server.v1_16_R3.NBTBase) sp.getItem(offhand));
+		((net.minecraft.server.v1_16_R3.NBTTagCompound) mob).set("HandItems", hands);
+                return mob;
+            }
+        }
 	
 	private Object equipHands(Object mob, String weapon, String offhand){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -425,6 +512,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
 		return (new EquipHands116R2()).get(mob, weapon, offhand, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+		return (new EquipHands116R3()).get(mob, weapon, offhand, this);
             }
             return mob;
 	}
@@ -480,6 +570,19 @@ public class SpawnPotential {
                 return mob;
             }
         }
+        
+        private static class EquipArmour116R3 {
+            public Object get(Object mob, Random rand, int level, SpawnPotential sp) {
+                net.minecraft.server.v1_16_R3.NBTTagList armour = new net.minecraft.server.v1_16_R3.NBTTagList();
+		armour.add((net.minecraft.server.v1_16_R3.NBTBase) sp.getItem(Equipment.getName(Equipment.FEET, Quality.getArmourQuality(rand, level))));
+		armour.add((net.minecraft.server.v1_16_R3.NBTBase) sp.getItem(Equipment.getName(Equipment.LEGS, Quality.getArmourQuality(rand, level))));
+		armour.add((net.minecraft.server.v1_16_R3.NBTBase) sp.getItem(Equipment.getName(Equipment.CHEST, Quality.getArmourQuality(rand, level))));
+		armour.add((net.minecraft.server.v1_16_R3.NBTBase) sp.getItem(Equipment.getName(Equipment.HELMET, Quality.getArmourQuality(rand, level))));
+		((net.minecraft.server.v1_16_R3.NBTTagCompound) mob).set("ArmorItems", armour);
+                
+                return mob;
+            }
+        }
 	
 	private Object equipArmour(Object mob, Random rand, int level){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -493,6 +596,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
 		return (new EquipArmour116R2()).get(mob, rand, level, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+		return (new EquipArmour116R3()).get(mob, rand, level, this);
             }
 
             return mob;
@@ -541,6 +647,17 @@ public class SpawnPotential {
 		return item;
             }
         }
+        
+        private static class GetItem116R3 {
+            public Object get(String itemName) {
+                net.minecraft.server.v1_16_R3.NBTTagCompound item = 
+                        new net.minecraft.server.v1_16_R3.NBTTagCompound();
+		if(itemName == null) return item;
+		item.setString("id", itemName);
+		item.setInt("Count", 1);
+		return item;
+            }
+        }
 	
 	private Object getItem(String itemName){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -554,6 +671,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
 		return (new GetItem116R2()).get(itemName);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+		return (new GetItem116R3()).get(itemName);
             }
             return null;
 	}
@@ -649,6 +769,29 @@ public class SpawnPotential {
                 return tag;
             }
         }
+        
+        private static class GetRoguelike116R3 {
+            public Object get(int level, String type, Object otag, SpawnPotential sp) {
+                net.minecraft.server.v1_16_R3.NBTTagCompound tag = (net.minecraft.server.v1_16_R3.NBTTagCompound) otag;
+                tag.setString("id", type);
+
+                if(!(WorldConfig.wc.rogueSpawners
+                        && sp.equip)) return tag;
+
+                net.minecraft.server.v1_16_R3.NBTTagList activeEffects = new net.minecraft.server.v1_16_R3.NBTTagList();
+                tag.set("ActiveEffects", activeEffects);
+
+                net.minecraft.server.v1_16_R3.NBTTagCompound buff = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                activeEffects.add(buff);
+
+                buff.setByte("Id", (byte) 4);
+                buff.setByte("Amplifier", (byte) level);
+                buff.setInt("Duration", 10);
+                buff.setByte("Ambient", (byte) 0);
+
+                return tag;
+            }
+        }
 	
 	private Object getRoguelike(int level, String type, Object otag){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -662,6 +805,9 @@ public class SpawnPotential {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
                 return (new GetRoguelike116R2()).get(level, type, otag, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+                return (new GetRoguelike116R3()).get(level, type, otag, this);
             }
             return otag;
     }

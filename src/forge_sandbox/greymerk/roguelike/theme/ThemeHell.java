@@ -10,7 +10,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.blocks.StairType;
 import forge_sandbox.greymerk.roguelike.worldgen.blocks.door.Door;
 import forge_sandbox.greymerk.roguelike.worldgen.blocks.door.DoorType;
 import forge_sandbox.greymerk.roguelike.worldgen.blocks.door.IDoor;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 public class ThemeHell extends ThemeBase{
 

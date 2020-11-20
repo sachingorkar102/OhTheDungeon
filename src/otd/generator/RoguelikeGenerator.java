@@ -12,8 +12,8 @@ import org.bukkit.World;
 import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import zhehe.util.AsyncLog;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *

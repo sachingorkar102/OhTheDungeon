@@ -35,7 +35,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.shapes.RectHollow;
 import forge_sandbox.greymerk.roguelike.worldgen.shapes.RectSolid;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 //import net.minecraft.init.Items;
 //import net.minecraft.item.ItemStack;
 

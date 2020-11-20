@@ -22,8 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import shadow_lib.async.AsyncWorldEditor;
 import shadow_lib.async.later.roguelike.Later;
 import zhehe.util.RandomCollection;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *
@@ -123,7 +123,7 @@ public class Chest_Later extends Later {
             if(bs instanceof Chest) {
                 Chest chest = (Chest) bs;
                 Inventory inv = chest.getInventory();
-                for(zhehe.util.config.LootNode ln : swc.ant_man_dungeon.loots) {
+                for(otd.util.config.LootNode ln : swc.ant_man_dungeon.loots) {
                     if(random.nextDouble() <= ln.chance) {
                         ItemStack item = ln.getItem();
                         int amount = ln.min + random.nextInt(ln.max - ln.min + 1);

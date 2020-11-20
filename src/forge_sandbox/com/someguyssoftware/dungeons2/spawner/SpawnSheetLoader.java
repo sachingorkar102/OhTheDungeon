@@ -32,7 +32,7 @@ import otd.Main;
  *
  */
 public class SpawnSheetLoader {
-    public static final String BUILT_IN_SPAWN_SHEET_PATH = "dungeons2" + File.separator + "spawnsheet.json";
+    public static final String BUILT_IN_SPAWN_SHEET_PATH = "dungeons2/spawnsheet.json";
     public static final String BUILT_IN_SPAWN_SHEET_SUB_FOLDER = "spawnSheets";
     private static final SpawnSheet EMPTY_SHEET = new SpawnSheet();
     

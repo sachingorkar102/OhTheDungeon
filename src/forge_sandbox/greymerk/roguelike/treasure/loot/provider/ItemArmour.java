@@ -252,7 +252,32 @@ public class ItemArmour extends ItemBase {
                 return armor;
             }
         }
+        
+        private static class DyeArmor116R3 {
+            public ItemStack dyeArmor(ItemStack armor, int r, int g, int b){
+                int color = r << 16 | g << 8 | b;
+                net.minecraft.server.v1_16_R3.ItemStack ca = 
+                        org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asNMSCopy(armor);
+                net.minecraft.server.v1_16_R3.NBTTagCompound nbtdata = ca.getTag();
 
+                if (nbtdata == null)
+                {
+                    nbtdata = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                    ca.setTag(nbtdata);
+                    armor = org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asBukkitCopy(ca);
+                }
+
+                net.minecraft.server.v1_16_R3.NBTTagCompound nbtDisplay = nbtdata.getCompound("display");
+
+                if (!nbtdata.hasKey("display"))
+                {
+                    nbtdata.set("display", nbtDisplay);
+                }
+
+                nbtDisplay.setInt("color", color);
+                return armor;
+            }
+        }
 	
 	public static ItemStack dyeArmor(ItemStack armor, int r, int g, int b) {
             if(Main.version == MultiVersion.Version.V1_14_R1) {
@@ -269,6 +294,10 @@ public class ItemArmour extends ItemBase {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
                 DyeArmor116R2 da = new DyeArmor116R2();
+                armor = da.dyeArmor(armor, r, g, b);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+                DyeArmor116R3 da = new DyeArmor116R3();
                 armor = da.dyeArmor(armor, r, g, b);
             }
             return armor;

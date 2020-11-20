@@ -37,10 +37,10 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import zhehe.util.config.LootNode;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
-import zhehe.util.worldgen.HalfAsyncWorld;
+import otd.util.config.LootNode;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
+import otd.util.worldgen.HalfAsyncWorld;
 
 //import net.minecraft.world.World;
 //import net.minecraft.world.biome.Biome;

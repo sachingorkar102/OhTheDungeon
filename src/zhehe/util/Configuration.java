@@ -34,7 +34,7 @@ public class Configuration {
     public void addCustomCategoryComment(String name, String comment) {
         if(Category.contains(name)) return;
         Category.add(name);
-        Content.add(new HashMap<String, String>());
+        Content.add(new HashMap<>());
     }
     
     public IProperty get(String category, String key, int dvalue, String comment) {
@@ -143,7 +143,7 @@ public class Configuration {
         int res;
         try {
             res = Integer.parseInt(tmp);
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             res = defaultValue;
         }
         

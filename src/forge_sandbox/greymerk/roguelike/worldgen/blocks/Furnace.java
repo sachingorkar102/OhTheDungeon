@@ -14,7 +14,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import shadow_lib.ZoneWorld;
 import shadow_lib.async.later.roguelike.Furnace_Later;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 //import net.minecraft.block.BlockFurnace;
 //import net.minecraft.init.Blocks;
 //import net.minecraft.item.ItemStack;

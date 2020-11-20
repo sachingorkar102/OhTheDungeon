@@ -17,7 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import shadow_lib.async.AsyncWorldEditor;
-import zhehe.util.worldgen.HalfAsyncWorld;
+import otd.util.worldgen.HalfAsyncWorld;
 //import net.minecraft.block.Block;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.world.World;

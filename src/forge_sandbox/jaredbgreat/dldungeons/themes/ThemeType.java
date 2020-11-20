@@ -10,7 +10,7 @@ package forge_sandbox.jaredbgreat.dldungeons.themes;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 
 /*This mod is free software: you can redistribute it and/or modify

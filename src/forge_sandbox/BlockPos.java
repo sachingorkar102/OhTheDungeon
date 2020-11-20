@@ -13,27 +13,36 @@ import org.bukkit.block.BlockFace;
  *
  * @author
  */
-public class BlockPos {
+public class BlockPos extends Vec3i {
     public int x, y, z;
     public BlockPos(int x, int y, int z) {
+        super(x, y, z);
         this.x = x;
         this.y = y;
         this.z = z;
     }
     public BlockPos(Vec3d vec) {
+        super((int) vec.x, (int) vec.y, (int) vec.z);
         this.x = (int) vec.x;
         this.y = (int) vec.y;
         this.z = (int) vec.z;
     }
+    
+    @Override
     public int getX() {
         return this.x;
     }
+    
+    @Override
     public int getY() {
         return this.y;
     }
+    
+    @Override
     public int getZ() {
         return this.z;
     }
+    
     public BlockPos add(int x, int y, int z) {
         return new BlockPos(this.x + x, this.y + y, this.z + z);
     }

@@ -5,7 +5,13 @@
  */
 package otd.dungeon.aetherlegacy;
 
+import forge_sandbox.com.someguyssoftware.gottschcore.enums.Rarity;
+import forge_sandbox.com.someguyssoftware.gottschcore.positional.Coords;
+import forge_sandbox.com.someguyssoftware.gottschcore.positional.ICoords;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import shadow_lib.async.later.aetherlegacy.Chest_Later;
+import shadow_lib.async.later.aetherlegacy.Spawner_Later;
 
 public class ComponentSilverDungeon extends AetherStructure {
 
@@ -42,16 +48,16 @@ public class ComponentSilverDungeon extends AetherStructure {
     private final static class BlocksAether {
         public static Material holystone = Material.COBBLESTONE;
         public static Material mossy_holystone = Material.MOSSY_COBBLESTONE;
-        public static Material angelic_trap = Material.WHITE_CONCRETE;
+        public static Material angelic_trap = Material.CHISELED_STONE_BRICKS;//yellow
         public static Material chest_mimic = Material.TRAPPED_CHEST;
         public static Material ambrosium_torch = Material.TORCH;
-        public static Material treasure_chest = Material.LIGHT_BLUE_SHULKER_BOX;
+        public static Material treasure_chest = Material.LIME_SHULKER_BOX;
         public static Material aether_dirt = Material.DIRT;
         public static Material golden_oak_sapling = Material.OAK_SAPLING;
         public static Material pillar = Material.QUARTZ_PILLAR;
         public static Material pillar_top = Material.CHISELED_QUARTZ_BLOCK;
-        public static Material locked_angelic_stone = Material.WHITE_CONCRETE;
-        public static Material locked_light_angelic_stone = Material.WHITE_CONCRETE;
+        public static Material locked_angelic_stone = Material.STONE_BRICKS;//blue
+        public static Material locked_light_angelic_stone = Material.MOSSY_STONE_BRICKS;//green
         public static Material aercloud = Material.PACKED_ICE;
     }
     
@@ -89,14 +95,15 @@ public class ComponentSilverDungeon extends AetherStructure {
 
 
     @Override
-    public boolean generate() {
+    public boolean generate(boolean cloud, Material cloud_material) {
         this.replaceAir = true;
 
         this.setStructureOffset(21, 17, 20);
-
-//        for (int tries = 0; tries < 100; tries++) {
-//            generateClouds(this, BlocksAether.aercloud, false, 10, this.random.nextInt(77), 0, this.random.nextInt(50), this.xTendency, this.zTendency);
-//        }
+        if(cloud) {
+            for (int tries = 0; tries < 100; tries++) {
+                generateClouds(this, cloud_material, false, 10, this.random.nextInt(77), 0, this.random.nextInt(50), this.xTendency, this.zTendency);
+            }
+        }
 
         this.setStructureOffset(31, 24, 30);
 
@@ -284,17 +291,24 @@ public class ComponentSilverDungeon extends AetherStructure {
                                     int v = 7 + 7 * r + this.random.nextInt(2);
 
                                     if (this.getBlockState(u, 5 * q + 1, v) == Material.AIR) {
-                                        this.setBlockWithOffset(u, 5 * q + 1, v, Material.CHEST);
+                                        ICoords chestCoords = new Coords(u + this.startX, 5 * q + 1 + this.startY, v + this.startZ);
+                                        Chest_Later.generate_later(this.worldObj, random, chestCoords, Rarity.RARE, Material.CHEST);
                                     }
 
                                     break;
                                 }
                                 case 2: {
                                     this.addPlaneY(7 + 7 * p, 5 * q, 7 + 7 * r, 2, 2);
-                                    this.setBlockWithOffset(7 + 7 * p + this.random.nextInt(2), 5 * q + 1, 7 + 7 * r + this.random.nextInt(2), BlocksAether.chest_mimic);
+                                    ICoords spawnerCoords = new Coords(7 + 7 * p + this.random.nextInt(2) + this.startX,
+                                            5 * q + 1 + this.startY, 7 + 7 * r + this.random.nextInt(2) + this.startZ);
+                                    Spawner_Later.generate_later(worldObj, random, spawnerCoords, EntityType.VEX);
 
                                     if (this.random.nextBoolean()) {
-                                        this.setBlockWithOffset(7 + 7 * p + this.random.nextInt(2), 5 * q + 1, 7 + 7 * r + this.random.nextInt(2), BlocksAether.chest_mimic);
+                                        //this.setBlockWithOffset(7 + 7 * p + this.random.nextInt(2), 5 * q + 1, 7 + 7 * r + this.random.nextInt(2), BlocksAether.chest_mimic);
+                                        ICoords chestCoords = new Coords(7 + 7 * p + this.random.nextInt(2) + this.startX,
+                                                5 * q + 1 + this.random.nextInt(2) + this.startY, 
+                                                7 + 7 * r + this.random.nextInt(2) + this.startZ);
+                                        Chest_Later.generate_later(this.worldObj, random, chestCoords, Rarity.RARE, Material.CHEST);
                                     }
 
                                     break;
@@ -375,8 +389,12 @@ public class ComponentSilverDungeon extends AetherStructure {
 
         x = 42 + this.random.nextInt(2);
         z = 14 + this.random.nextInt(2);
+        
+        this.setBlockWithOffset(x, -1, z, BlocksAether.locked_angelic_stone);
 
-        this.setBlockWithOffset(x, -1, z, BlocksAether.treasure_chest);
+//        this.setBlockWithOffset(x, -1, z, BlocksAether.treasure_chest);
+//        ICoords chestCoords = new Coords(x + this.startX, -1 + this.startY, this.startZ);
+//        Chest_Later.generate_later(this.worldObj, random, chestCoords, Rarity.RARE, BlocksAether.treasure_chest);
 
         return true;
     }
@@ -430,7 +448,7 @@ public class ComponentSilverDungeon extends AetherStructure {
 
         Material slab = Material.SMOOTH_STONE_SLAB;
 
-        Material double_slab = Material.LEGACY_DOUBLE_STEP;
+        Material double_slab = Material.SMOOTH_STONE_SLAB;
 
         this.setBlockWithOffset(x + 1, y, z + 1, slab);
         this.setBlockWithOffset(x + 2, y, z + 1, double_slab);

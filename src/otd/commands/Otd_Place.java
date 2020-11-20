@@ -22,7 +22,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import static otd.Main.instance;
-import otd.data.draylar.BattleTowerSchematics;
+import otd.dungeon.aetherlegacy.AetherBukkitGenerator;
+import otd.dungeon.draylar.BattleTowerSchematics;
 import otd.generator.BattleTowerGenerator;
 import otd.generator.SmoofyDungeonGenerator;
 import otd.util.ActualHeight;
@@ -32,7 +33,7 @@ import shadow_lib.async.AsyncWorldEditor;
 
 public class Otd_Place implements TabExecutor {
     
-    private Set<Player> players = new HashSet<>();
+    private final Set<Player> players = new HashSet<>();
     
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
@@ -47,6 +48,7 @@ public class Otd_Place implements TabExecutor {
                 res.add("smoofy");
                 res.add("draylar");
                 res.add("antman");
+                res.add("aether");
             }
         }
         return res;
@@ -54,6 +56,7 @@ public class Otd_Place implements TabExecutor {
     @Override
     @SuppressWarnings("ConvertToStringSwitch")
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+        if(sender == null) return false;
         if(!(sender instanceof Player)) {
             sender.sendMessage("Player only command");
             return true;
@@ -113,21 +116,26 @@ public class Otd_Place implements TabExecutor {
             sender.sendMessage("Done");
         } else if(type.equals("smoofy")) {
             SmoofyDungeonGenerator.halfAsyncGenerate(world, chunk, new Random());
+            sender.sendMessage("Done");
         } else if(type.equals("draylar")) {
             Location location = p.getLocation();
             BattleTowerSchematics.place(world, new Random(), location.getBlockX(), location.getBlockZ());
+            sender.sendMessage("Done");
         } else if(type.equals("antman")) {
-//            Location location = p.getLocation();
-//            WorldGenTestAether.generate(world, new Random(), location.getBlockX(), location.getBlockZ());
             Location location = p.getLocation();
             location = location.getWorld().getHighestBlockAt(location).getLocation();
             location = ActualHeight.getHeight(location);
             
             try {
                 BukkitDungeonGenerator.generate(world, location, new Random());
+                sender.sendMessage("Done");
             } catch(Exception ex) {
                 Bukkit.getLogger().log(Level.SEVERE, ExceptionRepoter.exceptionToString(ex));
             }
+        } else if(type.equals("aether")) {
+            Location location = p.getLocation();
+            AetherBukkitGenerator.generate(world, new Random(), location.getBlockX(), location.getBlockZ());
+            sender.sendMessage("Done");
         } else return false;
         return true;
     }

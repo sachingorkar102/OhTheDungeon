@@ -13,8 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import otd.Main;
 import otd.dungeon.dungeonmaze.SmoofyDungeonPopulator;
 import zhehe.util.AsyncLog;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *

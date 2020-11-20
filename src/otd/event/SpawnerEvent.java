@@ -8,13 +8,16 @@ package otd.event;
 import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,8 +25,8 @@ import org.bukkit.persistence.PersistentDataType;
 import otd.Main;
 import static otd.event.Event.SPAWN_EGGS;
 import zhehe.util.I18n;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *
@@ -55,6 +58,33 @@ public class SpawnerEvent implements Listener {
             } else {
                 e.setCancelled(true);
                 p.sendMessage(I18n.instance.ChangeSpawnerMessage);
+            }
+        }
+    }
+    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onSpawnerMine(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        if(block.getType() != Material.SPAWNER) return;
+        
+        World world = block.getWorld();
+        Player p = event.getPlayer();
+        String world_name = world.getName();
+        
+        if(WorldConfig.wc.dict.containsKey(world_name)) {
+            SimpleWorldConfig config = WorldConfig.wc.dict.get(world_name);
+            
+            if(config.prevent_spawner_breaking) {
+                if(p.hasPermission("oh_the_dungeons.admin")) {
+                    p.sendMessage("Bypass spawner change for OP");
+                    return;
+                }
+                event.setCancelled(true);
+                return;
+            }
+            
+            if(config.prevent_spawner_dropping) {
+                event.setCancelled(true);
+                block.setType(Material.AIR);
             }
         }
     }

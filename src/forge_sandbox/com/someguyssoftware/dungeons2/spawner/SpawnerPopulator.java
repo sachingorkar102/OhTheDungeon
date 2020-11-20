@@ -61,6 +61,7 @@ public class SpawnerPopulator {
      * @param group
      */
     public void populate(AsyncWorldEditor world, ICoords spawnerCoords, Random random, SpawnGroup group) {
+        if(group == null) return;
         String mob = group.getMobs().get(random.nextInt(group.getMobs().size()));
         Spawner_Later.generate_later(world, random, spawnerCoords, mob);
         Dungeons2.log.debug("Adding mob to spawner:" + mob);        

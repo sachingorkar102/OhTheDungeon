@@ -294,6 +294,63 @@ public class Spawnable {
             }
         }
         
+        private static class GenerateLaterOrigin116R3 {
+            public void generate_chunk(Chunk chunk, Coord pos, IWorldEditor editor, Random rand, Coord cursor, int level, Spawnable s) {
+                
+//                Bukkit.getLogger().log(Level.SEVERE, pos.getX() + "," + pos.getY() + "," + pos.getZ());
+                
+                int x = pos.getX() % 16;
+                int y = pos.getY();
+                int z = pos.getZ() % 16;
+                if(x < 0) x = x + 16;
+                if(z < 0) z = z + 16;  
+            
+            	Block tileentity = chunk.getBlock(x, y, z);
+                BlockState blockState = tileentity.getState();
+                if (!(blockState instanceof CreatureSpawner)) return;
+                org.bukkit.craftbukkit.v1_16_R3.CraftWorld ws = (org.bukkit.craftbukkit.v1_16_R3.CraftWorld) 
+                        tileentity.getWorld();
+                net.minecraft.server.v1_16_R3.TileEntity te = 
+                        ws.getHandle().getTileEntity(
+                                new net.minecraft.server.v1_16_R3.BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+                if(te == null) return;
+
+                net.minecraft.server.v1_16_R3.NBTTagCompound nbt = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                nbt.setInt("x", pos.getX());
+                nbt.setInt("y", pos.getY());
+                nbt.setInt("z", pos.getZ());
+
+                nbt.set("SpawnPotentials", (net.minecraft.server.v1_16_R3.NBTBase) s.getSpawnPotentials(rand, level));
+
+                te.load(null, nbt);
+                
+                SpawnerDecryAPI.setSpawnerDecry(tileentity, Main.instance);
+            }
+            
+            public void generate(Coord pos, IWorldEditor editor, Random rand, Coord cursor, int level, Spawnable s) {
+                Block tileentity = editor.getBlock(pos);
+                BlockState blockState = tileentity.getState();
+                if (!(blockState instanceof CreatureSpawner)) return;
+                org.bukkit.craftbukkit.v1_16_R3.CraftWorld ws = (org.bukkit.craftbukkit.v1_16_R3.CraftWorld) 
+                        tileentity.getWorld();
+                net.minecraft.server.v1_16_R3.TileEntity te = 
+                        ws.getHandle().getTileEntity(
+                                new net.minecraft.server.v1_16_R3.BlockPosition(pos.getX(), pos.getY(), pos.getZ()));
+                if(te == null) return;
+
+                net.minecraft.server.v1_16_R3.NBTTagCompound nbt = new net.minecraft.server.v1_16_R3.NBTTagCompound();
+                nbt.setInt("x", pos.getX());
+                nbt.setInt("y", pos.getY());
+                nbt.setInt("z", pos.getZ());
+
+                nbt.set("SpawnPotentials", (net.minecraft.server.v1_16_R3.NBTBase) s.getSpawnPotentials(rand, level));
+
+                te.load(null, nbt);
+                
+                SpawnerDecryAPI.setSpawnerDecry(tileentity, Main.instance);
+            }
+        }
+        
         public void generate_later_orign(Coord pos, IWorldEditor editor, Random rand, Coord cursor, int level) {
             if(Main.version == MultiVersion.Version.V1_14_R1) {
                 (new GenerateLaterOrigin114()).generate(pos, editor, rand, cursor, level, this);
@@ -306,6 +363,9 @@ public class Spawnable {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
                 (new GenerateLaterOrigin116R2()).generate(pos, editor, rand, cursor, level, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+                (new GenerateLaterOrigin116R3()).generate(pos, editor, rand, cursor, level, this);
             }
         }
         
@@ -321,6 +381,9 @@ public class Spawnable {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
                 (new GenerateLaterOrigin116R2()).generate_chunk(chunk, pos, editor, rand, cursor, level, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+                (new GenerateLaterOrigin116R3()).generate_chunk(chunk, pos, editor, rand, cursor, level, this);
             }
         }
         
@@ -414,6 +477,26 @@ public class Spawnable {
             }
         }
         
+        private static class GetSpawnPotentials116R3 {
+            public Object get(Random rand, int level, Spawnable s) {
+                if(s.type != null){
+			SpawnPotential potential = new SpawnPotential(Spawner.getName(s.type));
+			return potential.getNBTTagList(rand, level);
+		}
+		
+		net.minecraft.server.v1_16_R3.NBTTagList potentials = 
+                        new net.minecraft.server.v1_16_R3.NBTTagList();
+		
+		for(SpawnPotential potential : s.potentials){
+			net.minecraft.server.v1_16_R3.NBTTagCompound nbt = 
+                                (net.minecraft.server.v1_16_R3.NBTTagCompound) potential.getNBTTagCompound(level);
+			potentials.add(nbt);
+		}
+		
+		return potentials;
+            }
+        }
+        
 	private Object getSpawnPotentials(Random rand, int level){
             if(Main.version == MultiVersion.Version.V1_14_R1) {
 		return (new GetSpawnPotentials114()).get(rand, level, this);
@@ -426,6 +509,9 @@ public class Spawnable {
             }
             if(Main.version == MultiVersion.Version.V1_16_R2) {
 		return (new GetSpawnPotentials116R2()).get(rand, level, this);
+            }
+            if(Main.version == MultiVersion.Version.V1_16_R3) {
+		return (new GetSpawnPotentials116R3()).get(rand, level, this);
             }
             return null;
 	}

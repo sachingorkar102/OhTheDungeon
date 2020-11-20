@@ -24,7 +24,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.blocks.StairType;
 import forge_sandbox.greymerk.roguelike.worldgen.redstone.Hopper;
 import forge_sandbox.greymerk.roguelike.worldgen.shapes.RectHollow;
 import forge_sandbox.greymerk.roguelike.worldgen.shapes.RectSolid;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 public class DungeonsSmithy extends DungeonBase {
 

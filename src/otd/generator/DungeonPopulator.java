@@ -13,8 +13,8 @@ import org.bukkit.generator.BlockPopulator;
 import otd.Main;
 import shadow_manager.DungeonWorldManager;
 import zhehe.util.RandomCollection;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *
@@ -61,10 +61,14 @@ public class DungeonPopulator extends BlockPopulator{
         if(swc.ant_man_dungeon.doNaturalSpawn) {
             generator.add(swc.antman_weight, new AntManGenerator());
         }
+        if(swc.aether_dungeon.doNaturalSpawn) {
+            generator.add(swc.aether_weight, new AetherGenerator());
+        }
         
         boolean r = swc.roguelike.doNaturalSpawn || swc.doomlike.doNaturalSpawn
                 || swc.battletower.doNaturalSpawn || swc.smoofydungeon.doNaturalSpawn
-                || swc.draylar_battletower.doNaturalSpawn || swc.ant_man_dungeon.doNaturalSpawn;
+                || swc.draylar_battletower.doNaturalSpawn || swc.ant_man_dungeon.doNaturalSpawn 
+                || swc.aether_dungeon.doNaturalSpawn;
         
         if(!r) return;
         

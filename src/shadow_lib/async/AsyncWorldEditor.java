@@ -57,6 +57,10 @@ public class AsyncWorldEditor implements IWorldEditor {
         invalid.add(Material.DANDELION);
     };
     
+    public void setDefaultState(Material data) {
+        this.zone_world.default_state = data;
+    }
+    
     public AsyncWorldEditor(World world) {
         this.world = world;
         stats = new HashMap<>();
@@ -131,9 +135,16 @@ public class AsyncWorldEditor implements IWorldEditor {
     public void setBlockState(BlockPos pos, Material data, int flag) {
         zone_world.setType(pos.getX(), pos.getY(), pos.getZ(), data, false);
     }
+    public void setBlockState(int x, int y, int z, Material data) {
+        zone_world.setType(x, y, z, data, false);
+    }
     
     public Material getBlockState(BlockPos pos) {
         return zone_world.getType(pos.getX(), pos.getY(), pos.getZ());
+    }
+    
+    public Material getBlockState(int x, int y, int z) {
+        return zone_world.getType(x, y, z);
     }
 
     @Override

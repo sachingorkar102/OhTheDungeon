@@ -11,12 +11,21 @@ package otd;
  */
 public class MultiVersion {
     public static enum Version {
+        V1_16_R3,
         V1_16_R2,
         V1_16_R1,
         V1_15_R1,
         V1_14_R1,
         UNKNOWN,
     };
+    public static boolean is116R3() {
+        try {
+            Class clazz = Class.forName("net.minecraft.server.v1_16_R3.NBTTagCompound");
+            return clazz != null;
+        } catch (ClassNotFoundException ex) {
+            return false;
+        }
+    }
     public static boolean is116R2() {
         try {
             Class clazz = Class.forName("net.minecraft.server.v1_16_R2.NBTTagCompound");

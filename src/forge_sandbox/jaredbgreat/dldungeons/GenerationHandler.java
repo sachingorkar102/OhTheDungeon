@@ -8,7 +8,7 @@ import java.util.Set;
 import zhehe.util.BiomeDictionary;
 import zhehe.util.BiomeDictionary.Type;
 import org.bukkit.World;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  * The class responcible for determine where dungeons generate.  More 

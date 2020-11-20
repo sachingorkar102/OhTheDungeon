@@ -16,12 +16,17 @@ import forge_sandbox.greymerk.roguelike.dungeon.Dungeon;
 import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeReader;
 import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeType;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.logging.Level;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,33 +37,36 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import otd.data.draylar.BattleTowerSchematics;
+import otd.dungeon.draylar.BattleTowerSchematics;
 import otd.event.Event;
 import otd.event.SpawnerEvent;
 import otd.generator.DungeonPopulator;
 import otd.update.UpdateChecker;
 import otd.util.WorldDiagnostic;
 import shadow_lib.async.io.papermc.lib.PaperLib;
+import shadow_lib.bstats.Metrics;
 import shadow_manager.DungeonWorldManager;
 import zhehe.util.I18n;
 import zhehe.util.Logging;
-import zhehe.util.config.PluginConfig;
-import zhehe.util.config.WorldConfig;
-import zhehe.util.gui.AntManDungeonConfig;
-import zhehe.util.gui.BattleTowerConfig;
-import zhehe.util.gui.BiomeSetting;
-import zhehe.util.gui.DoomlikeConfig;
-import zhehe.util.gui.DraylarBattleTowerConfig;
-import zhehe.util.gui.DungeonSpawnSetting;
-import zhehe.util.gui.LootItem;
-import zhehe.util.gui.LootManager;
-import zhehe.util.gui.RoguelikeConfig;
-import zhehe.util.gui.RoguelikeLootItem;
-import zhehe.util.gui.RoguelikeLootManager;
-import zhehe.util.gui.SmoofyConfig;
-import zhehe.util.gui.WorldEditor;
-import zhehe.util.gui.WorldManager;
-import zhehe.util.gui.WorldSpawnerManager;
+import otd.util.config.PluginConfig;
+import otd.util.config.WorldConfig;
+import otd.util.gui.AetherDungeonConfig;
+import otd.util.gui.AntManDungeonConfig;
+import otd.util.gui.BattleTowerConfig;
+import otd.util.gui.BiomeSetting;
+import otd.util.gui.DoomlikeConfig;
+import otd.util.gui.DraylarBattleTowerConfig;
+import otd.util.gui.DungeonSpawnSetting;
+import otd.util.gui.LootItem;
+import otd.util.gui.LootManager;
+import otd.util.gui.RoguelikeConfig;
+import otd.util.gui.RoguelikeLootItem;
+import otd.util.gui.RoguelikeLootManager;
+import otd.util.gui.SmoofyConfig;
+import otd.util.gui.WorldEditor;
+import otd.util.gui.WorldManager;
+import otd.util.gui.WorldSpawnerManager;
+import otd.util.lang.LanguageUtil;
 
 /**
  *
@@ -69,24 +77,30 @@ public class Main extends JavaPlugin {
     public static boolean disabled = false;
     private static Integer api_version = 6;
     public static MultiVersion.Version version = MultiVersion.Version.UNKNOWN;
+    private Metrics metrics;
+    private final static int metric_pluginId = 9213;
 
     
     public Main() {
         if(MultiVersion.is114()) {
             version = MultiVersion.Version.V1_14_R1;
-            Bukkit.getLogger().log(Level.INFO, "[Oh The Dungeons You'll Go] MC Version: 1.14.x");
+            Bukkit.getLogger().log(Level.INFO, "{0}[Oh The Dungeons You''ll Go] MC Version: 1.14.x", ChatColor.GREEN);
         }
         else if(MultiVersion.is115()) {
             version = MultiVersion.Version.V1_15_R1;
-            Bukkit.getLogger().log(Level.INFO, "[Oh The Dungeons You'll Go] MC Version: 1.15.x");
+            Bukkit.getLogger().log(Level.INFO, "{0}[Oh The Dungeons You''ll Go] MC Version: 1.15.x", ChatColor.GREEN);
         }
         else if(MultiVersion.is116R1()) {
             version = MultiVersion.Version.V1_16_R1;
-            Bukkit.getLogger().log(Level.INFO, "[Oh The Dungeons You'll Go] MC Version: 1.16.[0-1]");
+            Bukkit.getLogger().log(Level.INFO, "{0}[Oh The Dungeons You''ll Go] MC Version: 1.16.[0-1]", ChatColor.GREEN);
         }
         else if(MultiVersion.is116R2()) {
             version = MultiVersion.Version.V1_16_R2;
-            Bukkit.getLogger().log(Level.INFO, "[Oh The Dungeons You'll Go] MC Version: 1.16.2");
+            Bukkit.getLogger().log(Level.INFO, "{0}[Oh The Dungeons You''ll Go] MC Version: 1.16.[2-3]", ChatColor.GREEN);
+        }
+        else if(MultiVersion.is116R3()) {
+            version = MultiVersion.Version.V1_16_R3;
+            Bukkit.getLogger().log(Level.INFO, "{0}[Oh The Dungeons You''ll Go] MC Version: 1.16.4", ChatColor.GREEN);
         }
         else version = MultiVersion.Version.UNKNOWN;
     }
@@ -96,6 +110,8 @@ public class Main extends JavaPlugin {
         Bukkit.getLogger().log(Level.WARNING, "[Oh The Dungeons You'll Go] Plugin is disabled");
         disabled = true;
     }
+    
+    public Material legacy;
     
     @Override
     public void onEnable() {
@@ -107,6 +123,9 @@ public class Main extends JavaPlugin {
         //PaperLib.suggestPaper(this);
         disabled = false;
         instance = this;
+        
+        //Legacy support
+        legacy = Material.LEGACY_DOUBLE_STEP;
         
         Sandbox.mkdir();
         I18n.init();
@@ -121,7 +140,6 @@ public class Main extends JavaPlugin {
         
         StyleSheetLoader.exposeStyleSheet(ModConfig.styleSheetFile);
         SpawnSheetLoader.exposeSpawnSheet(ModConfig.spawnSheetFile);
-        
         
         Dungeon.init = true;        
         
@@ -142,6 +160,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(DraylarBattleTowerConfig.instance, this);
         getServer().getPluginManager().registerEvents(WorldSpawnerManager.instance, this);
         getServer().getPluginManager().registerEvents(AntManDungeonConfig.instance, this);
+        getServer().getPluginManager().registerEvents(AetherDungeonConfig.instance, this);
         
         getServer().getPluginManager().registerEvents(new Event(), this);
         getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);
@@ -155,16 +174,37 @@ public class Main extends JavaPlugin {
             asyncUpdateChecker();
         }
         
+        String bstats = PluginConfig.instance.config.get("bstats");
+        if(bstats != null && bstats.equalsIgnoreCase("TRUE")) {
+            metrics = new Metrics(this, metric_pluginId);
+        }
+        
         registerCommand();
         BattleTowerSchematics.init(this);
         
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, () -> {
+        LanguageUtil.init();
+        
+        Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
             WorldDiagnostic.diagnostic();
+            {
+                try {
+                    InputStream stream = this.getResource("logo.txt");
+                    InputStreamReader isr = new InputStreamReader(stream);
+                    BufferedReader reader = new BufferedReader(isr);
+                    String line;
+
+                    while( (line=reader.readLine())!=null) {
+                        Bukkit.getLogger().log(Level.INFO, "{0}{1}", new Object[]{ChatColor.BLUE, line});
+                    }
+                } catch (IOException ex) {
+
+                }
+            }
         }, 1L);
         
         Bukkit.getScheduler().runTaskLater(this, () -> {
             PaperLib.suggestPaper(Main.instance);
-        }, 1L);
+        }, 2L);
     }
     
     private void loadAdvancement() {
@@ -206,7 +246,7 @@ public class Main extends JavaPlugin {
         public void onWorldInit(WorldInitEvent event) {
             String world_name = event.getWorld().getName();
             if(world_name.equals(DungeonWorldManager.WORLD_NAME)) return;
-            Logging.logInfo("[Oh The Dungeons You'll Go] Found world: " + world_name);
+            Logging.logInfo(ChatColor.BLUE + "[Oh The Dungeons You'll Go] Found world: " + world_name);
             event.getWorld().getPopulators().add(new DungeonPopulator());
         }
     }

@@ -7,7 +7,7 @@ package otd.dungeon.aetherlegacy;
 
 import java.util.Random;
 import org.bukkit.Material;
-import org.bukkit.World;
+import shadow_lib.async.AsyncWorldEditor;
 
 public abstract class AetherStructure  {
     public int chance;
@@ -18,9 +18,9 @@ public abstract class AetherStructure  {
 
     public Random random;
 
-    public World worldObj;
+    public AsyncWorldEditor worldObj;
 
-    private int startX, startY, startZ;
+    public int startX, startY, startZ;
 
     public void setBlocks(Material blockState) {
         this.blockState = blockState;
@@ -202,13 +202,12 @@ public abstract class AetherStructure  {
         return flag;
     }
         
-        public Material getBlockAtCurrentPosition(World world, int x, int y, int z) {
-            return world.getBlockAt(x, y, z).getType();
+        public Material getBlockAtCurrentPosition(AsyncWorldEditor world, int x, int y, int z) {
+            return world.getBlockState(x, y, z);
         }
         
-        public void placeBlockAtCurrentPosition(World world, Material material, int x, int y, int z) {
-//            Bukkit.getLogger().log(Level.SEVERE, x + "," + y + "," + z);
-            world.getBlockAt(x, y, z).setType(material, false);
+        public void placeBlockAtCurrentPosition(AsyncWorldEditor world, Material material, int x, int y, int z) {
+            world.setBlockState(x, y, z, material);
         }
 
     public Material getBlockStateWithOffset(int x, int y, int z) {
@@ -253,12 +252,12 @@ public abstract class AetherStructure  {
         }
     }
 
-    public boolean addComponentParts(World worldIn, Random randomIn) {
+    public boolean addComponentParts(AsyncWorldEditor worldIn, Random randomIn, boolean cloud, Material cloud_material) {
         this.worldObj = worldIn;
         this.random = randomIn;
 
-        return this.generate();
+        return this.generate(cloud, cloud_material);
     }
 
-    public abstract boolean generate();
+    public abstract boolean generate(boolean cloud, Material cloud_material);
 }

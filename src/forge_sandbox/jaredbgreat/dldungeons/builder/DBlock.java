@@ -17,7 +17,7 @@ import org.bukkit.entity.EntityType;
 import otd.Main;
 import shadow_lib.api.SpawnerDecryAPI;
 import shadow_lib.async.AsyncWorldEditor;
-import zhehe.util.worldgen.HalfAsyncWorld;
+import otd.util.worldgen.HalfAsyncWorld;
 
 public final class DBlock {
 	private final String id;   // The name

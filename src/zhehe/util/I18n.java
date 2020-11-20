@@ -48,7 +48,7 @@ public class I18n {
         }
     }
     
-    public int lang_version = 11;
+    public int lang_version = 12;
     
     public SpecialItem GREYMERK = new SpecialItem("Greymerk's Hatchet","Pointlessly sharp");
     public SpecialItem NEBRISCROWN = new SpecialItem("Nebrian Crown of Justice", "Adorned with precious gemstones");
@@ -162,6 +162,19 @@ public class I18n {
     
     public String AntManDungeon_Config = "Ant Man Dungeon Cfg";
     public String Ant_Man_Dungeon = "Ant Man Dungeon";
+    
+    public String AetherDungeon_Config = "Aether Dungeon Cfg";
+    public String Aether_Dungeon = "Aether Dungeon";
+    public String Aether_Dungeon_Cloud = "Aether Dungeon Cloud";
+    public String Aether_Dungeon_Cloud_Lore = "Does the dungeon have cloud structure";
+    public String Aether_Dungeon_Cloud_Material = "Aether Dungeon Cloud Material";
+    public String Aether_Dungeon_Height = "Height to generation";
+    public String Aether_Dungeon_Natural_Spawn = "Aether Dungeon Natural Spawn";
+    
+    public String Prevent_Breaking_Of_Dungeon_Spawner = "Prevent the breaking of dungeon spawner";
+    public String Prevent_Breaking_Of_Dungeon_Spawner_Lore = "Make player cannot break the dungeon spawner";
+    public String Prevent_Dropping_Of_Dungeon_Spawner = "Prevent the dropping of dungeon spawner";
+    public String Prevent_Dropping_Of_Dungeon_Spawner_Lore = "For plugins like [SlikSpawner, Slimefun]";
     
     public String World_Editor = "World Dungeon Cfg";
     public String Roguelike_Config = "Roguelike Cfg";
@@ -390,6 +403,26 @@ public class I18n {
         if(I18n.instance.lang_version == 10) {
             update10();
         }
+        if(I18n.instance.lang_version == 11) {
+            update11();
+        }
+    }
+    
+    public static void update11() {
+        I18n.instance.AetherDungeon_Config = "Aether Dungeon Cfg";
+        I18n.instance.Aether_Dungeon = "Aether Dungeon";
+        I18n.instance.Aether_Dungeon_Cloud = "Aether Dungeon Cloud";
+        I18n.instance.Aether_Dungeon_Cloud_Lore = "Does the dungeon have cloud structure";
+        I18n.instance.Aether_Dungeon_Cloud_Material = "Aether Dungeon Cloud Material";
+        I18n.instance.Aether_Dungeon_Height = "Height to generation";
+        I18n.instance.Aether_Dungeon_Natural_Spawn = "Aether Dungeon Natural Spawn";
+        
+        I18n.instance.Prevent_Breaking_Of_Dungeon_Spawner = "Prevent the breaking of dungeon spawner";
+        I18n.instance.Prevent_Breaking_Of_Dungeon_Spawner_Lore = "Make player cannot break the dungeon spawner";
+        I18n.instance.Prevent_Dropping_Of_Dungeon_Spawner = "Prevent the dropping of dungeon spawner";
+        I18n.instance.Prevent_Dropping_Of_Dungeon_Spawner_Lore = "For plugins like [SlikSpawner, Slimefun]";
+        
+        I18n.instance.lang_version = 12;
     }
     
     public static void update10() {

@@ -7,7 +7,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.Coord;
 import forge_sandbox.greymerk.roguelike.worldgen.MetaBlock;
 import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
 import org.bukkit.Material;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 //import net.minecraft.block.BlockBed;
 //import net.minecraft.init.Blocks;
 //import net.minecraft.tileentity.TileEntityBed;

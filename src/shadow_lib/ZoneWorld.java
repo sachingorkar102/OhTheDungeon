@@ -25,6 +25,7 @@ public class ZoneWorld {
     
     public final static Set<Material> SPECIAL_BLOCKS = new HashSet<>();
     public List<Later> later_task = new ArrayList<>();
+    public Material default_state = Material.STONE;
     
     public static void registerSpecialBlock(Material material) {
         SPECIAL_BLOCKS.add(material);
@@ -143,7 +144,7 @@ public class ZoneWorld {
     
     public Material getType(int x, int y, int z) {
         String key = xyzToKey(x, y, z);
-        if(!map.containsKey(key)) return Material.STONE;
+        if(!map.containsKey(key)) return default_state;
         
         BlockBase bb = map.get(key);
         if(bb.data != null) return bb.data.getMaterial();

@@ -10,7 +10,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import otd.Main;
 import shadow_lib.api.SpawnerDecryAPI;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 @SuppressWarnings("UnusedDeclaration")
 public class SpawnerUtils {

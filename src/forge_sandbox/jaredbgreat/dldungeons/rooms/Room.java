@@ -34,8 +34,8 @@ import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeType;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.bukkit.World;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 
 /**

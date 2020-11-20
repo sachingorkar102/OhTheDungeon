@@ -13,9 +13,9 @@ import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
 //import shadow_manager.DungeonWorldManager;
-import zhehe.util.config.RoguelikeLootNode;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.RoguelikeLootNode;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 //import net.minecraft.item.ItemStack;
 
 public class DungeonTaskLoot implements IDungeonTask {

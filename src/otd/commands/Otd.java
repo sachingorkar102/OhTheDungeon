@@ -11,7 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import zhehe.util.gui.WorldManager;
+import otd.util.gui.WorldManager;
 
 public class Otd implements TabExecutor {
     @Override

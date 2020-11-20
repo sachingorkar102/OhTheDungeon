@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import otd.Main;
 import otd.MultiVersion;
 import zhehe.util.FormatItem;
-import zhehe.util.nbt.JsonToNBT;
+import otd.util.nbt.JsonToNBT;
 //import net.minecraft.block.Block;
 //import net.minecraft.item.Item;
 //import net.minecraft.item.ItemStack;
@@ -152,6 +152,16 @@ public class WeightedRandomLoot implements Comparable<WeightedRandomLoot>, IWeig
                 return item;
             }
         }
+        
+        private static class Get116R3 {
+            public ItemStack get(ItemStack item, Object nbt) {
+                net.minecraft.server.v1_16_R3.ItemStack tmp = 
+                        org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asNMSCopy(item);
+                tmp.setTag((net.minecraft.server.v1_16_R3.NBTTagCompound) nbt);
+                item = org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack.asBukkitCopy(tmp);
+                return item;
+            }
+        }
 
 	@Override
 	public ItemStack get(Random rand) {
@@ -175,6 +185,9 @@ public class WeightedRandomLoot implements Comparable<WeightedRandomLoot>, IWeig
                     }
                     if(Main.version == MultiVersion.Version.V1_16_R2) {
                         item = (new Get116R2()).get(item, this.nbt);
+                    }
+                    if(Main.version == MultiVersion.Version.V1_16_R3) {
+                        item = (new Get116R3()).get(item, this.nbt);
                     }
                 }
 		return item;

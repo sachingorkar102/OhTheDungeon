@@ -35,8 +35,8 @@ import org.bukkit.Bukkit;
 //import net.minecraftforge.common.BiomeDictionary;
 //import net.minecraftforge.common.BiomeDictionary.Type;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 //
 public class Dungeon implements IDungeon{
         public static int count = 0;

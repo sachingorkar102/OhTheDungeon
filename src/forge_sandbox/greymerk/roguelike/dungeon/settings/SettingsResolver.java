@@ -10,7 +10,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.Coord;
 import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 public class SettingsResolver {
 

@@ -25,7 +25,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import otd.Main;
 import otd.event.Event;
 import zhehe.util.I18n;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *

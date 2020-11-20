@@ -182,7 +182,8 @@ public class BossRoomInsanePopulator extends MazeLayerBlockPopulator {
             BlockState blockState = spawnerBlock.getState();
             CreatureSpawner spawner = ((CreatureSpawner)blockState);
             if(otd.Main.version == otd.MultiVersion.Version.V1_16_R1 
-                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R2) {
+                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R2
+                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R3) {
                 spawner.setSpawnedType(EntityType.valueOf("ZOMBIFIED_PIGLIN"));
             } else {
                 spawner.setSpawnedType(EntityType.valueOf("PIG_ZOMBIE"));
@@ -197,7 +198,8 @@ public class BossRoomInsanePopulator extends MazeLayerBlockPopulator {
             BlockState blockState = spawnerBlock.getState();
             CreatureSpawner spawner = ((CreatureSpawner)blockState);
             if(otd.Main.version == otd.MultiVersion.Version.V1_16_R1
-                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R2) {
+                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R2
+                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R3) {
                 spawner.setSpawnedType(EntityType.valueOf("ZOMBIFIED_PIGLIN"));
             } else {
                 spawner.setSpawnedType(EntityType.valueOf("PIG_ZOMBIE"));
@@ -232,7 +234,8 @@ public class BossRoomInsanePopulator extends MazeLayerBlockPopulator {
             BlockState blockState = spawnerBlock.getState();
             CreatureSpawner spawner = ((CreatureSpawner)blockState);
             if(otd.Main.version == otd.MultiVersion.Version.V1_16_R1
-                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R2) {
+                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R2
+                    || otd.Main.version == otd.MultiVersion.Version.V1_16_R3) {
                 spawner.setSpawnedType(EntityType.valueOf("ZOMBIFIED_PIGLIN"));
             } else {
                 spawner.setSpawnedType(EntityType.valueOf("PIG_ZOMBIE"));

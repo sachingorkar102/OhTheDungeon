@@ -13,8 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import otd.util.ActualHeight;
 import zhehe.util.AsyncLog;
-import zhehe.util.config.SimpleWorldConfig;
-import zhehe.util.config.WorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 
 /**
  *
