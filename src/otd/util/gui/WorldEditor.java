@@ -34,8 +34,9 @@ public class WorldEditor extends Content {
     private boolean draylar;
     private boolean ant;
     private boolean aether;
+    private boolean lich;
     private boolean egg;
-    private final static int SLOT = 18;
+    private final static int SLOT = 27;
     
     private final static Material DISABLE = Material.MUSIC_DISC_BLOCKS;
     private final static Material ENABLE = Material.MUSIC_DISC_CAT;
@@ -60,7 +61,7 @@ public class WorldEditor extends Content {
         kcancel(e);
         
         int slot = e.getRawSlot();
-        if(slot < 0 && slot >= 18) {
+        if(slot < 0 && slot >= 27) {
             return;
         }
 
@@ -106,10 +107,15 @@ public class WorldEditor extends Content {
             ad.openInventory(p);
         }
         if(slot == 16) {
+            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            LichTowerConfig ad = new LichTowerConfig(holder.world, holder);
+            ad.openInventory(p);
+        }
+        if(slot == 18) {
             DungeonSpawnSetting dss = new DungeonSpawnSetting(holder.world, holder);
             dss.openInventory(p);
         }
-        if(slot == 17) {
+        if(slot == 19) {
             WorldSpawnerManager wsm = new WorldSpawnerManager(holder.world, holder);
             wsm.openInventory(p);
         }
@@ -135,6 +141,7 @@ public class WorldEditor extends Content {
                 draylar = config.draylar_battletower.doNaturalSpawn;
                 ant = config.ant_man_dungeon.doNaturalSpawn;
                 aether = config.aether_dungeon.doNaturalSpawn;
+                lich = config.lich_tower.doNaturalSpawn;
                 egg = config.egg_change_spawner;
             } else {
                 roguelike = false;
@@ -144,6 +151,7 @@ public class WorldEditor extends Content {
                 draylar = false;
                 ant = false;
                 aether = false;
+                lich = false;
                 egg = true;
             }
         }
@@ -207,6 +215,11 @@ public class WorldEditor extends Content {
                     lores.add(I18n.instance.Aether_Dungeon + " : " + ChatColor.RED + I18n.instance.Enable);
                 } else {
                     lores.add(I18n.instance.Aether_Dungeon + " : " + ChatColor.GRAY + I18n.instance.Disable);
+                }
+                if(lich) {
+                    lores.add(I18n.instance.LichTower + " : " + ChatColor.RED + I18n.instance.Enable);
+                } else {
+                    lores.add(I18n.instance.LichTower + " : " + ChatColor.GRAY + I18n.instance.Disable);
                 }
             }
             im.setLore(lores);
@@ -370,7 +383,7 @@ public class WorldEditor extends Content {
             im.setLore(lores);
             is.setItemMeta(im);
             
-            addItem(1, 5, is);
+            addItem(1, 6, is);
         } else {
             ItemStack is = new ItemStack(Material.GLOWSTONE);
             ItemMeta im = is.getItemMeta();
@@ -387,13 +400,39 @@ public class WorldEditor extends Content {
             addItem(1, 6, is);
         }
         
+        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+            ItemStack is = new ItemStack(Material.BARRIER);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.LichTower);
+            List<String> lores = new ArrayList<>();
+            lores.add(I18n.instance.PPDI_WORLD_LORE);
+            im.setLore(lores);
+            is.setItemMeta(im);
+            
+            addItem(1, 7, is);
+        } else {
+            ItemStack is = new ItemStack(Material.PAINTING);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.LichTower);
+            List<String> lores = new ArrayList<>();
+            if(aether) {
+                lores.add(I18n.instance.LichTower + " : " + ChatColor.RED + I18n.instance.Enable);
+            } else {
+                lores.add(I18n.instance.LichTower + " : " + ChatColor.GRAY + I18n.instance.Disable);
+            }
+            im.setLore(lores);
+            is.setItemMeta(im);
+            
+            addItem(1, 7, is);
+        }
+        
         {
             ItemStack is = new ItemStack(Material.ACTIVATOR_RAIL);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Dungeon_Spawn_Setting);
             is.setItemMeta(im);
             
-            addItem(1, 7, is);
+            addItem(2, 0, is);
         }
         
         {
@@ -402,7 +441,7 @@ public class WorldEditor extends Content {
             im.setDisplayName(I18n.instance.World_Spawner_Manager);
             is.setItemMeta(im);
             
-            addItem(1, 8, is);
+            addItem(2, 1, is);
         }
 //        {
 //            Material material;

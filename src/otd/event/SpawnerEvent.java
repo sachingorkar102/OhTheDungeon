@@ -70,6 +70,16 @@ public class SpawnerEvent implements Listener {
         Player p = event.getPlayer();
         String world_name = world.getName();
         
+        boolean isDungeon = false;
+        if(block.getState() instanceof TileState) {
+            TileState ts = (TileState) block.getState();
+            NamespacedKey key = new NamespacedKey(Main.instance, "decry");
+            if(ts.getPersistentDataContainer().has(key, PersistentDataType.BYTE)) {
+                isDungeon = true;
+            }
+        }
+        if(!isDungeon) return;
+        
         if(WorldConfig.wc.dict.containsKey(world_name)) {
             SimpleWorldConfig config = WorldConfig.wc.dict.get(world_name);
             

@@ -67,6 +67,8 @@ import otd.util.gui.WorldEditor;
 import otd.util.gui.WorldManager;
 import otd.util.gui.WorldSpawnerManager;
 import otd.util.lang.LanguageUtil;
+import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
+import otd.util.gui.LichTowerConfig;
 
 /**
  *
@@ -161,7 +163,9 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(WorldSpawnerManager.instance, this);
         getServer().getPluginManager().registerEvents(AntManDungeonConfig.instance, this);
         getServer().getPluginManager().registerEvents(AetherDungeonConfig.instance, this);
+        getServer().getPluginManager().registerEvents(LichTowerConfig.instance, this);
         
+        getServer().getPluginManager().registerEvents(new Lich(), this);
         getServer().getPluginManager().registerEvents(new Event(), this);
         getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);
         
@@ -183,6 +187,7 @@ public class Main extends JavaPlugin {
         BattleTowerSchematics.init(this);
         
         LanguageUtil.init();
+        Lich.init();
         
         Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
             WorldDiagnostic.diagnostic();

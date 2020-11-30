@@ -344,13 +344,20 @@ public class WorldSpawnerManager extends Content {
         }
         {
             Material material;
-            if(prevent_spawner_break) material = ENABLE;
-            else material = DISABLE;
+            String status;
+            if(prevent_spawner_break) {
+                material = ENABLE;
+                status = I18n.instance.Enable;
+            } else {
+                material = DISABLE;
+                status = I18n.instance.Disable;
+            }
             
             ItemStack is = new ItemStack(material);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Prevent_Breaking_Of_Dungeon_Spawner);
             List<String> lores = new ArrayList<>();
+            lores.add(I18n.instance.Status + " : " + status);
             lores.add(I18n.instance.Prevent_Breaking_Of_Dungeon_Spawner_Lore);
             
             im.setLore(lores);
@@ -361,13 +368,20 @@ public class WorldSpawnerManager extends Content {
         }
         {
             Material material;
-            if(prevent_spawner_drop) material = ENABLE;
-            else material = DISABLE;
+            String status;
+            if(prevent_spawner_drop) {
+                material = ENABLE;
+                status = I18n.instance.Enable;
+            } else {
+                material = DISABLE;
+                status = I18n.instance.Disable;
+            }
             
             ItemStack is = new ItemStack(material);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Prevent_Dropping_Of_Dungeon_Spawner);
             List<String> lores = new ArrayList<>();
+            lores.add(I18n.instance.Status + " : " + status);
             lores.add(I18n.instance.Prevent_Dropping_Of_Dungeon_Spawner_Lore);
             
             im.setLore(lores);

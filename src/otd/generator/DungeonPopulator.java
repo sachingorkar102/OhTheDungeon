@@ -64,11 +64,14 @@ public class DungeonPopulator extends BlockPopulator{
         if(swc.aether_dungeon.doNaturalSpawn) {
             generator.add(swc.aether_weight, new AetherGenerator());
         }
+        if(swc.lich_tower.doNaturalSpawn) {
+            generator.add(swc.lich_weight, new LichTowerGenerator());
+        }
         
         boolean r = swc.roguelike.doNaturalSpawn || swc.doomlike.doNaturalSpawn
                 || swc.battletower.doNaturalSpawn || swc.smoofydungeon.doNaturalSpawn
                 || swc.draylar_battletower.doNaturalSpawn || swc.ant_man_dungeon.doNaturalSpawn 
-                || swc.aether_dungeon.doNaturalSpawn;
+                || swc.aether_dungeon.doNaturalSpawn || swc.lich_tower.doNaturalSpawn;
         
         if(!r) return;
         

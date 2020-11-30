@@ -70,5 +70,6 @@ public class Spawner_Later extends Later {
     @Override
     public void doSomethingInChunk(Chunk c) {
         Spawner_Later.generate(c, random, coords, mob);
+        this.world = null;
     }
 }

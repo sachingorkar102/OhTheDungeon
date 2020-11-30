@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
@@ -51,6 +52,7 @@ public class ZoneWorld {
         
         for(Later later : later_task) {
             Coord pos = later.getPos();
+            if(pos == null) continue;
             int x = pos.getX();
             int z = pos.getZ();
             
@@ -149,6 +151,15 @@ public class ZoneWorld {
         BlockBase bb = map.get(key);
         if(bb.data != null) return bb.data.getMaterial();
         return bb.material;
+    }
+    
+    public BlockData getData(int x, int y, int z) {
+        String key = xyzToKey(x, y, z);
+        if(!map.containsKey(key)) return Bukkit.createBlockData(default_state);
+        
+        BlockBase bb = map.get(key);
+        if(bb.data != null) return bb.data;
+        return Bukkit.createBlockData(bb.material);
     }
     
     public void setType(int x, int y, int z, Material material, boolean update) {

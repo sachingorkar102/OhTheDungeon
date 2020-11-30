@@ -37,7 +37,7 @@ public class WorldConfig {
     public boolean rogueSpawners = true;
     public boolean disableAPI = false;
     public boolean noMobChanges = false;
-    public int version = 8;
+    public int version = 9;
     
     public int rollCoolDownInSecond = 10;
     public int rollRange = 15;
@@ -173,6 +173,14 @@ public class WorldConfig {
                 entry.getValue().initAetherDungeon();
             }
             wc.version = 8;
+            saves = true;
+        }
+        if(wc.version == 8) {
+            for(Map.Entry<String, SimpleWorldConfig> entry : wc.dict.entrySet()) {
+                entry.getValue().lich_weight = 3;
+                entry.getValue().initLichTower();
+            }
+            wc.version = 9;
             saves = true;
         }
         if(saves) save();

@@ -143,6 +143,10 @@ public class AsyncWorldEditor implements IWorldEditor {
         return zone_world.getType(pos.getX(), pos.getY(), pos.getZ());
     }
     
+    public BlockData getBlockStateBD(BlockPos pos) {
+        return zone_world.getData(pos.getX(), pos.getY(), pos.getZ());
+    }
+    
     public Material getBlockState(int x, int y, int z) {
         return zone_world.getType(x, y, z);
     }

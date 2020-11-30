@@ -84,6 +84,7 @@ public class SimpleWorldConfig {
     public int draylar_weight = 3;
     public int antman_weight = 3;
     public int aether_weight = 3;
+    public int lich_weight = 3;
     
     public int distance = 22;
     
@@ -143,5 +144,20 @@ public class SimpleWorldConfig {
     
     public void initAetherDungeon() {
         this.aether_dungeon = new AetherDungeon();
+    }
+    
+    public class LichTower {
+        public Set<String> biomeExclusions = new HashSet<>();
+        public boolean doNaturalSpawn = false;
+        public boolean builtinLoot = true;
+        public boolean doArt = true;
+        
+        public List<LootNode> loots = new ArrayList<>();
+    }
+    
+    public LichTower lich_tower = new LichTower();
+    
+    public void initLichTower() {
+        this.lich_tower = new LichTower();
     }
 }

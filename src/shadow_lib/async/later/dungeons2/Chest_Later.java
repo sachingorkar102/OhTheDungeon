@@ -126,7 +126,9 @@ public class Chest_Later extends Later {
                 for(otd.util.config.LootNode ln : swc.ant_man_dungeon.loots) {
                     if(random.nextDouble() <= ln.chance) {
                         ItemStack item = ln.getItem();
-                        int amount = ln.min + random.nextInt(ln.max - ln.min + 1);
+                        int amount;
+                        if(ln.max == ln.min) amount = ln.max;
+                        else amount = ln.min + random.nextInt(ln.max - ln.min + 1);
                         item.setAmount(amount);
                         inv.setItem(random.nextInt(inv.getSize()), item);
                     }
@@ -162,5 +164,6 @@ public class Chest_Later extends Later {
     @Override
     public void doSomethingInChunk(Chunk c) {
         Chest_Later.generate(c, random, coords, rarity, state);
+        this.world = null;
     }
 }

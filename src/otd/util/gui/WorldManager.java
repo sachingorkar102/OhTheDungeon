@@ -242,6 +242,11 @@ public class WorldManager extends Content {
                     } else {
                         lores.add(I18n.instance.Aether_Dungeon_Natural_Spawn + " : " + ChatColor.GRAY + I18n.instance.Disable);
                     }
+                    if(config.lich_tower.doNaturalSpawn) {
+                        lores.add(I18n.instance.LichTower_Natural_Spawn + " : " + ChatColor.RED + I18n.instance.Enable);
+                    } else {
+                        lores.add(I18n.instance.LichTower_Natural_Spawn + " : " + ChatColor.GRAY + I18n.instance.Disable);
+                    }
                 }
                 im.setLore(lores);
             } else {
@@ -257,6 +262,7 @@ public class WorldManager extends Content {
                     lores.add(I18n.instance.Draylar_Battle_Tower_Natural_Spawn + " : " + ChatColor.GRAY + I18n.instance.Disable);
                     lores.add(I18n.instance.Ant_Man_Dungeon_Natural_Spawn + " : " + ChatColor.GRAY + I18n.instance.Disable);
                     lores.add(I18n.instance.Aether_Dungeon_Natural_Spawn + " : " + ChatColor.GRAY + I18n.instance.Disable);
+                    lores.add(I18n.instance.LichTower_Natural_Spawn + " : " + ChatColor.GRAY + I18n.instance.Disable);
                 }
                 im.setLore(lores);
             }

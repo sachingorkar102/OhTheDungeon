@@ -36,6 +36,7 @@ public class DungeonSpawnSetting extends Content {
     private int draylar;
     private int ant;
     private int aether;
+    private int lich;
     private int distance;
     
     private final static Material ROGUELIKE = Material.DIAMOND_BLOCK;
@@ -45,6 +46,7 @@ public class DungeonSpawnSetting extends Content {
     private final static Material DRAYLAR = Material.BOOKSHELF;
     private final static Material ANT = Material.END_PORTAL_FRAME;
     private final static Material AETHER = Material.GLOWSTONE;
+    private final static Material LICH = Material.PAINTING;
     
     private DungeonSpawnSetting() {
         super("", SLOT);
@@ -74,6 +76,7 @@ public class DungeonSpawnSetting extends Content {
         this.draylar = swc.draylar_weight;
         this.ant = swc.antman_weight;
         this.aether = swc.aether_weight;
+        this.lich = swc.lich_weight;
         this.distance = swc.distance;
     }
     
@@ -163,6 +166,16 @@ public class DungeonSpawnSetting extends Content {
                 holder.init();
             }
         }
+        if(slot == 16) {
+            if(type == ClickType.LEFT) {
+                holder.lich++;
+                holder.init();
+            }
+            if(type == ClickType.RIGHT) {
+                holder.lich--;
+                holder.init();
+            }
+        }
         if(slot == 18) {
             if(type == ClickType.LEFT) {
                 holder.distance++;
@@ -183,6 +196,8 @@ public class DungeonSpawnSetting extends Content {
                 swc.smoofy_weight = holder.smoofy;
                 swc.draylar_weight = holder.draylar;
                 swc.antman_weight = holder.ant;
+                swc.aether_weight = holder.aether;
+                swc.lich_weight = holder.lich;
                 swc.distance = holder.distance;
                 WorldConfig.save();
                 Player p = (Player) e.getWhoClicked();
@@ -200,6 +215,8 @@ public class DungeonSpawnSetting extends Content {
         if(this.smoofy < 0) this.smoofy = 0;
         if(this.draylar < 0) this.draylar = 0;
         if(this.ant < 0) this.ant = 0;
+        if(this.aether < 0) this.aether = 0;
+        if(this.lich < 0) this.lich = 0;
         inv.clear();
         {
             ItemStack is = new ItemStack(Material.OAK_SIGN);
@@ -208,7 +225,7 @@ public class DungeonSpawnSetting extends Content {
             is.setItemMeta(im);
             addItem(0, 0, is);
         }
-        int total = this.battle + this.doomlike + this.roguelike + this.smoofy + this.draylar + this.ant + this.aether;
+        int total = this.battle + this.doomlike + this.roguelike + this.smoofy + this.draylar + this.ant + this.aether + this.lich;
         {
             ItemStack is = new ItemStack(ROGUELIKE);
             ItemMeta im = is.getItemMeta();
@@ -292,6 +309,18 @@ public class DungeonSpawnSetting extends Content {
             im.setLore(lores);
             is.setItemMeta(im);
             addItem(1, 6, is);
+        }
+        {
+            ItemStack is = new ItemStack(LICH);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.LichTower);
+            List<String> lores = new ArrayList<>();
+            lores.add(Integer.toString(this.lich) + " / " + Integer.toString(total));
+            lores.add(I18n.instance.Amount_Item_Tip1);
+            lores.add(I18n.instance.Amount_Item_Tip2);
+            im.setLore(lores);
+            is.setItemMeta(im);
+            addItem(1, 7, is);
         }
         {
             ItemStack is = new ItemStack(Material.MAP);

@@ -15,6 +15,18 @@ import org.bukkit.block.BlockFace;
  */
 public class BlockPos extends Vec3i {
     public int x, y, z;
+    public BlockPos(double x, double y, double z) {
+        super(x, y, z);
+        this.x = (int) x;
+        this.y = (int) y;
+        this.z = (int) z;
+    }
+    public BlockPos(BlockPos bp) {
+        super(bp.x, bp.y, bp.z);
+        this.x = bp.x;
+        this.y = bp.y;
+        this.z = bp.z;
+    }
     public BlockPos(int x, int y, int z) {
         super(x, y, z);
         this.x = x;
@@ -43,7 +55,18 @@ public class BlockPos extends Vec3i {
         return this.z;
     }
     
-    public BlockPos add(int x, int y, int z) {
+    public BlockPos offset(BlockFace facing)
+    {
+        return this.offset(facing, 1);
+    }
+
+    public BlockPos offset(BlockFace facing, int n)
+    {
+        return n == 0 ? this : new BlockPos(this.getX() + facing.getModX() * n, this.getY() + facing.getModY() * n, this.getZ() + facing.getModZ() * n);
+    }
+
+    
+    public BlockPos add(double x, double y, double z) {
         return new BlockPos(this.x + x, this.y + y, this.z + z);
     }
     public static List<BlockPos> getAllInBox(int x0, int y0, int z0, int x1, int y1, int z1) {
@@ -66,10 +89,91 @@ public class BlockPos extends Vec3i {
     public BlockPos west() {
         return offset(BlockFace.WEST, 1);
     }
-    public BlockPos offset(BlockFace facing, int n) {
-        return new BlockPos(this.x + facing.getModX() * n, this.y + facing.getModY() * n, this.z + facing.getModZ() * n);
-    }
     public BlockPos down() {
         return offset(BlockFace.DOWN, 1);
     }
+    public BlockPos toImmutable()
+    {
+        return this;
+    }
+
+    
+    
+        public static class MutableBlockPos extends BlockPos
+        {
+            protected int x;
+            protected int y;
+            protected int z;
+
+            public MutableBlockPos()
+            {
+                this(0, 0, 0);
+            }
+
+            public MutableBlockPos(BlockPos pos)
+            {
+                this(pos.getX(), pos.getY(), pos.getZ());
+            }
+
+            public MutableBlockPos(int x_, int y_, int z_)
+            {
+                super(0, 0, 0);
+                this.x = x_;
+                this.y = y_;
+                this.z = z_;
+            }
+
+            public BlockPos add(double x, double y, double z)
+            {
+                return super.add(x, y, z).toImmutable();
+            }
+
+            public BlockPos add(int x, int y, int z)
+            {
+                return super.add(x, y, z).toImmutable();
+            }
+
+            public BlockPos offset(BlockFace facing, int n)
+            {
+                return super.offset(facing, n).toImmutable();
+            }
+            public int getX()
+            {
+                return this.x;
+            }
+
+            public int getY()
+            {
+                return this.y;
+            }
+
+            public int getZ()
+            {
+                return this.z;
+            }
+
+            public BlockPos.MutableBlockPos setPos(int xIn, int yIn, int zIn)
+            {
+                this.x = xIn;
+                this.y = yIn;
+                this.z = zIn;
+                return this;
+            }
+            public BlockPos toImmutable()
+            {
+                return new BlockPos(this);
+            }
+            
+            public BlockPos.MutableBlockPos move(BlockFace facing)
+            {
+                return this.move(facing, 1);
+            }
+
+            public BlockPos.MutableBlockPos move(BlockFace facing, int n)
+            {
+                return this.setPos(this.x + facing.getModX()* n, this.y + facing.getModY()* n, this.z + facing.getModZ()* n);
+            }
+
+        }
+
 }

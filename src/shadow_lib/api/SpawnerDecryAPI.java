@@ -18,10 +18,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class SpawnerDecryAPI {
     public static void setSpawnerDecry(Block block, JavaPlugin plugin) {
-            TileState ts = (TileState) block.getState();
-            NamespacedKey key = new NamespacedKey(plugin, "decry");
-            ts.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte)15);
-            
-            ts.update(true, false);
+        TileState ts = (TileState) block.getState();
+        NamespacedKey key = new NamespacedKey(plugin, "decry");
+        ts.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte)15);
+        
+        ts.update(true, false);
     }
 }

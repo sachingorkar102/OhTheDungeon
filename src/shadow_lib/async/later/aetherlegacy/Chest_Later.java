@@ -16,7 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -129,7 +128,9 @@ public class Chest_Later extends Later {
                 for(otd.util.config.LootNode ln : swc.aether_dungeon.loots) {
                     if(random.nextDouble() <= ln.chance) {
                         ItemStack item = ln.getItem();
-                        int amount = ln.min + random.nextInt(ln.max - ln.min + 1);
+                        int amount;
+                        if(ln.max == ln.min) amount = ln.max;
+                        else amount = ln.min + random.nextInt(ln.max - ln.min + 1);
                         item.setAmount(amount);
                         inv.setItem(random.nextInt(inv.getSize()), item);
                     }

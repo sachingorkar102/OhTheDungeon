@@ -5,7 +5,6 @@
  */
 package otd.util.gui;
 
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -60,7 +59,7 @@ public class Content implements InventoryHolder, Listener {
         // Using slots click is a best option for your inventory click's
         if (e.getRawSlot() == 10) p.sendMessage("You clicked at slot " + e.getRawSlot());
     }
-    
+        
     public final void addItem(int x, int y, ItemStack item) {
         int index = x * 9 + y;
         inv.setItem(index, item);

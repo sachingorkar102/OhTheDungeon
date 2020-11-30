@@ -48,7 +48,7 @@ public class I18n {
         }
     }
     
-    public int lang_version = 12;
+    public int lang_version = 13;
     
     public SpecialItem GREYMERK = new SpecialItem("Greymerk's Hatchet","Pointlessly sharp");
     public SpecialItem NEBRISCROWN = new SpecialItem("Nebrian Crown of Justice", "Adorned with precious gemstones");
@@ -341,6 +341,14 @@ public class I18n {
     public String Addon_Not_Installed = "Addon not installed";
     public String Click_To_Install = "Click to get the URL of this addon";
     
+    public String Lich_Name = "Lich";
+    public String Lich_Head = "Head of Lich";
+    public String Lich_Head_Lore = "I will await my eternal reward.";
+    public String LichTower_Config = "Lich Tower Cfg";
+    public String LichTower = "Lich Tower";
+    public String LichTower_Art = "Generate Paintings in Lich Tower";
+    public String LichTower_Natural_Spawn = "Lich Tower Natural Spawn";
+    
     public static final transient String configFileName = "lang.json";
     
     public static void init() {
@@ -406,6 +414,21 @@ public class I18n {
         if(I18n.instance.lang_version == 11) {
             update11();
         }
+        if(I18n.instance.lang_version == 12) {
+            update12();
+        }
+    }
+    
+    public static void update12() {
+        I18n.instance.Lich_Name = "Lich";
+        I18n.instance.Lich_Head = "Head of Lich";
+        I18n.instance.Lich_Head_Lore = "I will await my eternal reward.";
+        I18n.instance.LichTower_Config = "Lich Tower Cfg";
+        I18n.instance.LichTower = "Lich Tower";
+        I18n.instance.LichTower_Art = "Generate Paintings in Lich Tower";
+        I18n.instance.LichTower_Natural_Spawn = "Lich Tower Natural Spawn";
+        
+        I18n.instance.lang_version = 13;
     }
     
     public static void update11() {

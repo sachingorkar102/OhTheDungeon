@@ -5,14 +5,9 @@
  */
 package otd.util;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,8 +19,9 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import otd.Main;
 import otd.event.Event;
-import zhehe.util.I18n;
+import static otd.util.Skull.applyHead;
 import otd.util.config.WorldConfig;
+import zhehe.util.I18n;
 
 /**
  *
@@ -34,6 +30,13 @@ import otd.util.config.WorldConfig;
 public class Roll {
     
     public final static String DICE = "DICE_TAG";
+
+    public static ItemStack getDice() {
+        return createHead(
+                WorldConfig.wc.diceUUID,
+                WorldConfig.wc.diceTexture
+        );
+    }
     
     public static ItemStack createHead(final String uuid, final String textures) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
@@ -43,27 +46,11 @@ public class Roll {
         lores.add(I18n.instance.DiceContent);
         lores.add(0, DICE);
         headMeta.setLore(lores);
-        GameProfile profile = new GameProfile(UUID.fromString(uuid), null);
-        profile.getProperties().put("textures", new Property("textures", textures));
-        Field profileField;
-        try {
-            profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(headMeta, profile);
-        } catch (NullPointerException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e1) {
-            //e1.printStackTrace();
-            Bukkit.getLogger().log(Level.SEVERE, "[Oh The Dungeons] Dice is not working properly");
-        }
+        headMeta = applyHead(uuid, textures, headMeta);
         head.setItemMeta(headMeta);
         return head;
     }
 
-    public static ItemStack getDice() {
-        return createHead(
-                WorldConfig.wc.diceUUID,
-                WorldConfig.wc.diceTexture
-        );
-    }
     
     public static void registerRecipe() {
         ShapedRecipe recipe = new ShapedRecipe( new NamespacedKey(Main.instance, "dice"), getDice() );
