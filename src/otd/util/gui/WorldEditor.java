@@ -415,7 +415,7 @@ public class WorldEditor extends Content {
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.LichTower);
             List<String> lores = new ArrayList<>();
-            if(aether) {
+            if(lich) {
                 lores.add(I18n.instance.LichTower + " : " + ChatColor.RED + I18n.instance.Enable);
             } else {
                 lores.add(I18n.instance.LichTower + " : " + ChatColor.GRAY + I18n.instance.Disable);

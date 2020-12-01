@@ -9,18 +9,15 @@ package forge_sandbox.jaredbgreat.dldungeons.rooms;
 //import forge_sandbox.jaredbgreat.dldungeons.ConfigHandler;
 import forge_sandbox.jaredbgreat.dldungeons.Difficulty;
 import forge_sandbox.jaredbgreat.dldungeons.pieces.Doorway;
-import forge_sandbox.jaredbgreat.dldungeons.pieces.Shape;
 import forge_sandbox.jaredbgreat.dldungeons.pieces.Shapes;
 import forge_sandbox.jaredbgreat.dldungeons.pieces.Spawner;
 import forge_sandbox.jaredbgreat.dldungeons.pieces.chests.BasicChest;
-import forge_sandbox.jaredbgreat.dldungeons.pieces.chests.LootCategory;
 import forge_sandbox.jaredbgreat.dldungeons.pieces.chests.TreasureChest;
 import forge_sandbox.jaredbgreat.dldungeons.pieces.chests.WeakChest;
 import forge_sandbox.jaredbgreat.dldungeons.planner.Dungeon;
 import forge_sandbox.jaredbgreat.dldungeons.planner.RoomSeed;
 import forge_sandbox.jaredbgreat.dldungeons.planner.Route;
 import forge_sandbox.jaredbgreat.dldungeons.planner.Symmetry;
-import forge_sandbox.jaredbgreat.dldungeons.planner.astar.AStar;
 import forge_sandbox.jaredbgreat.dldungeons.planner.astar.DoorQueue;
 import forge_sandbox.jaredbgreat.dldungeons.planner.features.Cutout;
 import forge_sandbox.jaredbgreat.dldungeons.planner.features.Depression;
@@ -33,9 +30,9 @@ import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeFlags;
 import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeType;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.bukkit.World;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
+import shadow_lib.async.AsyncWorldEditor;
 
 
 /**
@@ -117,10 +114,10 @@ public class Room extends AbstractRoom {
 		isNode = (previous == null);
 		isSubroom = (parent != null);
                 
-                World world = dungeon.map.world;
+                AsyncWorldEditor world = dungeon.map.world;
                 boolean singleEntrance = false;
-                if(WorldConfig.wc.dict.containsKey(world.getName())) {
-                    SimpleWorldConfig swc = WorldConfig.wc.dict.get(world.getName());
+                if(WorldConfig.wc.dict.containsKey(world.getWorldName())) {
+                    SimpleWorldConfig swc = WorldConfig.wc.dict.get(world.getWorldName());
                     singleEntrance = swc.doomlike.singleEntrance;
                 }
                 
@@ -286,8 +283,8 @@ public class Room extends AbstractRoom {
 	 */
 	protected void addSpawners(Dungeon dungeon) {
                 Difficulty difficulty = Difficulty.NONE;
-                if(WorldConfig.wc.dict.containsKey(dungeon.map.world.getName())) {
-                    SimpleWorldConfig swc = WorldConfig.wc.dict.get(dungeon.map.world.getName());
+                if(WorldConfig.wc.dict.containsKey(dungeon.map.world.getWorldName())) {
+                    SimpleWorldConfig swc = WorldConfig.wc.dict.get(dungeon.map.world.getWorldName());
                     difficulty = swc.doomlike.difficulty;
                 }
 		if(difficulty == Difficulty.NONE ||
@@ -369,8 +366,8 @@ public class Room extends AbstractRoom {
 	 */
 	public void addChests(Dungeon dungeon) {
                 Difficulty difficulty = Difficulty.NONE;
-                if(WorldConfig.wc.dict.containsKey(dungeon.map.world.getName())) {
-                    SimpleWorldConfig swc = WorldConfig.wc.dict.get(dungeon.map.world.getName());
+                if(WorldConfig.wc.dict.containsKey(dungeon.map.world.getWorldName())) {
+                    SimpleWorldConfig swc = WorldConfig.wc.dict.get(dungeon.map.world.getWorldName());
                     difficulty = swc.doomlike.difficulty;
                 }
 		if((difficulty == Difficulty.NONE) || 

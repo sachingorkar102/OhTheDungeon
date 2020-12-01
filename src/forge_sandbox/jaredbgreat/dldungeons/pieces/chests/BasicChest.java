@@ -9,6 +9,7 @@ package forge_sandbox.jaredbgreat.dldungeons.pieces.chests;
 //import jaredbgreat.dldungeons.api.DLDEvent;
 import forge_sandbox.jaredbgreat.dldungeons.builder.DBlock;
 import java.util.Random;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -80,7 +81,28 @@ public class BasicChest {
 //		MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.AfterChestTileEntity(world, contents, which, x, y, z, random, level));
 		
 	}
-	
+	public void placeChunk(Chunk chunk, int x, int y, int z, Random random) {
+		level += random.nextInt(2);
+		if(level >= LootCategory.LEVELS) level = LootCategory.LEVELS - 1;
+		if(chunk.getBlock(x, y, z).getType() != DBlock.chest) {
+//			System.err.println("[OTD] ERROR! Trying to put loot into non-chest at " 
+//									+ x + ", " + y + ", " + z + " (basic chest).");
+			return;
+		}
+		Block contents = chunk.getBlock(x, y, z);
+		int which = random.nextInt(3);
+		switch (which) {
+		case 0:
+			fillChest(contents, LootType.HEAL, random);
+			break;
+		case 1:
+			fillChest(contents, LootType.GEAR, random);
+			break;
+		case 2:
+			fillChest(contents, LootType.RANDOM, random);
+			break;
+		}		
+	}
 	
 	/**
 	 * Fills the chest with loot of the specified kind (lootType).

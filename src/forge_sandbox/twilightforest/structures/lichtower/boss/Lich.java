@@ -8,9 +8,7 @@ package forge_sandbox.twilightforest.structures.lichtower.boss;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -126,7 +124,6 @@ public class Lich implements Listener {
         Projectile entity = event.getEntity();
         if(event.getHitEntity() == null) return;
         ProjectileSource shooter = entity.getShooter();
-        if(shooter != null) Bukkit.getLogger().log(Level.SEVERE, shooter.getClass().getCanonicalName());
         
         if(shooter instanceof Skeleton) {
             Skeleton skeleton = (Skeleton) shooter;

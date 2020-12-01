@@ -113,8 +113,6 @@ public class Main extends JavaPlugin {
         disabled = true;
     }
     
-    public Material legacy;
-    
     @Override
     public void onEnable() {
         if(version == MultiVersion.Version.UNKNOWN) {
@@ -125,9 +123,6 @@ public class Main extends JavaPlugin {
         //PaperLib.suggestPaper(this);
         disabled = false;
         instance = this;
-        
-        //Legacy support
-        legacy = Material.LEGACY_DOUBLE_STEP;
         
         Sandbox.mkdir();
         I18n.init();

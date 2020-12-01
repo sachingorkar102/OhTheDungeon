@@ -9,9 +9,8 @@ package forge_sandbox.jaredbgreat.dldungeons.pieces.entrances;
 
 import forge_sandbox.jaredbgreat.dldungeons.builder.DBlock;
 import forge_sandbox.jaredbgreat.dldungeons.planner.Dungeon;
-import static zhehe.util.Constant.*;
 import org.bukkit.World;
-//import net.minecraft.world.World;
+import static zhehe.util.Constant.*;
 
 public class SimpleEntrance extends AbstractEntrance {
 
@@ -24,33 +23,33 @@ public class SimpleEntrance extends AbstractEntrance {
 		int wx = x + (dungeon.map.chunkX * 16) - (dungeon.map.room.length / 2) + 8;
 		int wz = z + (dungeon.map.chunkZ * 16) - (dungeon.map.room.length / 2) + 8;
 		int bottom = dungeon.map.floorY[x][z];
-		int top = world.getMaxHeight();
-		while(!DBlock.isGroundBlock(world, wx, top, wz)) top--;
+		int top = 255;
+		while(!DBlock.isGroundBlockSync(world, wx, top, wz)) top--;
 		top++;
 		int side = dungeon.random.nextInt(4);
 		switch (side) {
 			case 0:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx + 1, i, wz, ladder5);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx + 1, i, wz, ladder5);
 				}
 				break;
 			case 1:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx, i, wz + 1, ladder3);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx, i, wz + 1, ladder3);
 				}
 				break;
 			case 2:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx - 1, i, wz, ladder4);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx - 1, i, wz, ladder4);
 				}
 				break;
 			case 3:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx, i, wz - 1, ladder2);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx, i, wz - 1, ladder2);
 				}
 				break;
 		}

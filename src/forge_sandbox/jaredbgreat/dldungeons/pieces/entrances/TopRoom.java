@@ -7,10 +7,9 @@ package forge_sandbox.jaredbgreat.dldungeons.pieces.entrances;
 
 import forge_sandbox.jaredbgreat.dldungeons.builder.DBlock;
 import forge_sandbox.jaredbgreat.dldungeons.planner.Dungeon;
-import static zhehe.util.Constant.*;
 import org.bukkit.World;
-//import net.minecraft.block.Block;
-//import net.minecraft.world.World;
+import static zhehe.util.Constant.*;
+import shadow_lib.async.AsyncWorldEditor;
 
 
 /**
@@ -35,8 +34,8 @@ public class TopRoom extends AbstractEntrance {
 		wx = x + (dungeon.map.chunkX * 16) - (dungeon.map.room.length / 2) + 8;
 		wz = z + (dungeon.map.chunkZ * 16) - (dungeon.map.room.length / 2) + 8;
 		bottom = dungeon.map.floorY[x][z];
-		top = world.getMaxHeight();
-		while(!DBlock.isGroundBlock(world, wx, top, wz)) top--;
+		top = 255;
+		while(!DBlock.isGroundBlockSync(world, wx, top, wz)) top--;
 		xdim = dungeon.random.nextInt(7) + 6;
 		zdim = dungeon.random.nextInt(7) + 6;
 		ymod = (xdim <= zdim) ? (int) Math.sqrt(xdim) : (int) Math.sqrt(zdim);
@@ -79,12 +78,12 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating Floor (TopRoom)");
 		for(int i = xmin + 1; i < xmax; i++) 
 			for(int j = zmin + 1; j < zmax; j++) {
-				DBlock.place(world, i, top, j, dungeon.floorBlock);
+				DBlock.placeSync(world, i, top, j, dungeon.floorBlock);
 				for(int k = top + (ydim * 2); k >= top + 1; k--) 
-					DBlock.deleteBlock(world, i, k, j);
+					DBlock.deleteBlockSync(world, i, k, j);
 				below = top - 1;
-				while(!DBlock.isGroundBlock(world, i, below, j)) {
-					DBlock.place(world, i, below, j, dungeon.floorBlock);
+				while(!DBlock.isGroundBlockSync(world, i, below, j)) {
+					DBlock.placeSync(world, i, below, j, dungeon.floorBlock);
 					below--;
 				}
 			}
@@ -92,22 +91,22 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating X-Walls (TopRoom)");
 		for(int i = xmin; i <= xmax; i++) {
 			for(int j = top + ydim; j >= top; j--) { 
-				DBlock.place(world, i, j, zmax, dungeon.wallBlock1);
-				DBlock.place(world, i, j, zmin, dungeon.wallBlock1);
+				DBlock.placeSync(world, i, j, zmax, dungeon.wallBlock1);
+				DBlock.placeSync(world, i, j, zmin, dungeon.wallBlock1);
 			}
 			if(dungeon.random.nextInt(8) == 0)
 				for(int j = top + 2; j > top; j--) {
-					DBlock.deleteBlock(world, i, j, zmax);
-					DBlock.deleteBlock(world, i, j, zmin);
+					DBlock.deleteBlockSync(world, i, j, zmax);
+					DBlock.deleteBlockSync(world, i, j, zmin);
 				}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, i, below, zmax)) {
-				DBlock.place(world, i, below, zmax, dungeon.wallBlock1);
+			while(!DBlock.isGroundBlockSync(world, i, below, zmax)) {
+				DBlock.placeSync(world, i, below, zmax, dungeon.wallBlock1);
 				below--;
 			}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, i, below, zmin)) {
-				DBlock.place(world, i, below, zmin, dungeon.floorBlock);
+			while(!DBlock.isGroundBlockSync(world, i, below, zmin)) {
+				DBlock.placeSync(world, i, below, zmin, dungeon.floorBlock);
 				below--;
 			}
 		}
@@ -115,22 +114,22 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating Z-Walls (TopRoom)");
 		for(int i = zmin; i <= zmax; i++) {
 			for(int j = top + ydim; j >= top; j--) { 
-				DBlock.place(world, xmin, j, i, dungeon.wallBlock1);
-				DBlock.place(world, xmax, j, i, dungeon.wallBlock1);
+				DBlock.placeSync(world, xmin, j, i, dungeon.wallBlock1);
+				DBlock.placeSync(world, xmax, j, i, dungeon.wallBlock1);
 			}
 			if(dungeon.random.nextInt(8) == 0)
 				for(int j = top + 2; j > top; j--) {
-					DBlock.deleteBlock(world, xmax, j, i);
-					DBlock.deleteBlock(world, xmin, j, i);
+					DBlock.deleteBlockSync(world, xmax, j, i);
+					DBlock.deleteBlockSync(world, xmin, j, i);
 				}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, xmax, below, i)) {
-				DBlock.place(world, xmax, below, i, dungeon.wallBlock1);
+			while(!DBlock.isGroundBlockSync(world, xmax, below, i)) {
+				DBlock.placeSync(world, xmax, below, i, dungeon.wallBlock1);
 				below--;
 			}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, xmin, below, i)) {
-				DBlock.place(world, xmin, below, i, dungeon.floorBlock);
+			while(!DBlock.isGroundBlockSync(world, xmin, below, i)) {
+				DBlock.placeSync(world, xmin, below, i, dungeon.floorBlock);
 				below--;
 			}
 		}
@@ -138,7 +137,7 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating Ceilding (TopRoom)");
 		for(int i = xmin; i <= xmax; i++) 
 			for(int j = zmin; j <= zmax; j++) {
-				DBlock.place(world, i, top + ydim + 1, j, dungeon.cielingBlock);
+				DBlock.placeSync(world, i, top + ydim + 1, j, dungeon.cielingBlock);
 			}
 		//DoomlikeDungeons.profiler.endTask("Generating Ceilding (TopRoom)");
 		//DoomlikeDungeons.profiler.endTask("Generating Building (TopRoom)");
@@ -157,10 +156,10 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating Floor (TopRoom)");
 		for(int i = xmin + 1; i < xmax; i++) 
 			for(int j = zmin + 1; j < zmax; j++) {
-				DBlock.place(world, i, top, j, dungeon.floorBlock);
+				DBlock.placeSync(world, i, top, j, dungeon.floorBlock);
 				below = top - 1;
-				while(!DBlock.isGroundBlock(world, i, below, j)) {
-					DBlock.place(world, i, below, j, dungeon.floorBlock);
+				while(!DBlock.isGroundBlockSync(world, i, below, j)) {
+					DBlock.placeSync(world, i, below, j, dungeon.floorBlock);
 					below--;
 				}
 			}
@@ -168,22 +167,22 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating X-Walls (TopRoom)");
 		for(int i = xmin; i <= xmax; i++) {
 			for(int j = top + ydim - dungeon.random.nextInt(3); j >= top; j--) { 
-				DBlock.place(world, i, j, zmax, dungeon.wallBlock1);
-				DBlock.place(world, i, j, zmin, dungeon.wallBlock1);
+				DBlock.placeSync(world, i, j, zmax, dungeon.wallBlock1);
+				DBlock.placeSync(world, i, j, zmin, dungeon.wallBlock1);
 			}
 			if(dungeon.random.nextInt(8) == 0)
 				for(int j = top + 2; j > top; j--) {
-					DBlock.deleteBlock(world, i, j, zmax);
-					DBlock.deleteBlock(world, i, j, zmin);
+					DBlock.deleteBlockSync(world, i, j, zmax);
+					DBlock.deleteBlockSync(world, i, j, zmin);
 				}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, i, below, zmax)) {
-				DBlock.place(world, i, below, zmax, dungeon.wallBlock1);
+			while(!DBlock.isGroundBlockSync(world, i, below, zmax)) {
+				DBlock.placeSync(world, i, below, zmax, dungeon.wallBlock1);
 				below--;
 			}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, i, below, zmin)) {
-				DBlock.place(world, i, below, zmin, dungeon.floorBlock);
+			while(!DBlock.isGroundBlockSync(world, i, below, zmin)) {
+				DBlock.placeSync(world, i, below, zmin, dungeon.floorBlock);
 				below--;
 			}
 		}
@@ -191,22 +190,22 @@ public class TopRoom extends AbstractEntrance {
 		//DoomlikeDungeons.profiler.startTask("Generating Z-Walls (TopRoom)");
 		for(int i = zmin; i <= zmax; i++) {
 			for(int j = top + ydim - dungeon.random.nextInt(3); j >= top; j--) { 
-				DBlock.place(world, xmin, j, i, dungeon.wallBlock1);
-				DBlock.place(world, xmax, j, i, dungeon.wallBlock1);
+				DBlock.placeSync(world, xmin, j, i, dungeon.wallBlock1);
+				DBlock.placeSync(world, xmax, j, i, dungeon.wallBlock1);
 			}
 			if(dungeon.random.nextInt(8) == 0)
 				for(int j = top + 2; j > top; j--) {
-					DBlock.deleteBlock(world, xmax, j, i);
-					DBlock.deleteBlock(world, xmin, j, i);
+					DBlock.deleteBlockSync(world, xmax, j, i);
+					DBlock.deleteBlockSync(world, xmin, j, i);
 				}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, xmax, below, i)) {
-				DBlock.place(world, xmax, below, i, dungeon.wallBlock1);
+			while(!DBlock.isGroundBlockSync(world, xmax, below, i)) {
+				DBlock.placeSync(world, xmax, below, i, dungeon.wallBlock1);
 				below--;
 			}
 			below = top - 1;
-			while(!DBlock.isGroundBlock(world, xmin, below, i)) {
-				DBlock.place(world, xmin, below, i, dungeon.floorBlock);
+			while(!DBlock.isGroundBlockSync(world, xmin, below, i)) {
+				DBlock.placeSync(world, xmin, below, i, dungeon.floorBlock);
 				below--;
 			}
 		}
@@ -237,26 +236,26 @@ public class TopRoom extends AbstractEntrance {
 		switch (side) {
 			case 0:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx + 1, i, wz, ladder5);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx + 1, i, wz, ladder5);
 				}
 				break;
 			case 1:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx, i, wz + 1, ladder3);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx, i, wz + 1, ladder3);
 				}
 				break;
 			case 2:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx - 1, i, wz, ladder4);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx - 1, i, wz, ladder4);
 				}
 				break;
 			case 3:
 				for(int i = bottom; i <= top; i++) {
-					DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
-					DBlock.placeBlock(world, wx, i, wz - 1, ladder2);
+					DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
+					DBlock.placeBlockSync(world, wx, i, wz - 1, ladder2);
 				}
 				break;
 		}	
@@ -277,51 +276,51 @@ public class TopRoom extends AbstractEntrance {
 		int side = dungeon.random.nextInt(4);
 		for(int i = bottom; i < top; i++) {
 			int sx, sz;
-			DBlock.place(world, wx, i, wz, dungeon.wallBlock1);
+			DBlock.placeSync(world, wx, i, wz, dungeon.wallBlock1);
 			switch (side) {
 			case 0:
-				DBlock.placeBlock(world, wx+1, i, wz,   slab0);
-				DBlock.placeBlock(world, wx+1, i, wz+1, slab8);
+				DBlock.placeBlockSync(world, wx+1, i, wz,   slab0);
+				DBlock.placeBlockSync(world, wx+1, i, wz+1, slab8);
 				// Empty space
-				DBlock.deleteBlock(world, wx,    i, wz+1);
-				DBlock.deleteBlock(world, wx-1,  i, wz+1);
-				DBlock.deleteBlock(world, wx-1,  i,   wz);
-				DBlock.deleteBlock(world, wx-1,  i, wz-1);
-				DBlock.deleteBlock(world, wx,    i, wz-1);
-				DBlock.deleteBlock(world, wx+1,  i, wz-1);
+				DBlock.deleteBlockSync(world, wx,    i, wz+1);
+				DBlock.deleteBlockSync(world, wx-1,  i, wz+1);
+				DBlock.deleteBlockSync(world, wx-1,  i,   wz);
+				DBlock.deleteBlockSync(world, wx-1,  i, wz-1);
+				DBlock.deleteBlockSync(world, wx,    i, wz-1);
+				DBlock.deleteBlockSync(world, wx+1,  i, wz-1);
 				break;
 			case 1:
-				DBlock.placeBlock(world, wx,   i, wz+1, slab0);
-				DBlock.placeBlock(world, wx-1, i, wz+1, slab8);
+				DBlock.placeBlockSync(world, wx,   i, wz+1, slab0);
+				DBlock.placeBlockSync(world, wx-1, i, wz+1, slab8);
 				// Empty space
-				DBlock.deleteBlock(world, wx+1, i,   wz);
-				DBlock.deleteBlock(world, wx+1, i, wz+1);
-				DBlock.deleteBlock(world, wx-1, i,   wz);
-				DBlock.deleteBlock(world, wx-1, i, wz-1);
-				DBlock.deleteBlock(world, wx,   i, wz-1);
-				DBlock.deleteBlock(world, wx+1, i, wz-1);
+				DBlock.deleteBlockSync(world, wx+1, i,   wz);
+				DBlock.deleteBlockSync(world, wx+1, i, wz+1);
+				DBlock.deleteBlockSync(world, wx-1, i,   wz);
+				DBlock.deleteBlockSync(world, wx-1, i, wz-1);
+				DBlock.deleteBlockSync(world, wx,   i, wz-1);
+				DBlock.deleteBlockSync(world, wx+1, i, wz-1);
 				break;
 			case 2:
-				DBlock.placeBlock(world, wx-1, i, wz,   slab0);
-				DBlock.placeBlock(world, wx-1, i, wz-1, slab8);
+				DBlock.placeBlockSync(world, wx-1, i, wz,   slab0);
+				DBlock.placeBlockSync(world, wx-1, i, wz-1, slab8);
 				// Empty space
-				DBlock.deleteBlock(world, wx+1, i,   wz);
-				DBlock.deleteBlock(world, wx+1, i, wz+1);
-				DBlock.deleteBlock(world, wx,   i, wz+1);
-				DBlock.deleteBlock(world, wx-1, i, wz+1);
-				DBlock.deleteBlock(world, wx,   i, wz-1);
-				DBlock.deleteBlock(world, wx+1, i, wz-1);
+				DBlock.deleteBlockSync(world, wx+1, i,   wz);
+				DBlock.deleteBlockSync(world, wx+1, i, wz+1);
+				DBlock.deleteBlockSync(world, wx,   i, wz+1);
+				DBlock.deleteBlockSync(world, wx-1, i, wz+1);
+				DBlock.deleteBlockSync(world, wx,   i, wz-1);
+				DBlock.deleteBlockSync(world, wx+1, i, wz-1);
 				break;
 			case 3:
-				DBlock.placeBlock(world, wx,   i, wz-1, slab0);
-				DBlock.placeBlock(world, wx+1, i, wz-1, slab8);
+				DBlock.placeBlockSync(world, wx,   i, wz-1, slab0);
+				DBlock.placeBlockSync(world, wx+1, i, wz-1, slab8);
 				// Empty space
-				DBlock.deleteBlock(world, wx+1, i,   wz);
-				DBlock.deleteBlock(world, wx+1, i, wz+1);
-				DBlock.deleteBlock(world, wx,   i, wz+1);
-				DBlock.deleteBlock(world, wx-1, i, wz+1);
-				DBlock.deleteBlock(world, wx-1, i,   wz);
-				DBlock.deleteBlock(world, wx-1, i, wz-1);
+				DBlock.deleteBlockSync(world, wx+1, i,   wz);
+				DBlock.deleteBlockSync(world, wx+1, i, wz+1);
+				DBlock.deleteBlockSync(world, wx,   i, wz+1);
+				DBlock.deleteBlockSync(world, wx-1, i, wz+1);
+				DBlock.deleteBlockSync(world, wx-1, i,   wz);
+				DBlock.deleteBlockSync(world, wx-1, i, wz-1);
 				break;
 			}
 			side = (side + 1) % 4; 

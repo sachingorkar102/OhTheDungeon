@@ -5,7 +5,6 @@
  */
 package otd.commands;
 
-import forge_sandbox.StructureBoundingBox;
 import forge_sandbox.com.someguyssoftware.dungeons2.BukkitDungeonGenerator;
 import static forge_sandbox.jaredbgreat.dldungeons.builder.Builder.commandPlaceDungeon;
 import java.util.ArrayList;
@@ -17,9 +16,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -34,11 +31,6 @@ import shadow_lib.ExceptionRepoter;
 import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import forge_sandbox.twilightforest.TFBukkitGenerator;
-import forge_sandbox.twilightforest.TFFeature;
-import forge_sandbox.twilightforest.structures.darktower.StructureStartDarkTower;
-import forge_sandbox.twilightforest.structures.lichtower.StructureStartLichTower;
-import forge_sandbox.twilightforest.structures.minotaurmaze.StructureStartLabyrinth;
-//import twilightforest.structures.minotaurmaze.StructureStartLabyrinth;
 
 public class Otd_Place implements TabExecutor {
     

@@ -7,6 +7,7 @@ package forge_sandbox.jaredbgreat.dldungeons.planner;
  */	
 
 //import forge_sandbox.jaredbgreat.dldungeons.ConfigHandler;
+import forge_sandbox.greymerk.roguelike.worldgen.Coord;
 import forge_sandbox.jaredbgreat.dldungeons.Difficulty;
 //import jaredbgreat.dldungeons.DoomlikeDungeons;
 import forge_sandbox.jaredbgreat.dldungeons.builder.DBlock;
@@ -40,7 +41,8 @@ import org.bukkit.inventory.ItemStack;
 import otd.util.config.LootNode;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
-import otd.util.worldgen.HalfAsyncWorld;
+import shadow_lib.async.AsyncWorldEditor;
+import shadow_lib.async.later.doomlike.Chest_Later;
 
 //import net.minecraft.world.World;
 //import net.minecraft.world.biome.Biome;
@@ -176,7 +178,7 @@ public class Dungeon {
 		
 		rooms = new RoomList(size.maxRooms + 1);
 		planter = new ArrayList<>();
-		map = new MapMatrix(size.width, world, chunkX, chunkZ);
+		map = new MapMatrix(size.width, new AsyncWorldEditor(world), chunkX, chunkZ);
 		numNodes = random.nextInt(size.maxNodes - size.minNodes + 1) + size.minNodes + 1;
 		nodes = new Node[numNodes];
 		spawners = new SpawnerCounter();
@@ -208,11 +210,6 @@ public class Dungeon {
 				room.addChests(this);
 			}
 		}
-//		DoomlikeDungeons.profiler.endTask("Layout dungeon (rough draft)");
-//		DoomlikeDungeons.profiler.startTask("Fixing room contents");
-//		fixRoomContents();
-//		DoomlikeDungeons.profiler.endTask("Fixing room contents");
-//		DoomlikeDungeons.profiler.endTask("Planning Dungeon");
 	}
 	
 	
@@ -291,8 +288,8 @@ public class Dungeon {
 	private void connectNodesSparcely() {		
 		//DoomlikeDungeons.profiler.startTask("Connecting Nodes");
 		Node first, other;
-		ArrayList<Node> connected = new ArrayList<Node>(nodes.length), 
-				        disconnected = new ArrayList<Node>(nodes.length);		
+		ArrayList<Node> connected = new ArrayList<>(nodes.length), 
+				        disconnected = new ArrayList<>(nodes.length);		
 		connected.add(nodes[0]);
 		for(int i = 1; i < nodes.length; i++) {
 			disconnected.add(nodes[i]);
@@ -400,7 +397,7 @@ public class Dungeon {
 		DoorChecker.checkConnectivity(this);
 	}
         
-        public void fixRoomContentsAsync(HalfAsyncWorld hworld) {
+        public void fixRoomContentsAsync(AsyncWorldEditor hworld) {
 		for(Room room : rooms) {
 			addChestBlocksAsync(room, hworld);
 			DoorChecker.processDoors1(this, room);
@@ -429,11 +426,11 @@ public class Dungeon {
 		}
 	}
         
-        public void addChestBlocksAsync(Room room, HalfAsyncWorld hworld) {
+        public void addChestBlocksAsync(Room room, AsyncWorldEditor hworld) {
 //		if(MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.AddChestBlocksToRoom(this, room))) return;
 		for(BasicChest  chest : room.chests) {
 //			DBlock.placeChest(map.world, shiftX + chest.mx, chest.my, shiftZ + chest.mz);
-                        hworld.setType(shiftX + chest.mx, chest.my, shiftZ + chest.mz, DBlock.chest, true);
+                        hworld.setBlockType(shiftX + chest.mx, chest.my, shiftZ + chest.mz, DBlock.chest);
 		}
 	}
 	
@@ -457,41 +454,17 @@ public class Dungeon {
 	private void addTileEntitesToRoom(Room room) {
             for(Spawner  spawner : room.spawners) {
                 DBlock.placeSpawner(map.world, 
-                shiftX + spawner.getX(), 
-                spawner.getY(), 
-                shiftZ + spawner.getZ(), 
-                EntityType.valueOf(spawner.getMob()));
+                    shiftX + spawner.getX(), 
+                    spawner.getY(), 
+                    shiftZ + spawner.getZ(), 
+                    EntityType.valueOf(spawner.getMob()));
             }
             
             boolean enable = false;
-            String world_name = map.world.getName();
+            String world_name = map.world.getWorldName();
             if(WorldConfig.wc.dict.containsKey(world_name) && WorldConfig.wc.dict.get(world_name).doomlike.builtinLoot) enable = true;
-            SimpleWorldConfig swc = WorldConfig.wc.dict.get(world_name);
             for(BasicChest  chest : room.chests) {
-                //builtin loot
-                if(enable) chest.place(map.world, shiftX + chest.mx, chest.my, shiftZ + chest.mz, random);
-                List<ItemStack> loots = new ArrayList<>();
-                for(LootNode ln : swc.doomlike.loots) {
-                    if(random.nextDouble() <= ln.chance) {
-                        int max = ln.max - ln.min;
-                        int amount = ln.min + random.nextInt(max + 1);
-                        ItemStack is = ln.getItem();
-                        is.setAmount(amount);
-                        loots.add(is);
-                    }
-                }
-                
-                //custom loots
-                if(!loots.isEmpty()) {
-                    Block block = map.world.getBlockAt(shiftX + chest.mx, chest.my, shiftZ + chest.mz);
-                    block.setType(DBlock.chest, true);
-                    if(!(block.getState() instanceof Chest)) return;
-                    Chest bih = (Chest) block.getState();
-                    Inventory inv = bih.getBlockInventory();
-                    for(ItemStack is : loots) {
-                        inv.addItem(is);
-                    }
-                }
+                Chest_Later.generate_later(map.world, random, new Coord(shiftX + chest.mx, chest.my, shiftZ + chest.mz), enable, chest);
             }
 	}
 	
@@ -527,27 +500,19 @@ public class Dungeon {
                 }
                 
 		if(easyFind) entrance = 1;
-//		if(MinecraftForge.TERRAIN_GEN_BUS.post(new DLDEvent.AddEntrance(this, room))) return;
 		
 		switch (entrance) {
 		case 0:
-			//DoomlikeDungeons.profiler.startTask("Adding Sriral Stair");
-			new SpiralStair((int)room.realX, (int)room.realZ).build(this, map.world);
-			//DoomlikeDungeons.profiler.endTask("Adding Sriral Stair");
+			new SpiralStair((int)room.realX, (int)room.realZ).build(this, world);
 			break;
 		case 1:
-			//DoomlikeDungeons.profiler.startTask("Adding Top Room");
-			new TopRoom((int)room.realX, (int)room.realZ).build(this, map.world);
-			//DoomlikeDungeons.profiler.endTask("Adding Top Room");
+			new TopRoom((int)room.realX, (int)room.realZ).build(this, world);
 			break;
 		case 2:
 		default:
-			//DoomlikeDungeons.profiler.startTask("Adding Simple Entrance");
-			new SimpleEntrance((int)room.realX, (int)room.realZ).build(this, map.world);
-			//DoomlikeDungeons.profiler.endTask("Adding Simple Entrance");
+			new SimpleEntrance((int)room.realX, (int)room.realZ).build(this, world);
 			break;
 		}		
-		//DoomlikeDungeons.profiler.endTask("Adding Entrances");
 	}
 	
 	

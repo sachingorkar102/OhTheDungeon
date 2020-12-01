@@ -12,16 +12,22 @@ import forge_sandbox.jaredbgreat.dldungeons.planner.Dungeon;
 import forge_sandbox.jaredbgreat.dldungeons.planner.astar.Step;
 import forge_sandbox.jaredbgreat.dldungeons.rooms.Room;
 import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeFlags;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Set;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.block.data.BlockData;
+import otd.Main;
+import shadow_lib.ZoneWorld;
+import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
-import otd.util.worldgen.HalfAsyncWorld;
-//import net.minecraft.block.Block;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.World;
-//import net.minecraftforge.common.MinecraftForge;
+import shadow_lib.async.io.papermc.lib.PaperLib;
+import shadow_lib.async.later.roguelike.Later;
 
 /**
  * A two dimensional map of the dungeon, including heights, blocks, and 
@@ -38,10 +44,11 @@ public class MapMatrix {
     private static final Material slab  = Material.STONE_SLAB;//Block.getBlockFromName("double_stone_slab");
     private static final Material gold  = Material.GOLD_BLOCK;
     private static final Material glass = Material.GLASS;
+    private static final BlockData STONE_SLAB = Bukkit.createBlockData("minecraft:stone_slab[type=double]");
     
     private static boolean drawFlyingMap = false;
     
-    public final World world;
+    public final AsyncWorldEditor world;
     public final int   chunkX, chunkZ, origenX, origenZ;
     
     // map of heights to build at
@@ -69,7 +76,7 @@ public class MapMatrix {
     public boolean astared[][];
     
     
-    public MapMatrix(int width, World world, int chunkX, int chunkZ) {
+    public MapMatrix(int width, AsyncWorldEditor world, int chunkX, int chunkZ) {
         this.world = world;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -91,97 +98,16 @@ public class MapMatrix {
         astared   = new boolean[width][width];
     }
     
-    
-    
-    /**
-     * This will build the dungeon into the world, transforming the information 
-     * mapped here in 2D arrays into the finished 3D structure in the Minecraft 
-     * world.
-     * 
-     * @param dungeon
-     */
-    public void build(Dungeon dungeon) { 
-        dungeon.fixRoomContents();
-        int shiftX = (chunkX * 16) - (room.length / 2) + 8;
-        int shiftZ = (chunkZ * 16) - (room.length / 2) + 8;
-        int below;
-        boolean flooded = dungeon.theme.flags.contains(ThemeFlags.WATER);
-        
-        for(int i = 0; i < room.length; i++)
-            for(int j = 0; j < room.length; j++) {
-                if(room[i][j] != 0) {
-                     Room theRoom = dungeon.rooms.get(room[i][j]);
-                     
-                     // Debugging code; should not normally run
-                     if(drawFlyingMap) {
-                         if(astared[i][j]) {
-                             DBlock.placeBlock(world, shiftX + i, 96, shiftZ +j, lapis);
-                         } else if(isDoor[i][j]) {
-                             DBlock.placeBlock(world, shiftX + i, 96, shiftZ +j, slab);
-                         } else if(isWall[i][j]) {
-                             DBlock.placeBlock(world, shiftX + i, 96, shiftZ +j, gold);
-                         } else {
-                             DBlock.placeBlock(world, shiftX + i, 96, shiftZ +j, glass);
-                         }
-                     }
-                     
-                     // Lower parts of the room
-                     if(nFloorY[i][j] < floorY[i][j])
-                         for(int k = nFloorY[i][j]; k < floorY[i][j]; k++) 
-                             if(noLowDegenerate(theRoom, shiftX + i, k, shiftZ + j, i, j))
-                                 DBlock.place(world, shiftX + i, k, shiftZ + j, wall[i][j]);
-                     if(nFloorY[i][j] > floorY[i][j])
-                         for(int k = floorY[i][j]; k < nFloorY[i][j]; k++) 
-                             if(noLowDegenerate(theRoom, shiftX + i, k, shiftZ + j, i, j))
-                                 DBlock.place(world, shiftX + i, k, shiftZ + j, wall[i][j]);
-                     
-                     if(noLowDegenerate(theRoom, shiftX + i, floorY[i][j] - 1, shiftZ + j, i, j)) {
-                         DBlock.place(world, shiftX + i, floorY[i][j] - 1, shiftZ + j, floor[i][j]);
-                         if(dungeon.theme.buildFoundation) {
-                             below = nFloorY[i][j] < floorY[i][j] ? nFloorY[i][j] - 1 : floorY[i][j] - 2;
-                             while(!DBlock.isGroundBlock(world, shiftX + i, below, shiftZ + j)) {
-                                 DBlock.place(world, shiftX + i, below, shiftZ + j, dungeon.floorBlock);
-                                 below--;
-                                 if(below < 0) break;                                 
-                              }
-                        }
-                     }
-                     
-                     // Upper parts of the room
-                     if(!theRoom.sky 
-                             && noHighDegenerate(theRoom, shiftX + i, ceilY[i][j] + 1, shiftZ + j))
-                         DBlock.place(world, shiftX + i, ceilY[i][j] + 1, shiftZ + j, ceiling[i][j]);
-                    
-                     for(int k = roomBottom(i, j); k <= ceilY[i][j]; k++)
-                         if(!isWall[i][j])DBlock.deleteBlock(world, shiftX +i, k, shiftZ + j, flooded);
-                         else if(noHighDegenerate(theRoom, shiftX + i, k, shiftZ + j))
-                             DBlock.place(world, shiftX + i, k, shiftZ + j, wall[i][j]);
-                     for(int k = nCeilY[i][j]; k < ceilY[i][j]; k++) 
-                         if(noHighDegenerate(theRoom, shiftX + i, k, shiftZ + j))
-                             DBlock.place(world, shiftX + i, k, shiftZ + j, wall[i][j]);
-                     if(isFence[i][j]) 
-                         DBlock.place(world, shiftX + i, floorY[i][j], shiftZ + j, dungeon.fenceBlock);
-                     
-                     if(isDoor[i][j]) {
-                         DBlock.deleteBlock(world, shiftX + i, floorY[i][j],     shiftZ + j, flooded);
-                         DBlock.deleteBlock(world, shiftX + i, floorY[i][j] + 1, shiftZ + j, flooded);
-                         DBlock.deleteBlock(world, shiftX + i, floorY[i][j] + 2, shiftZ + j, flooded);
-                     }
-                     
-                     // Liquids
-                     if(hasLiquid[i][j] && (!isWall[i][j] && !isDoor[i][j])
-                             && world.getBlockAt(shiftX + i, floorY[i][j] - 1, shiftZ + j).getType() != Material.AIR) 
-                         DBlock.place(world, shiftX + i, floorY[i][j], shiftZ + j, theRoom.liquidBlock);                     
-                }
-            }    
-        
-        dungeon.addTileEntities();    
-        dungeon.addEntrances(world);
-    }
-    
     public void buildAsync(Dungeon dungeon) {
-        HalfAsyncWorld hworld = new HalfAsyncWorld(world);
-        dungeon.fixRoomContentsAsync(hworld);
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            buildAsync_actual(dungeon);
+        });
+    }
+    
+    private void buildAsync_actual(Dungeon dungeon) {
+        AsyncWorldEditor aworld = world;
+        world.setDefaultState(Material.STONE);
+        dungeon.fixRoomContentsAsync(aworld);
         int shiftX = (chunkX * 16) - (room.length / 2) + 8;
         int shiftZ = (chunkZ * 16) - (room.length / 2) + 8;
         int below;
@@ -195,32 +121,32 @@ public class MapMatrix {
                      // Debugging code; should not normally run
                      if(drawFlyingMap) {
                          if(astared[i][j]) {
-                             DBlock.placeBlockAsync(hworld, shiftX + i, 96, shiftZ +j, lapis);
+                             DBlock.placeBlockAsync(aworld, shiftX + i, 96, shiftZ +j, lapis);
                          } else if(isDoor[i][j]) {
-                             DBlock.placeBlockAsync(hworld, shiftX + i, 96, shiftZ +j, slab);
+                             DBlock.placeBlockAsync(aworld, shiftX + i, 96, shiftZ +j, slab);
                          } else if(isWall[i][j]) {
-                             DBlock.placeBlockAsync(hworld, shiftX + i, 96, shiftZ +j, gold);
+                             DBlock.placeBlockAsync(aworld, shiftX + i, 96, shiftZ +j, gold);
                          } else {
-                             DBlock.placeBlockAsync(hworld, shiftX + i, 96, shiftZ +j, glass);
+                             DBlock.placeBlockAsync(aworld, shiftX + i, 96, shiftZ +j, glass);
                          }
                      }
                      
                      // Lower parts of the room
                      if(nFloorY[i][j] < floorY[i][j])
                          for(int k = nFloorY[i][j]; k < floorY[i][j]; k++) 
-                             if(noLowDegenerateAsync(hworld, theRoom, shiftX + i, k, shiftZ + j, i, j))
-                                 DBlock.placeAsync(hworld, shiftX + i, k, shiftZ + j, wall[i][j]);
+                             if(noLowDegenerateAsync(aworld, theRoom, shiftX + i, k, shiftZ + j, i, j))
+                                 DBlock.placeAsync(aworld, shiftX + i, k, shiftZ + j, wall[i][j]);
                      if(nFloorY[i][j] > floorY[i][j])
                          for(int k = floorY[i][j]; k < nFloorY[i][j]; k++) 
-                             if(noLowDegenerateAsync(hworld, theRoom, shiftX + i, k, shiftZ + j, i, j))
-                                 DBlock.placeAsync(hworld, shiftX + i, k, shiftZ + j, wall[i][j]);
+                             if(noLowDegenerateAsync(aworld, theRoom, shiftX + i, k, shiftZ + j, i, j))
+                                 DBlock.placeAsync(aworld, shiftX + i, k, shiftZ + j, wall[i][j]);
                      
-                     if(noLowDegenerateAsync(hworld, theRoom, shiftX + i, floorY[i][j] - 1, shiftZ + j, i, j)) {
-                         DBlock.placeAsync(hworld, shiftX + i, floorY[i][j] - 1, shiftZ + j, floor[i][j]);
+                     if(noLowDegenerateAsync(aworld, theRoom, shiftX + i, floorY[i][j] - 1, shiftZ + j, i, j)) {
+                         DBlock.placeAsync(aworld, shiftX + i, floorY[i][j] - 1, shiftZ + j, floor[i][j]);
                          if(dungeon.theme.buildFoundation) {
                              below = nFloorY[i][j] < floorY[i][j] ? nFloorY[i][j] - 1 : floorY[i][j] - 2;
-                             while(!DBlock.isGroundBlockAsync(hworld, shiftX + i, below, shiftZ + j)) {
-                                 DBlock.placeAsync(hworld, shiftX + i, below, shiftZ + j, dungeon.floorBlock);
+                             while(!DBlock.isGroundBlockAsync(aworld, shiftX + i, below, shiftZ + j)) {
+                                 DBlock.placeAsync(aworld, shiftX + i, below, shiftZ + j, dungeon.floorBlock);
                                  below--;
                                  if(below < 0) break;                                 
                               }
@@ -229,50 +155,97 @@ public class MapMatrix {
                      
                      // Upper parts of the room
                      if(!theRoom.sky 
-                             && noHighDegenerateAsync(hworld, theRoom, shiftX + i, ceilY[i][j] + 1, shiftZ + j))
-                         DBlock.placeAsync(hworld, shiftX + i, ceilY[i][j] + 1, shiftZ + j, ceiling[i][j]);
+                             && noHighDegenerateAsync(aworld, theRoom, shiftX + i, ceilY[i][j] + 1, shiftZ + j))
+                         DBlock.placeAsync(aworld, shiftX + i, ceilY[i][j] + 1, shiftZ + j, ceiling[i][j]);
                     
                      for(int k = roomBottom(i, j); k <= ceilY[i][j]; k++)
                          if(!isWall[i][j])DBlock.deleteBlock(world, shiftX +i, k, shiftZ + j, flooded);
-                         else if(noHighDegenerateAsync(hworld, theRoom, shiftX + i, k, shiftZ + j))
-                             DBlock.placeAsync(hworld, shiftX + i, k, shiftZ + j, wall[i][j]);
+                         else if(noHighDegenerateAsync(aworld, theRoom, shiftX + i, k, shiftZ + j))
+                             DBlock.placeAsync(aworld, shiftX + i, k, shiftZ + j, wall[i][j]);
                      for(int k = nCeilY[i][j]; k < ceilY[i][j]; k++) 
-                         if(noHighDegenerateAsync(hworld, theRoom, shiftX + i, k, shiftZ + j))
-                             DBlock.placeAsync(hworld, shiftX + i, k, shiftZ + j, wall[i][j]);
+                         if(noHighDegenerateAsync(aworld, theRoom, shiftX + i, k, shiftZ + j))
+                             DBlock.placeAsync(aworld, shiftX + i, k, shiftZ + j, wall[i][j]);
                      if(isFence[i][j]) 
-                         DBlock.placeAsync(hworld, shiftX + i, floorY[i][j], shiftZ + j, dungeon.fenceBlock);
+                         DBlock.placeAsync(aworld, shiftX + i, floorY[i][j], shiftZ + j, dungeon.fenceBlock);
                      
                      if(isDoor[i][j]) {
-                         DBlock.deleteBlockAsync(hworld, shiftX + i, floorY[i][j],     shiftZ + j, flooded);
-                         DBlock.deleteBlockAsync(hworld, shiftX + i, floorY[i][j] + 1, shiftZ + j, flooded);
-                         DBlock.deleteBlockAsync(hworld, shiftX + i, floorY[i][j] + 2, shiftZ + j, flooded);
+                         DBlock.deleteBlockAsync(aworld, shiftX + i, floorY[i][j],     shiftZ + j, flooded);
+                         DBlock.deleteBlockAsync(aworld, shiftX + i, floorY[i][j] + 1, shiftZ + j, flooded);
+                         DBlock.deleteBlockAsync(aworld, shiftX + i, floorY[i][j] + 2, shiftZ + j, flooded);
                      }
                      
                      // Liquids
                      if(hasLiquid[i][j] && (!isWall[i][j] && !isDoor[i][j])
-                             && hworld.getType(shiftX + i, floorY[i][j] - 1, shiftZ + j) != Material.AIR) 
-                         DBlock.placeAsync(hworld, shiftX + i, floorY[i][j], shiftZ + j, theRoom.liquidBlock);                     
+                             && aworld.getBlockState(shiftX + i, floorY[i][j] - 1, shiftZ + j) != Material.AIR) 
+                         DBlock.placeAsync(aworld, shiftX + i, floorY[i][j], shiftZ + j, theRoom.liquidBlock);                     
                 }
             }
-        BukkitRunnable run = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(hworld.commit(1000)) {
-                    try {
-                        dungeon.addTileEntities();
-                        dungeon.addEntrances(world);
-                        dungeon.preFinalize();
-                    } catch(Exception ex) {
-                        
-                    }
-                    this.cancel();
-                }
-            }
-        };
-        run.runTaskTimer(otd.Main.instance, 1L, 1L);
+        dungeon.addTileEntities();
+
+        startBuild(dungeon, aworld);
     }
 
-
+    private void startBuild(Dungeon dungeon, AsyncWorldEditor w) {
+        Set<int[]> chunks0 = w.getAsyncWorld().getCriticalChunks();
+        
+        int delay = 0;
+        
+        for(int[] chunk : chunks0) {
+            int chunkX = chunk[0];
+            int chunkZ = chunk[1];
+            
+            List<ZoneWorld.CriticalNode> cn = w.getAsyncWorld().getCriticalBlock(chunkX, chunkZ);
+            List<Later> later = w.getAsyncWorld().getCriticalLater(chunkX, chunkZ);
+            
+            if(!PaperLib.isPaper()) delay++;
+            
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                try {
+                    PaperLib.getChunkAtAsync(w.getWorld(), chunkX, chunkZ, true).thenAccept( (Chunk c) -> {
+                        for(ZoneWorld.CriticalNode node : cn) {
+                            int[] pos = node.pos;
+                            if(node.bd != null) {
+                                if(node.bd.getMaterial() != Material.GLASS_PANE && node.bd.getMaterial() != Material.STONE_SLAB)
+                                    c.getBlock(pos[0], pos[1], pos[2]).setBlockData(node.bd, false);
+                                if(node.bd.getMaterial() == Material.STONE_SLAB) {
+                                    c.getBlock(pos[0], pos[1], pos[2]).setBlockData(STONE_SLAB, false);
+                                }
+                            } else {
+                                if(node.material != Material.GLASS_PANE && node.material != Material.STONE_SLAB)
+                                    c.getBlock(pos[0], pos[1], pos[2]).setType(node.material, false);
+                                if(node.material == Material.STONE_SLAB)
+                                    c.getBlock(pos[0], pos[1], pos[2]).setBlockData(STONE_SLAB, false);
+                            }
+                        }
+                        if(later != null) {
+                            for(Later l : later) {
+                                l.doSomethingInChunk(c);
+                            }
+                        }
+                    });
+                } catch (Exception ex) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    ex.printStackTrace(pw);
+                    Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+                        try (FileWriter writer = new FileWriter(AsyncRoguelikeDungeon.errfile, true)) {
+                            writer.write(sw.toString());
+                            writer.write("\n");
+                        }
+                        catch(IOException e)
+                        {
+                        }
+                    });
+                }
+            }, delay);
+        }
+        {
+            delay++;
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                dungeon.addEntrances(w.getWorld());
+            }, delay);
+        }
+    }
     
     
     /**
@@ -289,10 +262,10 @@ public class MapMatrix {
      * @return if the block should be placed here.
      */
     private boolean noHighDegenerate(Room theRoom, int x, int y, int z) {
-        return !(theRoom.degenerate && world.getBlockAt(x, y, z).getType() == Material.AIR);
+        return !(theRoom.degenerate && world.getBlockState(x, y, z) == Material.AIR);
     }
-    private boolean noHighDegenerateAsync(HalfAsyncWorld hworld, Room theRoom, int x, int y, int z) {
-        return !(theRoom.degenerate && hworld.getType(x, y, z) == Material.AIR);
+    private boolean noHighDegenerateAsync(AsyncWorldEditor hworld, Room theRoom, int x, int y, int z) {
+        return !(theRoom.degenerate && hworld.getBlockState(x, y, z) == Material.AIR);
     }
     
     
@@ -312,12 +285,12 @@ public class MapMatrix {
      */
     private boolean noLowDegenerate(Room theRoom, int x, int y, int z, int i, int j) {
         return !(theRoom.degenerateFloors 
-                && world.getBlockAt(x, y, z).getType() == Material.AIR
+                && world.getBlockState(x, y, z) == Material.AIR
                 && !astared[i][j]);
     }
-    private boolean noLowDegenerateAsync(HalfAsyncWorld world, Room theRoom, int x, int y, int z, int i, int j) {
+    private boolean noLowDegenerateAsync(AsyncWorldEditor world, Room theRoom, int x, int y, int z, int i, int j) {
         return !(theRoom.degenerateFloors 
-                && world.getType(x, y, z) == Material.AIR
+                && world.getBlockState(x, y, z) == Material.AIR
                 && !astared[i][j]);
     }
     
