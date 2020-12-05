@@ -27,7 +27,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -190,24 +189,10 @@ public class Lich implements Listener {
         drops.add(skull.clone());
     }
     
-    @EventHandler
-    public void onSpawner(SpawnerSpawnEvent event) {
-        if(event.isCancelled()) return;
-        Block block = event.getSpawner().getBlock();
-        TileState ts = (TileState) block.getState();
-                
-        if(ts.getPersistentDataContainer().has(key, PersistentDataType.BYTE)) {
-            event.setCancelled(true);
-            
-            block.setType(Material.AIR, true);
-            
-            Location loc = block.getLocation();
-            loc.setY(loc.getBlockY() + 2);
-            
-            spawnBoss(loc);
-        }
+    public static boolean isLichSpawner(TileState ts) {
+        return ts.getPersistentDataContainer().has(key, PersistentDataType.BYTE);
     }
-    
+        
     @EventHandler
     public void onBreakSpawner(BlockBreakEvent event) {
         if(event.isCancelled()) return;

@@ -3,7 +3,7 @@ authors: [shadow_wind]
 main: otd.Main
 load: startup
 api-version: 1.14
-version: 11.1
+version: 11.2
 commands:
   oh_the_dungeons:
     aliases: [otd]

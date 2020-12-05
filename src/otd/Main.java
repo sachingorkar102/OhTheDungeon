@@ -160,10 +160,10 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(AetherDungeonConfig.instance, this);
         getServer().getPluginManager().registerEvents(LichTowerConfig.instance, this);
         
-        getServer().getPluginManager().registerEvents(new Lich(), this);
         getServer().getPluginManager().registerEvents(new Event(), this);
         getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);
-        
+        getServer().getPluginManager().registerEvents(new Lich(), this);
+
         PluginConfig.instance.init();
         PluginConfig.instance.update();
         

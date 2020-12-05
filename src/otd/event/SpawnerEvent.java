@@ -5,7 +5,9 @@
  */
 package otd.event;
 
+import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
 import java.util.Random;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -215,6 +217,18 @@ public class SpawnerEvent implements Listener {
                     Entity entity = event.getEntity();
                     NamespacedKey key = new NamespacedKey(Main.instance, "no_drop");
                     entity.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte)1);
+                }
+            }
+            
+            {
+                TileState ts = (TileState) block.getState();
+                if(Lich.isLichSpawner(ts)) {
+                    block.setType(Material.AIR, true);
+                    
+                    Location loc = block.getLocation();
+                    loc.setY(loc.getBlockY() + 2);
+                    
+                    Lich.spawnBoss(loc);
                 }
             }
         } catch(Exception ex) {
