@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -69,6 +68,7 @@ import otd.util.gui.WorldSpawnerManager;
 import otd.util.lang.LanguageUtil;
 import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
 import otd.util.gui.LichTowerConfig;
+import otd.world.WorldDefine;
 
 /**
  *
@@ -246,6 +246,7 @@ public class Main extends JavaPlugin {
         public void onWorldInit(WorldInitEvent event) {
             String world_name = event.getWorld().getName();
             if(world_name.equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(world_name.equalsIgnoreCase(WorldDefine.WORLD_NAME)) return;
             Logging.logInfo(ChatColor.BLUE + "[Oh The Dungeons You'll Go] Found world: " + world_name);
             event.getWorld().getPopulators().add(new DungeonPopulator());
         }

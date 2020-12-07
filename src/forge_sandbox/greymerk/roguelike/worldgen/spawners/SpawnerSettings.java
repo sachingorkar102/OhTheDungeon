@@ -67,10 +67,10 @@ public class SpawnerSettings {
 		int weight = entry.has("weight") ? entry.get("weight").getAsInt() : 1;
 		
 		if(!this.spawners.containsKey(type)){
-			this.spawners.put(type, new WeightedRandomizer<Spawnable>());
+			this.spawners.put(type, new WeightedRandomizer<>());
 		}
 		
-		WeightedChoice<Spawnable> toAdd = new WeightedChoice<Spawnable>(spawn, weight);
+		WeightedChoice<Spawnable> toAdd = new WeightedChoice<>(spawn, weight);
 		
 		this.spawners.get(type).add(toAdd);
 	}

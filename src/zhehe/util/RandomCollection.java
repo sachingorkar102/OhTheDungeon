@@ -19,6 +19,10 @@ public class RandomCollection<E> {
     public RandomCollection() {
         this(new Random());
     }
+    
+    public boolean isEmpty() {
+        return total == 0D;
+    }
 
     public RandomCollection(Random random) {
         this.random = random;

@@ -10,7 +10,7 @@ public class SettingsBlank extends DungeonSettings{
 	
 	public SettingsBlank(){
 		this.id = ID;
-		levels = new HashMap<Integer, LevelSettings>();
+		levels = new HashMap<>();
 		this.lootRules = new LootRuleManager();
 	}
 }

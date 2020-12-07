@@ -8,8 +8,6 @@ import forge_sandbox.greymerk.roguelike.util.WeightedChoice;
 import forge_sandbox.greymerk.roguelike.util.WeightedRandomizer;
 import forge_sandbox.greymerk.roguelike.worldgen.Coord;
 import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
-import java.util.logging.Level;
-import org.bukkit.Bukkit;
 import otd.util.config.WorldConfig;
 
 public class SettingsResolver {
@@ -35,7 +33,6 @@ public class SettingsResolver {
                 boolean random = false;
                 String world_name = editor.getWorldName();
                 if(WorldConfig.wc.dict.containsKey(world_name) && WorldConfig.wc.dict.get(world_name).roguelike.random) random = true;
-//		if(random) Bukkit.getLogger().log(Level.SEVERE, "!!!");
                 if(random) return new SettingsRandom(rand);
 		
 		DungeonSettings builtin = this.getBuiltin(editor, rand, pos);

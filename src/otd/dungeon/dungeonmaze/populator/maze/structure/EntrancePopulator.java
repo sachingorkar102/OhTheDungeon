@@ -8,7 +8,6 @@ import org.bukkit.block.Block;
 
 import otd.dungeon.dungeonmaze.populator.maze.MazeRoomBlockPopulator;
 import otd.dungeon.dungeonmaze.populator.maze.MazeRoomBlockPopulatorArgs;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 
@@ -30,7 +29,6 @@ public class EntrancePopulator extends MazeRoomBlockPopulator {
 
 	@Override
 	public void populateRoom(MazeRoomBlockPopulatorArgs args) {
-//            Bukkit.getLogger().log(Level.SEVERE,"called!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		Chunk chunk = args.getSourceChunk();
 		Random rand = args.getRandom();
 		int x = args.getRoomChunkX();

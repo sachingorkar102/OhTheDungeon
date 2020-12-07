@@ -1,6 +1,5 @@
 package forge_sandbox.greymerk.roguelike.treasure.loot;
 
-import java.util.List;
 import java.util.Random;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
@@ -9,14 +8,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-
-//import net.minecraft.enchantment.Enchantment;
-//import net.minecraft.enchantment.EnchantmentData;
-//import net.minecraft.enchantment.EnchantmentHelper;
-//import net.minecraft.init.Items;
-//import net.minecraft.item.ItemEnchantedBook;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.world.EnumDifficulty;
 
 public enum Enchant {
 
@@ -103,6 +94,7 @@ public enum Enchant {
 
 		if (item == null ) return null;
                 if(item.getType() != Material.ENCHANTED_BOOK) return item;
+
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta)item.getItemMeta();
                 int amount = 1 + rand.nextInt(3);
                 boolean flag = false;

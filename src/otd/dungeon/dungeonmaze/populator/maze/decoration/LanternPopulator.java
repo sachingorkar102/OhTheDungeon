@@ -41,7 +41,6 @@ public class LanternPopulator extends MazeRoomBlockPopulator {
         final int lanternY = y + rand.nextInt(4 - floorOffset) + 2 + floorOffset;
         final int lanternZ = z + rand.nextInt(8);
         final Block b = chunk.getBlock(lanternX, lanternY, lanternZ);
-//        Bukkit.getLogger().log(Level.SEVERE, "!!!");
 
         // Make sure the lantern can be placed
         if(b.getType() != Material.COBBLESTONE && b.getType() != Material.MOSSY_COBBLESTONE && b.getType() != Material.STONE_BRICKS)

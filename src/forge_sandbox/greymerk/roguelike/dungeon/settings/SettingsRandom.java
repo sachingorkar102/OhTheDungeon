@@ -27,7 +27,7 @@ public class SettingsRandom extends DungeonSettings{
 				Tower.getRandom(rand),
 				Theme.getRandom(rand));
 		
-		Map<Integer, LevelSettings> levels = new HashMap<Integer, LevelSettings>();
+		Map<Integer, LevelSettings> levels = new HashMap<>();
 		
 		for(int i = 0; i < 5; ++i){
 			LevelSettings level = new LevelSettings();

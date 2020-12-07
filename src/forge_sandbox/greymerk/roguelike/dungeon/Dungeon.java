@@ -19,7 +19,6 @@ import forge_sandbox.greymerk.roguelike.dungeon.settings.DungeonSettings;
 
 import forge_sandbox.greymerk.roguelike.dungeon.settings.ISettings;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.SettingsContainer;
-import forge_sandbox.greymerk.roguelike.dungeon.settings.SettingsRandom;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.SettingsResolver;
 import forge_sandbox.greymerk.roguelike.dungeon.tasks.DungeonTaskRegistry;
 import forge_sandbox.greymerk.roguelike.treasure.ITreasureChest;
@@ -30,10 +29,6 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import otd.Main;
 import org.bukkit.Bukkit;
-//import net.minecraft.block.material.Material;
-//import net.minecraft.world.biome.Biome;
-//import net.minecraftforge.common.BiomeDictionary;
-//import net.minecraftforge.common.BiomeDictionary.Type;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
