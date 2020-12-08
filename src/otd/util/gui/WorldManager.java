@@ -99,7 +99,7 @@ public class WorldManager extends Content {
             if(world == null) {
                 p.sendMessage(ChatColor.GREEN + "https://www.spigotmc.org/resources/perplayerdungeoninstance-lite.77777/");
             } else {
-                WorldEditor we = new WorldEditor(world.getName(), world.getEnvironment());
+                WorldEditor we = new WorldEditor(world.getName(), world.getEnvironment(), holder);
                 we.openInventory(p);
             }
         }

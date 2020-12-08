@@ -377,6 +377,14 @@ public class I18n {
     public String Menu_create_dungeon_count = "Total Dungeon Count";
     public String Menu_create = "Create Dungeon Plot";
     public String Menu_create_lore = "If you want to create dungeon plot world";
+    public String Current_Dungeon_Count = "Current Dungeon Count";
+    
+    public String Must_Natural_Spawn = "You must open at least one dungeon's Natural Spawn";
+    
+    public String Dungeon_Plot_Not_Working = "Dungeon plot worker is not working";
+    public String Dungeon_Plot_Breaking = "Dungeon plot generation will break in 30s";
+    
+    public String Dungeon_Plot_In_Progress = "Dungeon plot is creating. You could choose waiting for its finishing, or use /otd_world_stop to stop (all created dungeons in plot would be kept)";
     
     public static final transient String configFileName = "lang.json";
     
@@ -472,7 +480,16 @@ public class I18n {
         I18n.instance.Menu_remove_click = "Dungeon plot is removed";
         
         I18n.instance.Dungeon_Plot_Finish = "Finish to generate dungeon plot world";
+        
+        I18n.instance.Current_Dungeon_Count = "Current Dungeon Count";
+        
+        I18n.instance.Must_Natural_Spawn = "You must open at least one dungeon's Natural Spawn";
+        
+        I18n.instance.Dungeon_Plot_Not_Working = "Dungeon plot worker is not working";
+        I18n.instance.Dungeon_Plot_Breaking = "Dungeon plot generation will break in 30s";
 
+        I18n.instance.Dungeon_Plot_In_Progress = "Dungeon plot is creating. You could choose waiting for its finishing, or use /otd_world_stop to stop (all created dungeons in plot would be kept)";
+        
         I18n.instance.lang_version = 14;
     }
     

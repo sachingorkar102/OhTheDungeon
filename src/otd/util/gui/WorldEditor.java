@@ -27,6 +27,7 @@ import otd.util.config.WorldConfig;
 public class WorldEditor extends Content {
     public final String world;
     public final Environment env;
+    public final Content parent;
     private boolean roguelike;
     private boolean doomlike;
     private boolean battletower;
@@ -45,13 +46,15 @@ public class WorldEditor extends Content {
         super("", SLOT);
         this.world = null;
         this.env = Environment.NORMAL;
+        this.parent = null;
     }
     public static WorldEditor instance = new WorldEditor();
     
-    public WorldEditor(String world, Environment env) {
+    public WorldEditor(String world, Environment env, Content parent) {
         super(I18n.instance.World_Editor + " : " + world, SLOT);
         this.world = world;
         this.env = env;
+        this.parent = parent;
     }
     
     @EventHandler
@@ -121,13 +124,9 @@ public class WorldEditor extends Content {
             WorldSpawnerManager wsm = new WorldSpawnerManager(holder.world, holder);
             wsm.openInventory(p);
         }
-//        if(slot == 15) {
-//            SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world);
-//            swc.egg_change_spawner = !swc.egg_change_spawner;
-//            WorldConfig.wc.dict.put(holder.world, swc);
-//            WorldConfig.save();
-//            holder.init();
-//        }
+        if(slot == 26) {
+            holder.parent.openInventory(p);
+        }
     }
     
     @Override
@@ -443,6 +442,15 @@ public class WorldEditor extends Content {
             is.setItemMeta(im);
             
             addItem(2, 1, is);
+        }
+        
+        {
+            ItemStack is = new ItemStack(Material.LEVER);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.Back);
+            is.setItemMeta(im);
+            
+            addItem(2, 8, is);
         }
     }
 }

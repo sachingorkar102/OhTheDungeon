@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import otd.world.ChunkList;
 import otd.world.DungeonWorld;
 import zhehe.util.I18n;
 
@@ -68,6 +69,7 @@ public class RemoveDungeonWorld extends Content {
         
         if(slot == 4) {
             DungeonWorld.removeDungeonWorld();
+            ChunkList.clear();
             p.closeInventory();
             p.sendMessage(ChatColor.RED + I18n.instance.Menu_remove_click);
         }

@@ -20,6 +20,7 @@ import otd.generator.IGenerator;
 import otd.generator.LichTowerGenerator;
 import otd.generator.RoguelikeGenerator;
 import otd.generator.SmoofyDungeonGenerator;
+import otd.util.config.WorldConfig;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
@@ -34,9 +35,14 @@ public class DungeonTask {
     private static int next = 0;
     
     private static boolean generating = false;
+    private static boolean breaking = false;
     
     public static boolean isGenerating() {
         return generating;
+    }
+    
+    public static void setBreak() {
+        breaking = true;
     }
     
     public static int getTaskCount() {
@@ -64,6 +70,7 @@ public class DungeonTask {
         step = 0;
         next = 0;
         generating = true;
+        breaking = false;
         
         Bukkit.getScheduler().runTaskTimer(Main.instance, new BukkitRunnable() {
             @Override
@@ -73,6 +80,8 @@ public class DungeonTask {
                     if(ChunkList.task_pool.size() <= next) {
                         this.cancel();
                         generating = false;
+                        WorldConfig.wc.dungeon_world.finished = true;
+                        WorldConfig.save();
                         return;
                     }
                     DungeonWorldTask dwt = ChunkList.task_pool.get(next);
@@ -91,6 +100,13 @@ public class DungeonTask {
                         
                         step += dungeon.getDelay();
                         next++;
+                        
+                        if(breaking) {
+                            this.cancel();
+                            generating = false;
+                            WorldConfig.wc.dungeon_world.finished = true;
+                            WorldConfig.save();
+                        }
                     }
                 }
             }

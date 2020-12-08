@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import otd.Main;
 import zhehe.util.I18n;
 import otd.util.config.EnumType.ChestType;
+import otd.world.WorldDefine;
 
 /**
  *
@@ -52,14 +53,25 @@ public class WorldConfig {
     
     private void initDungeonWorld() {
         dungeon_world = new DungeonWorldConfig();
-        dungeon_world.dungeon_world.aether_dungeon.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.ant_man_dungeon.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.battletower.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.doomlike.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.draylar_battletower.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.lich_tower.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.roguelike.doNaturalSpawn = true;
-        dungeon_world.dungeon_world.smoofydungeon.doNaturalSpawn = true;
+        addDungeonPlotConfig();
+    }
+    
+    private boolean addDungeonPlotConfig() {
+        if(!wc.dict.containsKey(WorldDefine.WORLD_NAME)) {
+            SimpleWorldConfig swc = new SimpleWorldConfig();
+            swc.aether_dungeon.doNaturalSpawn = true;
+            swc.ant_man_dungeon.doNaturalSpawn = true;
+            swc.battletower.doNaturalSpawn = true;
+            swc.doomlike.doNaturalSpawn = true;
+            swc.draylar_battletower.doNaturalSpawn = true;
+            swc.lich_tower.doNaturalSpawn = true;
+            swc.roguelike.doNaturalSpawn = true;
+            swc.smoofydungeon.doNaturalSpawn = true;
+            
+            wc.dict.put(WorldDefine.WORLD_NAME, swc);
+            return true;
+        }
+        return false;
     }
     
     public static void handleRoguelikePatch() {
@@ -203,6 +215,9 @@ public class WorldConfig {
         if(wc.version == 9) {
             wc.initDungeonWorld();
             wc.version = 10;
+            saves = true;
+        }
+        if(wc.addDungeonPlotConfig()) {
             saves = true;
         }
         if(saves) save();

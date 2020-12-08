@@ -67,8 +67,10 @@ import otd.util.gui.WorldManager;
 import otd.util.gui.WorldSpawnerManager;
 import otd.util.lang.LanguageUtil;
 import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
+import otd.util.gui.CreateDungeonWorld;
 import otd.util.gui.LichTowerConfig;
 import otd.util.gui.MainMenu;
+import otd.util.gui.RemoveDungeonWorld;
 import otd.world.DungeonWorld;
 import otd.world.WorldDefine;
 import otd.world.WorldGenOptimization;
@@ -163,6 +165,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(AetherDungeonConfig.instance, this);
         getServer().getPluginManager().registerEvents(LichTowerConfig.instance, this);
         getServer().getPluginManager().registerEvents(MainMenu.instance, this);
+        getServer().getPluginManager().registerEvents(RemoveDungeonWorld.instance, this);
+        getServer().getPluginManager().registerEvents(CreateDungeonWorld.instance, this);
         
         getServer().getPluginManager().registerEvents(new Event(), this);
         getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);

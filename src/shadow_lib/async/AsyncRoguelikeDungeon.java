@@ -122,8 +122,12 @@ public class AsyncRoguelikeDungeon {
 
     
     private final static Map<UUID, Integer> POOL = new HashMap<>();
-
+    
     public static boolean generateAsync(Random rand, AsyncWorldEditor editor, int x, int z) {
+        return generateAsync(rand, editor, x, z, null);
+    }
+
+    public static boolean generateAsync(Random rand, AsyncWorldEditor editor, int x, int z, Set<String> chunk_set) {
         if(Dungeon.settingsResolver == null) return false;
         
         UUID uuid = UUID.randomUUID();
@@ -173,6 +177,7 @@ public class AsyncRoguelikeDungeon {
                 for(int[] chunk : chunks0) {
                     int chunkX = chunk[0];
                     int chunkZ = chunk[1];
+                    if(chunk_set != null && !chunk_set.contains(chunkX + "," + chunkZ)) continue;
                     
                     List<ZoneWorld.CriticalNode> cn = editor.getAsyncWorld().getCriticalBlock(chunkX, chunkZ);
                     List<Later> later = editor.getAsyncWorld().getCriticalLater(chunkX, chunkZ);

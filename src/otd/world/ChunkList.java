@@ -8,9 +8,13 @@ package otd.world;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import otd.util.config.DungeonWorldConfig;
+import otd.util.config.SimpleWorldConfig;
+import otd.util.config.WorldConfig;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
@@ -22,7 +26,15 @@ import zhehe.util.RandomCollection;
  */
 public class ChunkList {
     public static Map<int[], DungeonType> chunks = new HashMap<>();
+    public static Set<String> chunk_set = new HashSet<>();
     public static Map<int[], List<int[]>> groups = new HashMap<>();
+    
+    public static void clear() {
+        ChunkList.chunks.clear();
+        ChunkList.groups.clear();
+        ChunkList.task_pool.clear();
+        ChunkList.chunk_set.clear();
+    }
     
     public final static Map<DungeonType, Integer> dict;
     static {
@@ -39,18 +51,20 @@ public class ChunkList {
     public static List<DungeonWorldTask> task_pool = new ArrayList<>();
     
     public static void initChunksMap(DungeonWorldConfig dwc) {
+        chunk_set.clear();
         chunks.clear();
         groups.clear();
         task_pool.clear();
         RandomCollection<DungeonType> r = new RandomCollection();
-        if(dwc.dungeon_world.roguelike_weight > 0) r.add(dwc.dungeon_world.roguelike_weight, DungeonType.Roguelike);
-        if(dwc.dungeon_world.doomlike_weight > 0) r.add(dwc.dungeon_world.doomlike_weight, DungeonType.Doomlike);
-        if(dwc.dungeon_world.battle_tower_weight > 0) r.add(dwc.dungeon_world.battle_tower_weight, DungeonType.BattleTower);
-        if(dwc.dungeon_world.smoofy_weight > 0) r.add(dwc.dungeon_world.smoofy_weight, DungeonType.DungeonMaze);
-        if(dwc.dungeon_world.draylar_weight > 0) r.add(dwc.dungeon_world.draylar_weight, DungeonType.Draylar);
-        if(dwc.dungeon_world.antman_weight > 0) r.add(dwc.dungeon_world.antman_weight, DungeonType.AntMan);
-        if(dwc.dungeon_world.aether_weight > 0) r.add(dwc.dungeon_world.aether_weight, DungeonType.Aether);
-        if(dwc.dungeon_world.lich_weight > 0) r.add(dwc.dungeon_world.lich_weight, DungeonType.Lich);
+        SimpleWorldConfig swc = WorldConfig.wc.dict.get(WorldDefine.WORLD_NAME);
+        if(swc.roguelike.doNaturalSpawn) r.add(swc.roguelike_weight, DungeonType.Roguelike);
+        if(swc.doomlike.doNaturalSpawn) r.add(swc.doomlike_weight, DungeonType.Doomlike);
+        if(swc.battletower.doNaturalSpawn) r.add(swc.battle_tower_weight, DungeonType.BattleTower);
+        if(swc.smoofydungeon.doNaturalSpawn) r.add(swc.smoofy_weight, DungeonType.DungeonMaze);
+        if(swc.draylar_battletower.doNaturalSpawn) r.add(swc.draylar_weight, DungeonType.Draylar);
+        if(swc.ant_man_dungeon.doNaturalSpawn) r.add(swc.antman_weight, DungeonType.AntMan);
+        if(swc.aether_dungeon.doNaturalSpawn) r.add(swc.aether_weight, DungeonType.Aether);
+        if(swc.lich_tower.doNaturalSpawn) r.add(swc.lich_weight, DungeonType.Lich);
         
         if(r.isEmpty()) return;
         zonePos = new ZonePos();
@@ -64,6 +78,7 @@ public class ChunkList {
             for(int x = next[0] - d; x <= next[0] + d; x++) {
                 for(int z = next[1] - d; z <= next[1] + d; z++) {
                     chunks.put(new int[] {x, z}, dungeon);
+                    chunk_set.add(x + "," + z);
                     sub.add(new int[] {x, z});
                     
                     task_pool.add(new DungeonChunkTask(x, z));
