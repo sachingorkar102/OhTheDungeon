@@ -48,7 +48,7 @@ public class I18n {
         }
     }
     
-    public int lang_version = 13;
+    public int lang_version = 14;
     
     public SpecialItem GREYMERK = new SpecialItem("Greymerk's Hatchet","Pointlessly sharp");
     public SpecialItem NEBRISCROWN = new SpecialItem("Nebrian Crown of Justice", "Adorned with precious gemstones");
@@ -349,6 +349,35 @@ public class I18n {
     public String LichTower_Art = "Generate Paintings in Lich Tower";
     public String LichTower_Natural_Spawn = "Lich Tower Natural Spawn";
     
+    public String Main_Menu = "Main Menu";
+    public String Menu1 = "Dungeon in Normal World";
+    public String Menu1_Lore1 = "If you want to config natural_spawn";
+    public String Menu1_Lore2 = "or manually place dungeons in world";
+    public String Menu1_Lore3 = "Advantage:";
+    public String Menu1_Lore4 = "1. Work with all world generation plugin";
+    
+    public String Menu2 = "Dungeon Plot World";
+    public String Menu2_Lore1 = "If you want to create / remove";
+    public String Menu2_Lore2 = "a dungeon plot world";
+    public String Menu2_Lore3 = "Advantage:";
+    public String Menu2_Lore4 = "1. Pregeneration, good performance";
+    public String Menu2_Lore5 = "2. Player could use menu to teleport to every dungeon";
+    public String Menu2_Lore6 = "3. Easy to reset like resource world";
+    
+    public String Menu_Remove_World = "Dungeon Plot";
+    public String Menu_remove = "Remove Dungeon Plot";
+    public String Menu_remove_lore = "If you want to regenerate world";
+    public String Menu_remove_click = "Dungeon plot is removed";
+    
+    public String Dungeon_Plot_Finish = "Finish to generate dungeon plot world";
+    
+    public String Menu_Create_World = "Dungeon Plot";
+    public String Menu_create_world_config = "Dungeon Config";
+    public String Menu_create_world_config_lore = "Config the dungeon you want to create";
+    public String Menu_create_dungeon_count = "Total Dungeon Count";
+    public String Menu_create = "Create Dungeon Plot";
+    public String Menu_create_lore = "If you want to create dungeon plot world";
+    
     public static final transient String configFileName = "lang.json";
     
     public static void init() {
@@ -417,6 +446,34 @@ public class I18n {
         if(I18n.instance.lang_version == 12) {
             update12();
         }
+        if(I18n.instance.lang_version == 13) {
+            update13();
+        }
+    }
+    
+    public static void update13() {
+        I18n.instance.Main_Menu = "Main Menu";
+        I18n.instance.Menu1 = "Dungeon in Normal World";
+        I18n.instance.Menu1_Lore1 = "If you want to config natural_spawn";
+        I18n.instance.Menu1_Lore2 = "or manually place dungeons in world";
+        I18n.instance.Menu1_Lore3 = "Advantage:";
+        I18n.instance.Menu1_Lore4 = "1. Work with all world generation plugin";
+        I18n.instance.Menu2 = "Dungeon Plot World";
+        I18n.instance.Menu2_Lore1 = "If you want to create / remove";
+        I18n.instance.Menu2_Lore2 = "a dungeon plot world";
+        I18n.instance.Menu2_Lore3 = "Advantage:";
+        I18n.instance.Menu2_Lore4 = "1. Pregeneration, good performance";
+        I18n.instance.Menu2_Lore5 = "2. Player could use menu to teleport to every dungeon";
+        I18n.instance.Menu2_Lore6 = "3. Easy to reset like resource world";
+        
+        I18n.instance.Menu_Remove_World = "Dungeon Plot";
+        I18n.instance.Menu_remove = "Remove Dungeon Plot";
+        I18n.instance.Menu_remove_lore = "If you want to regenerate world";
+        I18n.instance.Menu_remove_click = "Dungeon plot is removed";
+        
+        I18n.instance.Dungeon_Plot_Finish = "Finish to generate dungeon plot world";
+
+        I18n.instance.lang_version = 14;
     }
     
     public static void update12() {

@@ -9,15 +9,10 @@ package otd.util.config;
  *
  * @author shadow
  */
-public class DungeonWorldConfig {
-    public int roguelike_weight = 3;
-    public int doomlike_weight = 3;
-    public int battle_tower_weight = 2;
-    public int smoofy_weight = 3;
-    public int draylar_weight = 3;
-    public int antman_weight = 3;
-    public int aether_weight = 3;
-    public int lich_weight = 3;
-    
+public class DungeonWorldConfig {    
     public int dungeon_count = 50;
+    
+    public SimpleWorldConfig dungeon_world = new SimpleWorldConfig();
+    
+    public boolean finished = false;
 }

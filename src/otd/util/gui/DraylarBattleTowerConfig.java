@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.ClickType;
@@ -28,7 +27,7 @@ import otd.util.config.WorldConfig;
 public class DraylarBattleTowerConfig extends Content {
     public static DraylarBattleTowerConfig instance = new DraylarBattleTowerConfig();
     private final static int SLOT = 18;
-    public final World world;
+    public final String world;
     private final Content parent;
     private DraylarBattleTowerConfig() {
         super("", SLOT);
@@ -36,7 +35,7 @@ public class DraylarBattleTowerConfig extends Content {
         this.parent = null;
     }
     
-    public DraylarBattleTowerConfig(World world, Content parent) {
+    public DraylarBattleTowerConfig(String world, Content parent) {
         super(I18n.instance.DraylarBattleTower_Config, SLOT);
         this.world = world;
         this.parent = parent;
@@ -62,7 +61,7 @@ public class DraylarBattleTowerConfig extends Content {
         DraylarBattleTowerConfig holder = (DraylarBattleTowerConfig) e.getInventory().getHolder();
         if(holder == null) return;
         if(holder.world == null) return;
-        String key = holder.world.getName();
+        String key = holder.world;
         SimpleWorldConfig swc = WorldConfig.wc.dict.get(key);
         
         if(slot == 0) {
@@ -96,9 +95,9 @@ public class DraylarBattleTowerConfig extends Content {
     
     @Override
     public void init() {
-        if(WorldConfig.wc.dict.get(world.getName()) == null) {
+        if(WorldConfig.wc.dict.get(world) == null) {
             SimpleWorldConfig swc = new SimpleWorldConfig();
-            WorldConfig.wc.dict.put(world.getName(), swc);
+            WorldConfig.wc.dict.put(world, swc);
             WorldConfig.save();
         }
         show();
@@ -106,7 +105,7 @@ public class DraylarBattleTowerConfig extends Content {
     
     private void show() {
         inv.clear();
-        SimpleWorldConfig swc = WorldConfig.wc.dict.get(world.getName());
+        SimpleWorldConfig swc = WorldConfig.wc.dict.get(world);
         {
             Material material;
             String status;

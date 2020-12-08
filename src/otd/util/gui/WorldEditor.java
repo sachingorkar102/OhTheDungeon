@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +25,8 @@ import otd.util.config.WorldConfig;
  * @author
  */
 public class WorldEditor extends Content {
-    public final World world;
+    public final String world;
+    public final Environment env;
     private boolean roguelike;
     private boolean doomlike;
     private boolean battletower;
@@ -44,12 +44,14 @@ public class WorldEditor extends Content {
     private WorldEditor() {
         super("", SLOT);
         this.world = null;
+        this.env = Environment.NORMAL;
     }
     public static WorldEditor instance = new WorldEditor();
     
-    public WorldEditor(World world) {
-        super(I18n.instance.World_Editor + " : " + world.getName(), SLOT);
+    public WorldEditor(String world, Environment env) {
+        super(I18n.instance.World_Editor + " : " + world, SLOT);
         this.world = world;
+        this.env = env;
     }
     
     @EventHandler
@@ -77,37 +79,37 @@ public class WorldEditor extends Content {
             rc.openInventory(p);
         }
         if(slot == 10) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             DoomlikeConfig dc = new DoomlikeConfig(holder.world, holder);
             dc.openInventory(p);
         }
         if(slot == 11) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             BattleTowerConfig btc = new BattleTowerConfig(holder.world, holder);
             btc.openInventory(p);
         }
         if(slot == 12) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             SmoofyConfig sc = new SmoofyConfig(holder.world, holder);
             sc.openInventory(p);
         }
         if(slot == 13) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             DraylarBattleTowerConfig db = new DraylarBattleTowerConfig(holder.world, holder);
             db.openInventory(p);
         }
         if(slot == 14) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             AntManDungeonConfig am = new AntManDungeonConfig(holder.world, holder);
             am.openInventory(p);
         }
         if(slot == 15) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             AetherDungeonConfig ad = new AetherDungeonConfig(holder.world, holder);
             ad.openInventory(p);
         }
         if(slot == 16) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             LichTowerConfig ad = new LichTowerConfig(holder.world, holder);
             ad.openInventory(p);
         }
@@ -120,9 +122,9 @@ public class WorldEditor extends Content {
             wsm.openInventory(p);
         }
 //        if(slot == 15) {
-//            SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world.getName());
+//            SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world);
 //            swc.egg_change_spawner = !swc.egg_change_spawner;
-//            WorldConfig.wc.dict.put(holder.world.getName(), swc);
+//            WorldConfig.wc.dict.put(holder.world, swc);
 //            WorldConfig.save();
 //            holder.init();
 //        }
@@ -132,8 +134,8 @@ public class WorldEditor extends Content {
     public void init() {
         inv.clear();
         {
-            if(WorldConfig.wc.dict.containsKey(world.getName())) {
-                SimpleWorldConfig config = WorldConfig.wc.dict.get(world.getName());
+            if(WorldConfig.wc.dict.containsKey(world)) {
+                SimpleWorldConfig config = WorldConfig.wc.dict.get(world);
                 roguelike = config.roguelike.doNaturalSpawn;
                 doomlike = config.doomlike.doNaturalSpawn;
                 battletower = config.battletower.doNaturalSpawn;
@@ -157,7 +159,6 @@ public class WorldEditor extends Content {
         }
         {
             Material material;
-            Environment env = world.getEnvironment();
             switch (env) {
                 case NORMAL:
                     material = WorldManager.NORMAL;
@@ -169,16 +170,16 @@ public class WorldEditor extends Content {
                     material = WorldManager.ENDER;
                     break;
             }
-            if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+            if(world.equals(DungeonWorldManager.WORLD_NAME)) {
                 material = WorldManager.MAP;
             }
 
             ItemStack is = new ItemStack(material);
             ItemMeta im = is.getItemMeta();
-            im.setDisplayName(world.getName());
+            im.setDisplayName(world);
 
             List<String> lores = new ArrayList<>();
-            if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+            if(world.equals(DungeonWorldManager.WORLD_NAME)) {
                 lores.add(I18n.instance.PPDI_WORLD);
             } else {
                 if(roguelike) {
@@ -244,7 +245,7 @@ public class WorldEditor extends Content {
             addItem(1, 0, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Doomlike_Dungeon);
@@ -270,7 +271,7 @@ public class WorldEditor extends Content {
             addItem(1, 1, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Battle_Tower);
@@ -296,7 +297,7 @@ public class WorldEditor extends Content {
             addItem(1, 2, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Smoofy_Dungeon);
@@ -322,7 +323,7 @@ public class WorldEditor extends Content {
             addItem(1, 3, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Draylar_Battle_Tower);
@@ -348,7 +349,7 @@ public class WorldEditor extends Content {
             addItem(1, 4, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Ant_Man_Dungeon);
@@ -374,7 +375,7 @@ public class WorldEditor extends Content {
             addItem(1, 5, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Aether_Dungeon);
@@ -400,7 +401,7 @@ public class WorldEditor extends Content {
             addItem(1, 6, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.LichTower);
@@ -443,26 +444,5 @@ public class WorldEditor extends Content {
             
             addItem(2, 1, is);
         }
-//        {
-//            Material material;
-//            String status;
-//            if(egg) {
-//                material = ENABLE;
-//                status = I18n.instance.Enable;
-//            } else {
-//                material = DISABLE;
-//                status = I18n.instance.Disable;
-//            }
-//            ItemStack is = new ItemStack(material);
-//            ItemMeta im = is.getItemMeta();
-//            im.setDisplayName(I18n.instance.ChangeSpawner);
-//            List<String> lores = new ArrayList<>();
-//            lores.add(I18n.instance.Status + " : " + status);
-//            im.setLore(lores);
-//            
-//            is.setItemMeta(im);
-//            
-//            addItem(1, 6, is);
-//        }
     }
 }

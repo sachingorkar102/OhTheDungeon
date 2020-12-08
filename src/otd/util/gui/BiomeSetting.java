@@ -25,7 +25,7 @@ import otd.util.config.WorldConfig;
  * @author
  */
 public class BiomeSetting extends Content {
-    public final World world;
+    public final String world;
     public final Content parent;
     private final static int SLOT = 54;
     private final Set<String> biomes;
@@ -40,7 +40,7 @@ public class BiomeSetting extends Content {
     
     public static BiomeSetting instance = new BiomeSetting();
     
-    public BiomeSetting(World world, Content parent, Set<String> biomes) {
+    public BiomeSetting(String world, Content parent, Set<String> biomes) {
         super(I18n.instance.Biome_Setting, SLOT);
         this.world = world;
         this.parent = parent;

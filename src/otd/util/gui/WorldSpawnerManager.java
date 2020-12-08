@@ -8,7 +8,6 @@ package otd.util.gui;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.ClickType;
@@ -24,7 +23,7 @@ import otd.util.config.WorldConfig;
  * @author
  */
 public class WorldSpawnerManager extends Content {
-    public final World world;
+    public final String world;
     public final WorldEditor parent;
     private boolean egg_change_spawner;
     private boolean silk_vanilla_spawner;
@@ -50,14 +49,14 @@ public class WorldSpawnerManager extends Content {
     }
     public static WorldSpawnerManager instance = new WorldSpawnerManager();
     
-    public WorldSpawnerManager(World world, WorldEditor parent) {
-        super(I18n.instance.World_Spawner_Manager + " : " + world.getName(), SLOT);
+    public WorldSpawnerManager(String world, WorldEditor parent) {
+        super(I18n.instance.World_Spawner_Manager + " : " + world, SLOT);
         this.world = world;
         this.parent = parent;
         
         {
-            if(WorldConfig.wc.dict.containsKey(world.getName())) {
-                SimpleWorldConfig config = WorldConfig.wc.dict.get(world.getName());
+            if(WorldConfig.wc.dict.containsKey(world)) {
+                SimpleWorldConfig config = WorldConfig.wc.dict.get(world);
                 
                 egg_change_spawner = config.egg_change_spawner;
                 silk_vanilla_spawner = config.silk_vanilla_spawner;
@@ -164,8 +163,8 @@ public class WorldSpawnerManager extends Content {
     }
     
     private void save() {
-        if(WorldConfig.wc.dict.containsKey(world.getName())) {
-            SimpleWorldConfig config = WorldConfig.wc.dict.get(world.getName());
+        if(WorldConfig.wc.dict.containsKey(world)) {
+            SimpleWorldConfig config = WorldConfig.wc.dict.get(world);
             config.egg_change_spawner = this.egg_change_spawner;
             config.silk_vanilla_spawner = this.silk_vanilla_spawner;
             config.silk_dungeon_spawner = this.silk_dungeon_spawner;
@@ -186,7 +185,7 @@ public class WorldSpawnerManager extends Content {
             config.disappearance_rate_dungeon = this.disappearance_rate_dungeon;
             config.prevent_spawner_breaking = this.prevent_spawner_break;
             config.prevent_spawner_dropping = this.prevent_spawner_drop;
-            WorldConfig.wc.dict.put(world.getName(), config);
+            WorldConfig.wc.dict.put(world, config);
         }
     }
     

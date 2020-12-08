@@ -27,7 +27,7 @@ import otd.util.config.WorldConfig;
  * @author
  */
 public class RoguelikeConfig extends Content {
-    public World world;
+    public String world;
     private final static int SLOT = 18;
     public final Content parent;
     
@@ -38,8 +38,8 @@ public class RoguelikeConfig extends Content {
         this.parent = null;
     }
     
-    public RoguelikeConfig(World world, Content parent) {
-        super(I18n.instance.Roguelike_Config + " : " + world.getName(), SLOT);
+    public RoguelikeConfig(String world, Content parent) {
+        super(I18n.instance.Roguelike_Config + " : " + world, SLOT);
         this.world = world;
         this.parent = parent;
     }
@@ -65,10 +65,10 @@ public class RoguelikeConfig extends Content {
         RoguelikeConfig holder = (RoguelikeConfig) e.getInventory().getHolder();
         if(holder == null) return;
         if(holder.world == null) return;
-        String key = holder.world.getName();
+        String key = holder.world;
         SimpleWorldConfig swc = WorldConfig.wc.dict.get(key);
         if(slot == 0) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             swc.roguelike.doNaturalSpawn = !swc.roguelike.doNaturalSpawn;
             WorldConfig.wc.dict.put(key, swc);
             WorldConfig.save();
@@ -76,7 +76,7 @@ public class RoguelikeConfig extends Content {
             holder.init();
         }
         if(slot == 1) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             swc.roguelike.encase = !swc.roguelike.encase;
             WorldConfig.wc.dict.put(key, swc);
             WorldConfig.save();
@@ -84,7 +84,7 @@ public class RoguelikeConfig extends Content {
             holder.init();
         }
         if(slot == 2) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             swc.roguelike.generous = !swc.roguelike.generous;
             WorldConfig.wc.dict.put(key, swc);
             WorldConfig.save();
@@ -92,7 +92,7 @@ public class RoguelikeConfig extends Content {
             holder.init();
         }
         if(slot == 3) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             swc.roguelike.random = !swc.roguelike.random;
             WorldConfig.wc.dict.put(key, swc);
             WorldConfig.save();
@@ -106,7 +106,7 @@ public class RoguelikeConfig extends Content {
             lm.openInventory(p);
         }
         if(slot == 5) {
-            if(holder.world.getName().equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             Set<String> biomes = swc.roguelike.biomeExclusions;
             BiomeSetting bs = new BiomeSetting(holder.world, holder, biomes);
             bs.openInventory(p);
@@ -132,9 +132,9 @@ public class RoguelikeConfig extends Content {
         
     @Override
     public void init() {
-        if(WorldConfig.wc.dict.get(world.getName()) == null) {
+        if(WorldConfig.wc.dict.get(world) == null) {
             SimpleWorldConfig swc = new SimpleWorldConfig();
-            WorldConfig.wc.dict.put(world.getName(), swc);
+            WorldConfig.wc.dict.put(world, swc);
             WorldConfig.save();
         }
         show();
@@ -142,8 +142,8 @@ public class RoguelikeConfig extends Content {
     
     private void show() {
         inv.clear();
-        SimpleWorldConfig swc = WorldConfig.wc.dict.get(world.getName());
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        SimpleWorldConfig swc = WorldConfig.wc.dict.get(world);
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Natural_Spawn);
@@ -180,7 +180,7 @@ public class RoguelikeConfig extends Content {
             addItem(0, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Encase);
@@ -214,7 +214,7 @@ public class RoguelikeConfig extends Content {
             addItem(1, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Generous);
@@ -250,7 +250,7 @@ public class RoguelikeConfig extends Content {
             addItem(2, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Random_Dungeon);
@@ -293,7 +293,7 @@ public class RoguelikeConfig extends Content {
             addItem(4, is);
         }
         
-        if(world.getName().equals(DungeonWorldManager.WORLD_NAME)) {
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.BARRIER);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Biome_Setting);

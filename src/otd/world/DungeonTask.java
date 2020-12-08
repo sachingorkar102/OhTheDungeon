@@ -7,6 +7,7 @@ package otd.world;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import otd.Main;
@@ -22,6 +23,7 @@ import otd.generator.SmoofyDungeonGenerator;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
+import zhehe.util.I18n;
 
 /**
  *
@@ -52,6 +54,10 @@ public class DungeonTask {
         dict.put(DungeonType.Lich, new LichTowerGenerator());
         dict.put(DungeonType.Roguelike, new RoguelikeGenerator());
         dict.put(DungeonType.DungeonMaze, new SmoofyDungeonGenerator());
+    }
+    
+    public static void globalMessage() {
+        Bukkit.broadcastMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_Finish);
     }
     
     public static void start() {

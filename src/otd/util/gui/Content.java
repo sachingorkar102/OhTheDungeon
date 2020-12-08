@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -72,6 +73,11 @@ public class Content implements InventoryHolder, Listener {
     public Content(String title, int slot) {
         this.title = title;
         inv = Bukkit.createInventory(this, slot, this.title);
+    }
+    
+    public Content(String title, InventoryType type) {
+        this.title = title;
+        inv = Bukkit.createInventory(this, type);
     }
     
     public void init() {

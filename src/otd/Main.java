@@ -68,7 +68,10 @@ import otd.util.gui.WorldSpawnerManager;
 import otd.util.lang.LanguageUtil;
 import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
 import otd.util.gui.LichTowerConfig;
+import otd.util.gui.MainMenu;
+import otd.world.DungeonWorld;
 import otd.world.WorldDefine;
+import otd.world.WorldGenOptimization;
 
 /**
  *
@@ -159,10 +162,12 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(AntManDungeonConfig.instance, this);
         getServer().getPluginManager().registerEvents(AetherDungeonConfig.instance, this);
         getServer().getPluginManager().registerEvents(LichTowerConfig.instance, this);
+        getServer().getPluginManager().registerEvents(MainMenu.instance, this);
         
         getServer().getPluginManager().registerEvents(new Event(), this);
         getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);
         getServer().getPluginManager().registerEvents(new Lich(), this);
+        getServer().getPluginManager().registerEvents(new WorldGenOptimization(), this);
 
         PluginConfig.instance.init();
         PluginConfig.instance.update();
@@ -200,11 +205,18 @@ public class Main extends JavaPlugin {
 
                 }
             }
-        }, 1L);
+        }, 2L);
         
         Bukkit.getScheduler().runTaskLater(this, () -> {
             PaperLib.suggestPaper(Main.instance);
-        }, 2L);
+        }, 3L);
+        
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            if(WorldConfig.wc.dungeon_world.finished) {
+                Bukkit.getLogger().log(Level.INFO, "Loading dungeon plot world...");
+                DungeonWorld.generateDungeonWorld();
+            }
+        }, 1L);
     }
     
     private void loadAdvancement() {

@@ -22,6 +22,7 @@ import shadow_manager.DungeonWorldManager;
 import zhehe.util.I18n;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
+import otd.world.WorldDefine;
 
 /**
  *
@@ -98,7 +99,7 @@ public class WorldManager extends Content {
             if(world == null) {
                 p.sendMessage(ChatColor.GREEN + "https://www.spigotmc.org/resources/perplayerdungeoninstance-lite.77777/");
             } else {
-                WorldEditor we = new WorldEditor(world);
+                WorldEditor we = new WorldEditor(world.getName(), world.getEnvironment());
                 we.openInventory(p);
             }
         }
@@ -114,6 +115,7 @@ public class WorldManager extends Content {
             if(w.getName().equals(DungeonWorldManager.WORLD_NAME)) {
                 include_instance = true;
             }
+            if(w.getName().equalsIgnoreCase(WorldDefine.WORLD_NAME)) continue;
             worlds.add(w);
         }
         if(!include_instance) worlds.add(null);

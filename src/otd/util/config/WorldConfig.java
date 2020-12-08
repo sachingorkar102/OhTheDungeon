@@ -22,7 +22,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import otd.Main;
 import zhehe.util.I18n;
 import otd.util.config.EnumType.ChestType;
-import static otd.util.config.WorldConfig.wc;
 
 /**
  *
@@ -37,13 +36,31 @@ public class WorldConfig {
     public boolean rogueSpawners = true;
     public boolean disableAPI = false;
     public boolean noMobChanges = false;
-    public int version = 9;
+    public int version = 10;
     
     public int rollCoolDownInSecond = 10;
     public int rollRange = 15;
     
     public String diceUUID = "afbe4c67-a6a5-4559-ad06-78a6ed2ab4e9";
     public String diceTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTE1ZjdjMzEzYmNhOWMyZjk1OGU2OGFiMTRhYjM5Mzg2N2Q2NzUwM2FmZmZmOGYyMGNiMTNmYmU5MTdmZDMxIn19fQ==";
+    
+    public DungeonWorldConfig dungeon_world;
+    
+    public WorldConfig() {
+        initDungeonWorld();
+    }
+    
+    private void initDungeonWorld() {
+        dungeon_world = new DungeonWorldConfig();
+        dungeon_world.dungeon_world.aether_dungeon.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.ant_man_dungeon.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.battletower.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.doomlike.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.draylar_battletower.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.lich_tower.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.roguelike.doNaturalSpawn = true;
+        dungeon_world.dungeon_world.smoofydungeon.doNaturalSpawn = true;
+    }
     
     public static void handleRoguelikePatch() {
         
@@ -181,6 +198,11 @@ public class WorldConfig {
                 entry.getValue().initLichTower();
             }
             wc.version = 9;
+            saves = true;
+        }
+        if(wc.version == 9) {
+            wc.initDungeonWorld();
+            wc.version = 10;
             saves = true;
         }
         if(saves) save();

@@ -8,7 +8,6 @@ package otd.util.gui;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.ClickType;
@@ -18,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import zhehe.util.I18n;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
+import otd.world.WorldDefine;
 
 /**
  *
@@ -26,7 +26,7 @@ import otd.util.config.WorldConfig;
 public class DungeonSpawnSetting extends Content {
     private final static int SLOT = 27;
     public static DungeonSpawnSetting instance = new DungeonSpawnSetting();
-    public final World world;
+    public final String world;
     public final Content parent;
     
     private int roguelike;
@@ -54,13 +54,13 @@ public class DungeonSpawnSetting extends Content {
         this.parent = null;
     }
     
-    public DungeonSpawnSetting(World world, Content parent) {
+    public DungeonSpawnSetting(String world, Content parent) {
         super(I18n.instance.Dungeon_Spawn_Setting, SLOT);
         this.world = world;
         this.parent = parent;
         
         SimpleWorldConfig swc;
-        String world_name = this.world.getName();
+        String world_name = this.world;
         if(!WorldConfig.wc.dict.containsKey(world_name)) {
             swc = new SimpleWorldConfig();
             WorldConfig.wc.dict.put(world_name, swc);
@@ -177,19 +177,21 @@ public class DungeonSpawnSetting extends Content {
             }
         }
         if(slot == 18) {
-            if(type == ClickType.LEFT) {
-                holder.distance++;
-                holder.init();
-            }
-            if(type == ClickType.RIGHT) {
-                holder.distance--;
-                if(holder.distance < 15) holder.distance = 15;
-                holder.init();
+            if(!holder.world.equalsIgnoreCase(WorldDefine.WORLD_NAME)) {
+                if(type == ClickType.LEFT) {
+                    holder.distance++;
+                    holder.init();
+                }
+                if(type == ClickType.RIGHT) {
+                    holder.distance--;
+                    if(holder.distance < 15) holder.distance = 15;
+                    holder.init();
+                }
             }
         }
         if(slot == 26) {
             if(type == ClickType.LEFT) {
-                SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world.getName());
+                SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world);
                 swc.roguelike_weight = holder.roguelike;
                 swc.doomlike_weight = holder.doomlike;
                 swc.battle_tower_weight = holder.battle;
@@ -322,7 +324,7 @@ public class DungeonSpawnSetting extends Content {
             is.setItemMeta(im);
             addItem(1, 7, is);
         }
-        {
+        if(!this.world.equalsIgnoreCase(WorldDefine.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.MAP);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName(I18n.instance.Average_Dungeon_Chunk_Distance);

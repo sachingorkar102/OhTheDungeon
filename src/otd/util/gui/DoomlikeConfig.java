@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.ClickType;
@@ -46,9 +45,9 @@ public class DoomlikeConfig extends Content {
         this.parent = null;
     }
     
-    public final World world;
+    public final String world;
     public final Content parent;
-    public DoomlikeConfig(World world, Content parent) {
+    public DoomlikeConfig(String world, Content parent) {
         super(I18n.instance.Doomlike_Config, 18);
         this.world = world;
         this.parent = parent;
@@ -71,7 +70,7 @@ public class DoomlikeConfig extends Content {
         DoomlikeConfig holder = (DoomlikeConfig) e.getInventory().getHolder();
         if(holder == null) return;
         
-        SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world.getName());
+        SimpleWorldConfig swc = WorldConfig.wc.dict.get(holder.world);
         
         if(slot == 0) {
             swc.doomlike.doNaturalSpawn = !swc.doomlike.doNaturalSpawn;
@@ -150,7 +149,7 @@ public class DoomlikeConfig extends Content {
     
     @Override
     public void init() {
-        String world_name = world.getName();
+        String world_name = world;
         SimpleWorldConfig swc;
         if(WorldConfig.wc.dict.containsKey(world_name)) swc = WorldConfig.wc.dict.get(world_name);
         else {
@@ -162,7 +161,7 @@ public class DoomlikeConfig extends Content {
     
     private void show() {
         inv.clear();
-        String world_name = world.getName();
+        String world_name = world;
         SimpleWorldConfig swc;
         if(WorldConfig.wc.dict.containsKey(world_name)) swc = WorldConfig.wc.dict.get(world_name);
         else {

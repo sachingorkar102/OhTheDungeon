@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.ClickType;
@@ -28,7 +27,7 @@ import otd.util.config.WorldConfig;
 public class AetherDungeonConfig extends Content {
     public static AetherDungeonConfig instance = new AetherDungeonConfig();
     private final static int SLOT = 18;
-    public final World world;
+    public String world;
     private final Content parent;
     private AetherDungeonConfig() {
         super("", SLOT);
@@ -36,7 +35,7 @@ public class AetherDungeonConfig extends Content {
         this.parent = null;
     }
     
-    public AetherDungeonConfig(World world, Content parent) {
+    public AetherDungeonConfig(String world, Content parent) {
         super(I18n.instance.AetherDungeon_Config, SLOT);
         this.world = world;
         this.parent = parent;
@@ -62,7 +61,7 @@ public class AetherDungeonConfig extends Content {
         AetherDungeonConfig holder = (AetherDungeonConfig) e.getInventory().getHolder();
         if(holder == null) return;
         if(holder.world == null) return;
-        String key = holder.world.getName();
+        String key = holder.world;
         SimpleWorldConfig swc = WorldConfig.wc.dict.get(key);
         
         if(slot == 0) {
@@ -115,9 +114,9 @@ public class AetherDungeonConfig extends Content {
     
     @Override
     public void init() {
-        if(WorldConfig.wc.dict.get(world.getName()) == null) {
+        if(WorldConfig.wc.dict.get(world) == null) {
             SimpleWorldConfig swc = new SimpleWorldConfig();
-            WorldConfig.wc.dict.put(world.getName(), swc);
+            WorldConfig.wc.dict.put(world, swc);
             WorldConfig.save();
         }
         show();
@@ -125,7 +124,7 @@ public class AetherDungeonConfig extends Content {
     
     private void show() {
         inv.clear();
-        SimpleWorldConfig swc = WorldConfig.wc.dict.get(world.getName());
+        SimpleWorldConfig swc = WorldConfig.wc.dict.get(world);
         {
             Material material;
             String status;
