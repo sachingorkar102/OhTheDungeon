@@ -9,7 +9,7 @@ import org.bukkit.Material;
 
 /**
  *
- * @author zhehe
+ * @author
  */
 public enum WoodType {
     OAK, BIRCH, SPRUCE, DARK_OAK, JUNGLE, ACACIA;

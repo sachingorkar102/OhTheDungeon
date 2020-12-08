@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import otd.util.config.DungeonWorldConfig;
+import otd.world.task.DungeonChunkTask;
+import otd.world.task.DungeonPlaceTask;
+import otd.world.task.DungeonWorldTask;
 import zhehe.util.RandomCollection;
 
 /**
@@ -18,9 +21,6 @@ import zhehe.util.RandomCollection;
  * @author shadow
  */
 public class ChunkList {
-    public static enum DungeonType {
-        BattleTower, Roguelike, Doomlike, DungeonMaze, Draylar, Aether, Lich, AntMan
-    }
     public static Map<int[], DungeonType> chunks = new HashMap<>();
     public static Map<int[], List<int[]>> groups = new HashMap<>();
     
@@ -36,10 +36,12 @@ public class ChunkList {
         dict.put(DungeonType.Lich, 2);
         dict.put(DungeonType.AntMan, 4);
     }
+    public static List<DungeonWorldTask> task_pool = new ArrayList<>();
     
     public static void initChunksMap(DungeonWorldConfig dwc) {
         chunks.clear();
         groups.clear();
+        task_pool.clear();
         RandomCollection<DungeonType> r = new RandomCollection();
         if(dwc.roguelike_weight > 0) r.add(dwc.roguelike_weight, DungeonType.Roguelike);
         if(dwc.doomlike_weight > 0) r.add(dwc.doomlike_weight, DungeonType.Doomlike);
@@ -63,9 +65,12 @@ public class ChunkList {
                 for(int z = next[1] - d; z <= next[1] + d; z++) {
                     chunks.put(new int[] {x, z}, dungeon);
                     sub.add(new int[] {x, z});
+                    
+                    task_pool.add(new DungeonChunkTask(x, z));
                 }
             }
             groups.put(next, sub);
+            task_pool.add(new DungeonPlaceTask(next[0], next[1], dungeon));
         }
     }
     

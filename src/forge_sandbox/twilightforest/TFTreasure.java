@@ -14,7 +14,7 @@ import forge_sandbox.twilightforest.treasure.Tower_Room;
 
 /**
  *
- * @author zhehe
+ * @author
  */
 public enum TFTreasure {
     tower_room, tower_library, 

@@ -11,7 +11,7 @@ import org.bukkit.block.data.BlockData;
 
 /**
  *
- * @author zhehe
+ * @author
  */
 public class Blocks {
     public static BlockData maze_stone = Bukkit.createBlockData(Material.STONE_BRICKS);

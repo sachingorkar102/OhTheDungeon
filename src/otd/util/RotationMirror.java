@@ -11,7 +11,7 @@ import org.bukkit.block.data.Directional;
 
 /**
  *
- * @author zhehe
+ * @author
  */
 public class RotationMirror {
     public static enum Rotation
