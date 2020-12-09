@@ -34,6 +34,8 @@ public class DungeonTask {
     private static int step = 0;
     private static int next = 0;
     
+    private static int current_count = 0;
+    
     private static boolean generating = false;
     private static boolean breaking = false;
     
@@ -71,6 +73,7 @@ public class DungeonTask {
         next = 0;
         generating = true;
         breaking = false;
+        current_count = 0;
         
         Bukkit.getScheduler().runTaskTimer(Main.instance, new BukkitRunnable() {
             @Override
@@ -100,11 +103,13 @@ public class DungeonTask {
                         
                         step += dungeon.getDelay();
                         next++;
+                        current_count++;
                         
                         if(breaking) {
                             this.cancel();
                             generating = false;
                             WorldConfig.wc.dungeon_world.finished = true;
+                            WorldConfig.wc.dungeon_world.dungeon_count = current_count;
                             WorldConfig.save();
                         }
                     }

@@ -15,6 +15,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import otd.util.config.WorldConfig;
+import otd.world.DungeonTask;
 import zhehe.util.I18n;
 
 /**
@@ -88,7 +90,16 @@ public class MainMenu extends Content {
             wm.openInventory(p);
         }
         if(slot == 5) {
-            
+            if(DungeonTask.isGenerating()) {
+                p.sendMessage(I18n.instance.Dungeon_Plot_In_Progress);
+                p.closeInventory();
+            } else if(WorldConfig.wc.dungeon_world.finished) {
+                RemoveDungeonWorld r = new RemoveDungeonWorld();
+                r.openInventory(p);
+            } else {
+                CreateDungeonWorld c = new CreateDungeonWorld();
+                c.openInventory(p);
+            }
         }
     }
 }

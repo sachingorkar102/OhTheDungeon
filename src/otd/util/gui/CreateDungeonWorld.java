@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
 import otd.world.ChunkList;
+import otd.world.DungeonTask;
 import otd.world.WorldDefine;
 import zhehe.util.I18n;
 
@@ -58,6 +59,7 @@ public class CreateDungeonWorld extends Content {
             im.setDisplayName(I18n.instance.Menu_create_dungeon_count);
             List<String> lores = new ArrayList<>();
             lores.add(I18n.instance.Current_Dungeon_Count + " : " + WorldConfig.wc.dungeon_world.dungeon_count);
+            lores.add(I18n.instance.Dungeon_Plot_Max_Count);
             lores.add(I18n.instance.Amount_Item_Tip1);
             lores.add(I18n.instance.Amount_Item_Tip2);
             im.setLore(lores);
@@ -71,7 +73,7 @@ public class CreateDungeonWorld extends Content {
             
             im.setDisplayName(I18n.instance.Menu_create);
             List<String> lores = new ArrayList<>();
-            lores.add(I18n.instance.Menu_create_lore);
+            lores.add(I18n.instance.Menu_create_lore1);
             im.setLore(lores);
             
             is.setItemMeta(im);
@@ -104,6 +106,7 @@ public class CreateDungeonWorld extends Content {
         if(slot == 1) {
             if (e.getClick().equals(ClickType.LEFT)) {
                 WorldConfig.wc.dungeon_world.dungeon_count++;
+                if(WorldConfig.wc.dungeon_world.dungeon_count > 30) WorldConfig.wc.dungeon_world.dungeon_count = 30;
                 WorldConfig.save();
             } else if (e.getClick().equals(ClickType.RIGHT)) {
                 WorldConfig.wc.dungeon_world.dungeon_count--;
@@ -116,7 +119,10 @@ public class CreateDungeonWorld extends Content {
             if(!checkEnabled()) {
                 p.sendMessage(ChatColor.RED + I18n.instance.Must_Natural_Spawn);
             } else {
-                ChunkList.initChunksMap(WorldConfig.wc.dungeon_world);
+                if(!DungeonTask.isGenerating()) {
+                    ChunkList.initChunksMap(WorldConfig.wc.dungeon_world);
+                }
+                p.closeInventory();
             }
         }
     }
