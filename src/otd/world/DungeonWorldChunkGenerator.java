@@ -21,7 +21,7 @@ public class DungeonWorldChunkGenerator extends ChunkGenerator {
     public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
         ChunkData chunk = Bukkit.createChunkData(world);
         
-        int[] chunkPos = new int[] {chunkX, chunkZ};
+        String chunkPos = chunkX + "," + chunkZ;
         if(ChunkList.chunks.containsKey(chunkPos)) {
             for(int i = 0; i < 16; i++) {
                 for(int j = 0; j < 16; j++) {

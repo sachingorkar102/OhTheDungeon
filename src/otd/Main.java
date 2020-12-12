@@ -86,9 +86,9 @@ public class Main extends JavaPlugin {
     public static MultiVersion.Version version = MultiVersion.Version.UNKNOWN;
     private Metrics metrics;
     private final static int metric_pluginId = 9213;
-
     
     public Main() {
+        instance = this;
         if(MultiVersion.is114()) {
             version = MultiVersion.Version.V1_14_R1;
             Bukkit.getLogger().log(Level.INFO, "{0}[Oh The Dungeons You''ll Go] MC Version: 1.14.x", ChatColor.GREEN);
@@ -127,7 +127,6 @@ public class Main extends JavaPlugin {
         
         //PaperLib.suggestPaper(this);
         disabled = false;
-        instance = this;
         
         Sandbox.mkdir();
         I18n.init();

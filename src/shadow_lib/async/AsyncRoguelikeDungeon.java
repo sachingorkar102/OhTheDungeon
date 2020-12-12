@@ -124,10 +124,10 @@ public class AsyncRoguelikeDungeon {
     private final static Map<UUID, Integer> POOL = new HashMap<>();
     
     public static boolean generateAsync(Random rand, AsyncWorldEditor editor, int x, int z) {
-        return generateAsync(rand, editor, x, z, null);
+        return generateAsync(rand, editor, x, z, null, null);
     }
 
-    public static boolean generateAsync(Random rand, AsyncWorldEditor editor, int x, int z, Set<String> chunk_set) {
+    public static boolean generateAsync(Random rand, AsyncWorldEditor editor, int x, int z, Set<String> chunk_set, DungeonSettings theme) {
         if(Dungeon.settingsResolver == null) return false;
         
         UUID uuid = UUID.randomUUID();
@@ -135,7 +135,11 @@ public class AsyncRoguelikeDungeon {
         Coord location = new Coord(x, 0 ,z);
         ISettings setting;
         try{
-            setting = Dungeon.settingsResolver.getSettings(editor, rand, location);
+            if(theme == null)
+                setting = Dungeon.settingsResolver.getSettings(editor, rand, location);
+            else
+                setting = Dungeon.settingsResolver.generateSettings(theme, editor, rand, location);
+            
             if(setting == null) return false;
             if(WorldConfig.wc.dict.containsKey(editor.getWorldName())) {
                 SimpleWorldConfig swc = WorldConfig.wc.dict.get(editor.getWorldName());
@@ -167,7 +171,7 @@ public class AsyncRoguelikeDungeon {
                     while(!task.execute(editor, rand, dungeon, setting, sub_index)) sub_index++;
                 }
                 
-                Set<int[]> chunks0 = editor.getAsyncWorld().getCriticalChunks();
+                Set<int[]> chunks0 = editor.getAsyncWorld().getCriticalChunks(chunk_set);
                 synchronized(POOL) {
                     POOL.put(uuid, chunks0.size());
                 }
@@ -261,6 +265,9 @@ public class AsyncRoguelikeDungeon {
                                 }
 
                                 if(isFinish) {
+                                    if(theme != null) {
+                                        Bukkit.getLogger().log(Level.INFO, "add loot");
+                                    }
                                     AsyncRoguelikeDungeon.addLoot(editor, rand, dungeon, setting);
                                 }
                             });

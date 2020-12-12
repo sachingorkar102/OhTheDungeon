@@ -181,6 +181,10 @@ public class ZoneWorld {
     }
     
     public Set<int[]> getCriticalChunks() {
+        return getCriticalChunks(null);
+    }
+    
+    public Set<int[]> getCriticalChunks(Set<String> except) {
         Set<int[]> set = new HashSet<>();
         Set<String> dummy = new HashSet<>();
         for(Map.Entry<String, BlockBase> entry : map.entrySet()) {
@@ -193,8 +197,10 @@ public class ZoneWorld {
             int[] tmp = {(int) x, (int) z};
             String key = tmp[0] + "," + tmp[1];
             if(!dummy.contains(key)) {
-                set.add(tmp);
-                dummy.add(key);
+                if(except == null || (except != null && except.contains(key))) {
+                    set.add(tmp);
+                    dummy.add(key);
+                }
             }
         }
         return set;

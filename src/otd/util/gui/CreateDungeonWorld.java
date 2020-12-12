@@ -21,6 +21,7 @@ import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
 import otd.world.ChunkList;
 import otd.world.DungeonTask;
+import otd.world.DungeonWorld;
 import otd.world.WorldDefine;
 import zhehe.util.I18n;
 
@@ -59,7 +60,6 @@ public class CreateDungeonWorld extends Content {
             im.setDisplayName(I18n.instance.Menu_create_dungeon_count);
             List<String> lores = new ArrayList<>();
             lores.add(I18n.instance.Current_Dungeon_Count + " : " + WorldConfig.wc.dungeon_world.dungeon_count);
-            lores.add(I18n.instance.Dungeon_Plot_Max_Count);
             lores.add(I18n.instance.Amount_Item_Tip1);
             lores.add(I18n.instance.Amount_Item_Tip2);
             im.setLore(lores);
@@ -73,7 +73,7 @@ public class CreateDungeonWorld extends Content {
             
             im.setDisplayName(I18n.instance.Menu_create);
             List<String> lores = new ArrayList<>();
-            lores.add(I18n.instance.Menu_create_lore1);
+            lores.add(I18n.instance.Menu_create_lore);
             im.setLore(lores);
             
             is.setItemMeta(im);
@@ -85,7 +85,7 @@ public class CreateDungeonWorld extends Content {
     @EventHandler
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
-        if (!(e.getInventory().getHolder() instanceof MainMenu)) {
+        if (!(e.getInventory().getHolder() instanceof CreateDungeonWorld)) {
             return;
         }
         if (e.getClick().equals(ClickType.NUMBER_KEY)){
@@ -96,7 +96,7 @@ public class CreateDungeonWorld extends Content {
         kcancel(e);
         int slot = e.getRawSlot();
         Player p = (Player) e.getWhoClicked();
-        MainMenu holder = (MainMenu) e.getInventory().getHolder();
+        CreateDungeonWorld holder = (CreateDungeonWorld) e.getInventory().getHolder();
         if(holder == null) return;
         
         if(slot == 0) {
@@ -121,6 +121,11 @@ public class CreateDungeonWorld extends Content {
             } else {
                 if(!DungeonTask.isGenerating()) {
                     ChunkList.initChunksMap(WorldConfig.wc.dungeon_world);
+                    DungeonWorld.generateDungeonWorld();
+                    DungeonTask.start();
+                    p.sendMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_In_Progress);
+                } else {
+                    p.sendMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_In_Progress);
                 }
                 p.closeInventory();
             }
@@ -130,13 +135,13 @@ public class CreateDungeonWorld extends Content {
     private static boolean checkEnabled() {
         SimpleWorldConfig swc = WorldConfig.wc.dict.get(WorldDefine.WORLD_NAME);
         
-        return swc.aether_dungeon.doNaturalSpawn &&
-                swc.ant_man_dungeon.doNaturalSpawn &&
-                swc.battletower.doNaturalSpawn &&
-                swc.doomlike.doNaturalSpawn &&
-                swc.draylar_battletower.doNaturalSpawn &&
-                swc.lich_tower.doNaturalSpawn &&
-                swc.roguelike.doNaturalSpawn &&
+        return swc.aether_dungeon.doNaturalSpawn ||
+                swc.ant_man_dungeon.doNaturalSpawn ||
+                swc.battletower.doNaturalSpawn ||
+                swc.doomlike.doNaturalSpawn ||
+                swc.draylar_battletower.doNaturalSpawn ||
+                swc.lich_tower.doNaturalSpawn ||
+                swc.roguelike.doNaturalSpawn ||
                 swc.smoofydungeon.doNaturalSpawn;
     }
 }

@@ -53,7 +53,7 @@ public class RemoveDungeonWorld extends Content {
     @EventHandler
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
-        if (!(e.getInventory().getHolder() instanceof MainMenu)) {
+        if (!(e.getInventory().getHolder() instanceof RemoveDungeonWorld)) {
             return;
         }
         if (e.getClick().equals(ClickType.NUMBER_KEY)){
@@ -64,7 +64,7 @@ public class RemoveDungeonWorld extends Content {
         kcancel(e);
         int slot = e.getRawSlot();
         Player p = (Player) e.getWhoClicked();
-        MainMenu holder = (MainMenu) e.getInventory().getHolder();
+        RemoveDungeonWorld holder = (RemoveDungeonWorld) e.getInventory().getHolder();
         if(holder == null) return;
         
         if(slot == 4) {

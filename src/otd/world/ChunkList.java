@@ -25,7 +25,7 @@ import zhehe.util.RandomCollection;
  * @author shadow
  */
 public class ChunkList {
-    public static Map<int[], DungeonType> chunks = new HashMap<>();
+    public static Map<String, DungeonType> chunks = new HashMap<>();
     public static Set<String> chunk_set = new HashSet<>();
     public static Map<int[], List<int[]>> groups = new HashMap<>();
     
@@ -46,7 +46,7 @@ public class ChunkList {
         dict.put(DungeonType.Draylar, 2);
         dict.put(DungeonType.Aether, 2);
         dict.put(DungeonType.Lich, 2);
-        dict.put(DungeonType.AntMan, 4);
+        dict.put(DungeonType.AntMan, 6);
     }
     public static List<DungeonWorldTask> task_pool = new ArrayList<>();
     
@@ -77,7 +77,7 @@ public class ChunkList {
             List<int[]> sub = new ArrayList<>();
             for(int x = next[0] - d; x <= next[0] + d; x++) {
                 for(int z = next[1] - d; z <= next[1] + d; z++) {
-                    chunks.put(new int[] {x, z}, dungeon);
+                    chunks.put(x + "," + z, dungeon);
                     chunk_set.add(x + "," + z);
                     sub.add(new int[] {x, z});
                     

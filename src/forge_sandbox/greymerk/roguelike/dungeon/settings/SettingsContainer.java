@@ -40,6 +40,18 @@ public class SettingsContainer implements ISettingsContainer{
     
     private Map<String, Map<String, DungeonSettings>> settingsByNamespace;
     
+    public final static SettingsMushroomTheme mushroom = new SettingsMushroomTheme();
+    public final static SettingsDesertTheme desert = new SettingsDesertTheme();
+    public final static SettingsGrasslandTheme grassland = new SettingsGrasslandTheme();
+    public final static SettingsJungleTheme jungle = new SettingsJungleTheme();
+    public final static SettingsSwampTheme swamp = new SettingsSwampTheme();
+    public final static SettingsMountainTheme mountain = new SettingsMountainTheme();
+    public final static SettingsForestTheme forest = new SettingsForestTheme();
+    public final static SettingsMesaTheme mesa = new SettingsMesaTheme();
+    public final static SettingsIceTheme ice = new SettingsIceTheme();
+    public final static SettingsRuinTheme ruin = new SettingsRuinTheme();
+    public final static SettingsRareTheme rare = new SettingsRareTheme();
+    
     public SettingsContainer(){
         this.settingsByNamespace = new HashMap<>();
         
@@ -54,17 +66,17 @@ public class SettingsContainer implements ISettingsContainer{
         this.put(loot);
         this.put(new SettingsBase());
     
-        this.put(new SettingsMushroomTheme()); //HOUSE
-        this.put(new SettingsDesertTheme()); //PYRAMID
-        this.put(new SettingsGrasslandTheme()); //BUNKER
-        this.put(new SettingsJungleTheme()); //JUNGLE
-        this.put(new SettingsSwampTheme()); //WITCH
-        this.put(new SettingsMountainTheme()); //ENIKO
-        this.put(new SettingsForestTheme()); //ROGUE
-        this.put(new SettingsMesaTheme()); //ETHO
-        this.put(new SettingsIceTheme()); //PYRAMID
-        this.put(new SettingsRuinTheme()); //PYRAMID
-        this.put(new SettingsRareTheme()); //BUMBO
+        this.put(mushroom); //HOUSE
+        this.put(desert); //PYRAMID
+        this.put(grassland); //BUNKER
+        this.put(jungle); //JUNGLE
+        this.put(swamp); //WITCH
+        this.put(mountain); //ENIKO
+        this.put(forest); //ROGUE
+        this.put(mesa); //ETHO
+        this.put(ice); //PYRAMID
+        this.put(ruin); //PYRAMID
+        this.put(rare); //BUMBO
     }
         
     public static final String configDirName = Main.instance.getDataFolder().toString() + File.separator + "forge_sandbox" + File.separator + "roguelike";
@@ -105,7 +117,7 @@ public class SettingsContainer implements ISettingsContainer{
         String name = setting.getName();
         
         if(!settingsByNamespace.containsKey(namespace)){
-            settingsByNamespace.put(namespace, new HashMap<String, DungeonSettings>());
+            settingsByNamespace.put(namespace, new HashMap<>());
         }
         
         Map<String, DungeonSettings> settings = this.settingsByNamespace.get(namespace);

@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import otd.Main;
 import zhehe.util.I18n;
 import otd.util.config.EnumType.ChestType;
+import static otd.util.config.WorldConfig.wc;
 import otd.world.WorldDefine;
 
 /**
@@ -29,9 +30,8 @@ import otd.world.WorldDefine;
  * @author
  */
 public class WorldConfig {
-    public static WorldConfig wc = new WorldConfig();
-    
     public Map<String, SimpleWorldConfig> dict = new HashMap<>();
+    
     public boolean furniture = true;
     public boolean preciousBlocks = true;
     public boolean rogueSpawners = true;
@@ -45,18 +45,23 @@ public class WorldConfig {
     public String diceUUID = "afbe4c67-a6a5-4559-ad06-78a6ed2ab4e9";
     public String diceTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTE1ZjdjMzEzYmNhOWMyZjk1OGU2OGFiMTRhYjM5Mzg2N2Q2NzUwM2FmZmZmOGYyMGNiMTNmYmU5MTdmZDMxIn19fQ==";
     
-    public DungeonWorldConfig dungeon_world;
+    public DungeonWorldConfig dungeon_world = new DungeonWorldConfig();
+    
+    public static WorldConfig wc;
+    static {
+        wc = new WorldConfig();
+        addDungeonPlotConfig();
+        
+    }
     
     public WorldConfig() {
-        initDungeonWorld();
     }
     
     private void initDungeonWorld() {
-        dungeon_world = new DungeonWorldConfig();
         addDungeonPlotConfig();
     }
     
-    private boolean addDungeonPlotConfig() {
+    private static boolean addDungeonPlotConfig() {
         if(!wc.dict.containsKey(WorldDefine.WORLD_NAME)) {
             SimpleWorldConfig swc = new SimpleWorldConfig();
             swc.aether_dungeon.doNaturalSpawn = true;
@@ -217,7 +222,11 @@ public class WorldConfig {
             wc.version = 10;
             saves = true;
         }
-        if(wc.addDungeonPlotConfig()) {
+        if(addDungeonPlotConfig()) {
+            saves = true;
+        }
+        if(wc.dungeon_world.dungeon_count > 30) {
+            wc.dungeon_world.dungeon_count = 30;
             saves = true;
         }
         if(saves) save();

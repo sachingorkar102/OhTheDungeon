@@ -7,6 +7,7 @@ package otd.util.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -91,9 +92,10 @@ public class MainMenu extends Content {
         }
         if(slot == 5) {
             if(DungeonTask.isGenerating()) {
-                p.sendMessage(I18n.instance.Dungeon_Plot_In_Progress);
-                p.closeInventory();
-            } else if(WorldConfig.wc.dungeon_world.finished) {
+                p.sendMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_In_Progress);
+                return;
+            }
+            if(WorldConfig.wc.dungeon_world.finished) {
                 RemoveDungeonWorld r = new RemoveDungeonWorld();
                 r.openInventory(p);
             } else {

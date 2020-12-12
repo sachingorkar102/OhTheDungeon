@@ -33,6 +33,7 @@ public class LichTowerGenerator implements IGenerator {
         int rz = chunk.getZ() * 16 + 7;
         Location loc = world.getHighestBlockAt(rx, rz).getLocation();
         loc = ActualHeight.getHeight(loc);
+        loc = loc.subtract(0, 1, 0);
         int ry = loc.getBlockY();
         if(ry > 120) return false;
         TFBukkitGenerator.generateLichTower(world, loc, random);

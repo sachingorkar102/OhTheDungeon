@@ -11,7 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import otd.util.gui.WorldManager;
+import otd.util.gui.MainMenu;
 
 public class Otd implements TabExecutor {
     @Override
@@ -29,7 +29,7 @@ public class Otd implements TabExecutor {
             sender.sendMessage("You don't have permission to do that");
             return true;
         }
-        WorldManager wm = new WorldManager();
+        MainMenu wm = new MainMenu();
         wm.openInventory(p);
         return true;
     }

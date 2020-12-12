@@ -31,6 +31,7 @@ import shadow_lib.ExceptionRepoter;
 import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import forge_sandbox.twilightforest.TFBukkitGenerator;
+import otd.world.DungeonWorld;
 
 public class Otd_Place implements TabExecutor {
     
@@ -143,6 +144,8 @@ public class Otd_Place implements TabExecutor {
             location = location.getWorld().getHighestBlockAt(location).getLocation();
             location = ActualHeight.getHeight(location);
             TFBukkitGenerator.generateLichTower(world, location, new Random());
+        } else if(type.equals("test")) {
+            p.teleport(DungeonWorld.world.getSpawnLocation());
         } else return false;
         return true;
     }

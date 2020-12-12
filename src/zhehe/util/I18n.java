@@ -151,6 +151,12 @@ public class I18n {
     public String Previous = "Previous";
     public String Next = "Next";
     public String Click_To_Edit = "Click To Edit";
+//    public List<String> World_Tip = Arrays.asList(new String[]
+//            {
+//                "If you want to create your world",
+//                "later, please use /otd worldname",
+//            }
+//    );
     
     public String DraylarBattleTower_Config = "Draylar Battle Tower Cfg";
     
@@ -370,8 +376,7 @@ public class I18n {
     public String Menu_create_world_config_lore = "Config the dungeon you want to create";
     public String Menu_create_dungeon_count = "Total Dungeon Count";
     public String Menu_create = "Create Dungeon Plot";
-    public String Menu_create_lore1 = "If you want to create dungeon plot world";
-    public String Menu_create_lore2 = "Generation would take around 10 minutes";
+    public String Menu_create_lore = "If you want to create dungeon plot world";
     public String Current_Dungeon_Count = "Current Dungeon Count";
     
     public String Must_Natural_Spawn = "You must open at least one dungeon's Natural Spawn";
@@ -379,9 +384,8 @@ public class I18n {
     public String Dungeon_Plot_Not_Working = "Dungeon plot worker is not working";
     public String Dungeon_Plot_Breaking = "Dungeon plot generation will break in 30s";
     
-    public String Dungeon_Plot_In_Progress = "Dungeon plot is creating. You could choose waiting for its finishing, or use /otd_world_stop to stop (all created dungeons in plot would be kept)";
+    public String Dungeon_Plot_In_Progress = "Dungeon plot is creating. It would finish in 10 minutes. You'll get the message once it's finished";
     
-    public String Dungeon_Plot_Max_Count = "Max count is 30 (Beta test)";
     public static final transient String configFileName = "lang.json";
     
     public static void init() {
@@ -477,13 +481,6 @@ public class I18n {
         
         I18n.instance.Dungeon_Plot_Finish = "Finish to generate dungeon plot world";
         
-        I18n.instance.Menu_Create_World = "Dungeon Plot";
-        I18n.instance.Menu_create_world_config = "Dungeon Config";
-        I18n.instance.Menu_create_world_config_lore = "Config the dungeon you want to create";
-        I18n.instance.Menu_create_dungeon_count = "Total Dungeon Count";
-        I18n.instance.Menu_create = "Create Dungeon Plot";
-        I18n.instance.Menu_create_lore1 = "If you want to create dungeon plot world";
-        I18n.instance.Menu_create_lore2 = "Generation would take around 10 minutes";
         I18n.instance.Current_Dungeon_Count = "Current Dungeon Count";
         
         I18n.instance.Must_Natural_Spawn = "You must open at least one dungeon's Natural Spawn";
@@ -492,8 +489,6 @@ public class I18n {
         I18n.instance.Dungeon_Plot_Breaking = "Dungeon plot generation will break in 30s";
 
         I18n.instance.Dungeon_Plot_In_Progress = "Dungeon plot is creating. You could choose waiting for its finishing, or use /otd_world_stop to stop (all created dungeons in plot would be kept)";
-        
-        I18n.instance.Dungeon_Plot_Max_Count = "Max count is 30 (Beta test)";
         
         I18n.instance.lang_version = 14;
     }

@@ -7,6 +7,8 @@ package otd.world;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.logging.Level;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,11 +35,12 @@ import zhehe.util.I18n;
 public class DungeonTask {
     private static int step = 0;
     private static int next = 0;
-    
-    private static int current_count = 0;
+    private static int pointer = 0;
     
     private static boolean generating = false;
     private static boolean breaking = false;
+    
+    private final static Random random = new Random();
     
     public static boolean isGenerating() {
         return generating;
@@ -51,17 +54,60 @@ public class DungeonTask {
         return ChunkList.task_pool.size();
     }
     
+    
+    private final static AetherGenerator aether;
+    private final static AntManGenerator antman;
+    private final static BattleTowerGenerator battle_tower;
+    private final static DoomlikeGenerator doomlike;
+    private final static DraylarBattleTowerGenerator draylar;
+    private final static LichTowerGenerator lich_tower;
+    private final static RoguelikeGenerator roguelike;
+    private final static SmoofyDungeonGenerator smoofy;
     private final static Map<DungeonType, IGenerator> dict;
     static {
         dict = new HashMap<>();
-        dict.put(DungeonType.Aether, new AetherGenerator());
-        dict.put(DungeonType.AntMan, new AntManGenerator());
-        dict.put(DungeonType.BattleTower, new BattleTowerGenerator());
-        dict.put(DungeonType.Doomlike, new DoomlikeGenerator());
-        dict.put(DungeonType.Draylar, new DraylarBattleTowerGenerator());
-        dict.put(DungeonType.Lich, new LichTowerGenerator());
-        dict.put(DungeonType.Roguelike, new RoguelikeGenerator());
-        dict.put(DungeonType.DungeonMaze, new SmoofyDungeonGenerator());
+        aether = new AetherGenerator();
+        antman = new AntManGenerator();
+        battle_tower = new BattleTowerGenerator();
+        doomlike = new DoomlikeGenerator();
+        draylar = new DraylarBattleTowerGenerator();
+        lich_tower = new LichTowerGenerator();
+        roguelike = new RoguelikeGenerator();
+        smoofy = new SmoofyDungeonGenerator();
+        
+        dict.put(DungeonType.Aether, aether);
+        dict.put(DungeonType.AntMan, antman);
+        dict.put(DungeonType.BattleTower, battle_tower);
+        dict.put(DungeonType.Doomlike, doomlike);
+        dict.put(DungeonType.Draylar, draylar);
+        dict.put(DungeonType.Lich, lich_tower);
+        dict.put(DungeonType.Roguelike, roguelike);
+        dict.put(DungeonType.DungeonMaze, smoofy);
+    }
+    
+    public static void placeAether(int x, int z) {
+        aether.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeAntMan(int x, int z) {
+        antman.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeBattleTower(int x, int z) {
+        battle_tower.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeDoomLike(int x, int z) {
+        doomlike.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeDraylar(int x, int z) {
+        draylar.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeLichTower(int x, int z) {
+        lich_tower.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeSmoofy(int x, int z) {
+        smoofy.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+    }
+    public static void placeRoguelike(int x, int z) {
+        roguelike.generateDungeonWithRandomTheme(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
     }
     
     public static void globalMessage() {
@@ -71,23 +117,28 @@ public class DungeonTask {
     public static void start() {
         step = 0;
         next = 0;
+        pointer = 0;
         generating = true;
         breaking = false;
-        current_count = 0;
         
-        Bukkit.getScheduler().runTaskTimer(Main.instance, new BukkitRunnable() {
+        BukkitRunnable r = new BukkitRunnable() {
             @Override
             public void run() {
                 if(step == next) {
-                    if(DungeonWorld.world == null) return;
-                    if(ChunkList.task_pool.size() <= next) {
+                    if(DungeonWorld.world == null) {
+                        this.cancel();
+                        return;
+                    }
+                    if(ChunkList.task_pool.size() <= pointer) {
                         this.cancel();
                         generating = false;
                         WorldConfig.wc.dungeon_world.finished = true;
                         WorldConfig.save();
+                        globalMessage();
                         return;
                     }
-                    DungeonWorldTask dwt = ChunkList.task_pool.get(next);
+                    DungeonWorldTask dwt = ChunkList.task_pool.get(pointer);
+                    pointer++;
                     
                     if(dwt instanceof DungeonChunkTask) {
                         int[] chunkPos = dwt.getChunkPos();
@@ -98,23 +149,48 @@ public class DungeonTask {
                     if(dwt instanceof DungeonPlaceTask) {
                         DungeonPlaceTask dungeon = (DungeonPlaceTask) dwt;
                         int[] chunkPos = dungeon.getChunkPos();
-                        int x = chunkPos[0] * 16 + 8;
-                        int z = chunkPos[1] * 16 + 8;
+                        
+                        if(dungeon.dungeon == DungeonType.Aether) {
+                            placeAether(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.AntMan) {
+                            placeAntMan(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.BattleTower) {
+                            placeBattleTower(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.Doomlike) {
+                            placeDoomLike(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.Draylar) {
+                            placeDraylar(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.DungeonMaze) {
+                            placeSmoofy(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.Lich) {
+                            placeLichTower(chunkPos[0], chunkPos[1]);
+                        } else {
+                            placeRoguelike(chunkPos[0], chunkPos[1]);
+                        }
                         
                         step += dungeon.getDelay();
                         next++;
-                        current_count++;
                         
                         if(breaking) {
                             this.cancel();
                             generating = false;
                             WorldConfig.wc.dungeon_world.finished = true;
-                            WorldConfig.wc.dungeon_world.dungeon_count = current_count;
                             WorldConfig.save();
                         }
+                        
+                        Bukkit.getLogger().log(Level.INFO, "Dungeon {0}, chunkx={1}, chunkz={2}", new Object[]{dungeon.dungeon.toString(), chunkPos[0], chunkPos[1]});
+
                     }
+                } else if(next < step) {
+                    next++;
+                } else {
+                    this.cancel();
+                    generating = false;
+                    WorldConfig.wc.dungeon_world.finished = true;
+                    WorldConfig.save();
                 }
             }
-        }, 1, 1);
+        };
+        r.runTaskTimer(Main.instance, 1, 1);
     }
 }
