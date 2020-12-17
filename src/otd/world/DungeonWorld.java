@@ -24,19 +24,8 @@ import otd.util.config.WorldConfig;
 public class DungeonWorld {
     public static World world = null;
     public static DungeonWorldChunkGenerator generator = new DungeonWorldChunkGenerator();
-    public static boolean generateDungeonWorld() {
-        
-        File container = Bukkit.getWorldContainer();
-        File world_folder = new File(container, WorldDefine.WORLD_NAME);
-//        Bukkit.getLogger().log(Level.SEVERE, world_folder.getAbsolutePath());
-        if(world_folder.exists()) {
-            try {
-                FileUtils.deleteDirectory(world_folder);
-            } catch(IOException ex) {
-                return false;
-            }
-        }
-        
+    
+    public static void loadDungeonWorld() {
         WorldCreator wc = new WorldCreator(WorldDefine.WORLD_NAME);
         wc.environment(World.Environment.NORMAL);
         wc.generator(generator);
@@ -45,6 +34,20 @@ public class DungeonWorld {
         wc.type(WorldType.NORMAL);
         
         world = wc.createWorld();
+    }
+    
+    public static boolean generateDungeonWorld() {
+        
+        File container = Bukkit.getWorldContainer();
+        File world_folder = new File(container, WorldDefine.WORLD_NAME);
+        if(world_folder.exists()) {
+            try {
+                FileUtils.deleteDirectory(world_folder);
+            } catch(IOException ex) {
+                return false;
+            }
+        }
+        loadDungeonWorld();
         return true;
     }
     
@@ -54,6 +57,9 @@ public class DungeonWorld {
         List<Player> ps = world.getPlayers();
         for(Player p : ps) {
             Location loc = p.getBedSpawnLocation();
+            if(loc == null) {
+                loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+            }
             p.teleport(loc);
         }
         

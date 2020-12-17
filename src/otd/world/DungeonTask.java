@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 import otd.Main;
 import otd.generator.AetherGenerator;
@@ -26,6 +28,7 @@ import otd.util.config.WorldConfig;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
+import shadow_lib.async.io.papermc.lib.PaperLib;
 import zhehe.util.I18n;
 
 /**
@@ -86,7 +89,22 @@ public class DungeonTask {
     }
     
     public static void placeAether(int x, int z) {
-        aether.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
+        Chunk chunk = DungeonWorld.world.getChunkAt(x, z);
+        
+        chunk.getBlock(8, 64, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(8, 65, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(8, 66, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(8, 67, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(8, 68, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(8, 69, 8).setType(Material.RED_WOOL);
+        
+        chunk.getBlock(7, 68, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(9, 68, 8).setType(Material.RED_WOOL);
+        
+        chunk.getBlock(6, 67, 8).setType(Material.RED_WOOL);
+        chunk.getBlock(10, 67, 8).setType(Material.RED_WOOL);
+        
+        aether.generateDungeon(DungeonWorld.world, random, chunk);
     }
     public static void placeAntMan(int x, int z) {
         antman.generateDungeon(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
@@ -133,6 +151,7 @@ public class DungeonTask {
                         this.cancel();
                         generating = false;
                         WorldConfig.wc.dungeon_world.finished = true;
+                        WorldConfig.wc.dungeon_world.dungeon_count_finish = WorldConfig.wc.dungeon_world.dungeon_count;
                         WorldConfig.save();
                         globalMessage();
                         return;
@@ -142,7 +161,8 @@ public class DungeonTask {
                     
                     if(dwt instanceof DungeonChunkTask) {
                         int[] chunkPos = dwt.getChunkPos();
-                        DungeonWorld.world.getChunkAt(chunkPos[0], chunkPos[1]);
+                        //DungeonWorld.world.getChunkAt(chunkPos[0], chunkPos[1]);
+                        PaperLib.getChunkAtAsync(DungeonWorld.world, chunkPos[0], chunkPos[1], true, false);
                         step += dwt.getDelay();
                         next++;
                     }
@@ -171,13 +191,6 @@ public class DungeonTask {
                         step += dungeon.getDelay();
                         next++;
                         
-                        if(breaking) {
-                            this.cancel();
-                            generating = false;
-                            WorldConfig.wc.dungeon_world.finished = true;
-                            WorldConfig.save();
-                        }
-                        
                         Bukkit.getLogger().log(Level.INFO, "Dungeon {0}, chunkx={1}, chunkz={2}", new Object[]{dungeon.dungeon.toString(), chunkPos[0], chunkPos[1]});
 
                     }
@@ -187,6 +200,7 @@ public class DungeonTask {
                     this.cancel();
                     generating = false;
                     WorldConfig.wc.dungeon_world.finished = true;
+                    WorldConfig.wc.dungeon_world.dungeon_count_finish = WorldConfig.wc.dungeon_world.dungeon_count;
                     WorldConfig.save();
                 }
             }

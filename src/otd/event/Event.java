@@ -31,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.spigotmc.SpigotConfig;
 import otd.Main;
 import static otd.update.UpdateChecker.UPDATE_RESULT;
+import otd.util.Diagnostic;
 import otd.util.Roll;
 import zhehe.util.I18n;
 
@@ -51,12 +52,7 @@ public class Event implements Listener {
             }
         }
     }
-    
-    private boolean getBoolean(String path, boolean def, String worldName) {
-        SpigotConfig.config.addDefault("world-settings.default." + path, def);
-        return SpigotConfig.config.getBoolean("world-settings." + worldName + "." + path, SpigotConfig.config.getBoolean("world-settings.default." + path));
-    }
-    
+        
     private static class BookNotice extends BookBase{
         public BookNotice(){
             super("Shadow_Wind", "Warning in your Spawner Setting");
@@ -94,11 +90,8 @@ public class Event implements Listener {
             }
 //            p.sendMessage(ChatColor.GREEN + "[Oh The Dungeons You'll Go] The free version is no longer supported. We will release Premium version");
             //boolean b = (boolean) Bukkit.getServer().spigot().getConfig().get("world-settings.default.nerf-spawner-mobs", false);
-            boolean b = false;
-            for(World world : Bukkit.getWorlds()) {
-                b = b | getBoolean("nerf-spawner-mobs", false, world.getName());
-            }
-            if(b) {
+
+            if(Diagnostic.isSpawnerNotReady()) {
                 p.openBook(BOOK.get());
 //                for(int i = 0; i < 5; i++) {
 //                    p.sendMessage(ChatColor.RED + I18n.instance.Nerf_Msg);

@@ -229,6 +229,10 @@ public class WorldConfig {
             wc.dungeon_world.dungeon_count = 30;
             saves = true;
         }
+        if(wc.dungeon_world.dungeon_count < 1) {
+            wc.dungeon_world.dungeon_count = 1;
+            saves = true;
+        }
         if(saves) save();
     }
 }

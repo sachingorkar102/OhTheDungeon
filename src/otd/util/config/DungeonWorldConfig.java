@@ -11,5 +11,6 @@ package otd.util.config;
  */
 public class DungeonWorldConfig {    
     public int dungeon_count = 30;
+    public int dungeon_count_finish = 0;
     public boolean finished = false;
 }

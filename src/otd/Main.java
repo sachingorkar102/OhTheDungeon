@@ -41,7 +41,7 @@ import otd.event.Event;
 import otd.event.SpawnerEvent;
 import otd.generator.DungeonPopulator;
 import otd.update.UpdateChecker;
-import otd.util.WorldDiagnostic;
+import otd.util.Diagnostic;
 import shadow_lib.async.io.papermc.lib.PaperLib;
 import shadow_lib.bstats.Metrics;
 import shadow_manager.DungeonWorldManager;
@@ -67,10 +67,13 @@ import otd.util.gui.WorldManager;
 import otd.util.gui.WorldSpawnerManager;
 import otd.util.lang.LanguageUtil;
 import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
-import otd.util.gui.CreateDungeonWorld;
+import otd.commands.Otd_Tp;
+import otd.util.gui.dungeon_plot.CreateDungeonWorld;
 import otd.util.gui.LichTowerConfig;
 import otd.util.gui.MainMenu;
-import otd.util.gui.RemoveDungeonWorld;
+import otd.util.gui.dungeon_plot.RemoveDungeonWorld;
+import otd.util.gui.dungeon_plot.UserTeleport;
+import otd.world.ChunkList;
 import otd.world.DungeonWorld;
 import otd.world.WorldDefine;
 import otd.world.WorldGenOptimization;
@@ -166,6 +169,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(MainMenu.instance, this);
         getServer().getPluginManager().registerEvents(RemoveDungeonWorld.instance, this);
         getServer().getPluginManager().registerEvents(CreateDungeonWorld.instance, this);
+        getServer().getPluginManager().registerEvents(UserTeleport.instance, this);
         
         getServer().getPluginManager().registerEvents(new Event(), this);
         getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);
@@ -174,6 +178,8 @@ public class Main extends JavaPlugin {
 
         PluginConfig.instance.init();
         PluginConfig.instance.update();
+        
+        ChunkList.rebuildChunkMap();
         
         String update = PluginConfig.instance.config.get("updater");
         if(update != null && update.equalsIgnoreCase("TRUE")) {
@@ -193,7 +199,7 @@ public class Main extends JavaPlugin {
         Lich.init();
         
         Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-            WorldDiagnostic.diagnostic();
+            Diagnostic.diagnostic();
             {
                 try {
                     InputStream stream = this.getResource("logo.txt");
@@ -217,7 +223,7 @@ public class Main extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, () -> {
             if(WorldConfig.wc.dungeon_world.finished) {
                 Bukkit.getLogger().log(Level.INFO, "Loading dungeon plot world...");
-                DungeonWorld.generateDungeonWorld();
+                DungeonWorld.loadDungeonWorld();
             }
         }, 1L);
     }
@@ -271,6 +277,7 @@ public class Main extends JavaPlugin {
         Otd otd = new Otd();
         Otd_Place otd_place = new Otd_Place();
         Otd_Cp otd_cp = new Otd_Cp();
+        Otd_Tp otd_tp = new Otd_Tp();
         
         PluginCommand command;
         command = this.getCommand("oh_the_dungeons");
@@ -287,6 +294,11 @@ public class Main extends JavaPlugin {
         if(command != null) {
             command.setExecutor(otd_cp);
             command.setTabCompleter(otd_cp);
+        }
+        command = this.getCommand("oh_the_dungeons_tp");
+        if(command != null) {
+            command.setExecutor(otd_tp);
+            command.setTabCompleter(otd_tp);
         }
     }
 }

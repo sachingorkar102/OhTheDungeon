@@ -17,7 +17,14 @@ commands:
     aliases: [otd_cp]
     description: Copy world config
     usage: /<command> source dest
+  oh_the_dungeons_tp:
+    aliases: [otd_tp]
+    description: open the dungeon plot teleport GUI
+    usage: /<command>
 permissions:
   oh_the_dungeons.admin:
     default: op
     description: open the inventory GUI
+  oh_the_dungeons.teleport:
+    default: true
+    description: open the dungeon plot teleport GUI

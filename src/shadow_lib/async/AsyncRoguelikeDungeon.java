@@ -265,9 +265,9 @@ public class AsyncRoguelikeDungeon {
                                 }
 
                                 if(isFinish) {
-                                    if(theme != null) {
-                                        Bukkit.getLogger().log(Level.INFO, "add loot");
-                                    }
+//                                    if(theme != null) {
+//                                        Bukkit.getLogger().log(Level.INFO, "add loot");
+//                                    }
                                     AsyncRoguelikeDungeon.addLoot(editor, rand, dungeon, setting);
                                 }
                             });

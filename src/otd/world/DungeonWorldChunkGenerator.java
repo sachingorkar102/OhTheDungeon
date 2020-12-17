@@ -32,7 +32,8 @@ public class DungeonWorldChunkGenerator extends ChunkGenerator {
                     }
                     chunk.setBlock(i, 61, j, Material.DIRT);
                     chunk.setBlock(i, 62, j, Material.DIRT);
-                    chunk.setBlock(i, 63, j, Material.GRASS_BLOCK);
+                    chunk.setBlock(i, 63, j, Material.DIRT);
+                    chunk.setBlock(i, 64, j, Material.GRASS_BLOCK);
                 }
             }
         } else {

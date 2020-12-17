@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package otd.util.gui;
+package otd.util.gui.dungeon_plot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import otd.util.gui.Content;
 import otd.world.ChunkList;
 import otd.world.DungeonWorld;
 import zhehe.util.I18n;

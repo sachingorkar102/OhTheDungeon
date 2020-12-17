@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import otd.util.config.WorldConfig;
+import zhehe.util.I18n;
 
 public class Otd_Cp implements TabExecutor {
     @Override
@@ -32,10 +33,11 @@ public class Otd_Cp implements TabExecutor {
     }
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+        if(sender == null) return false;
         if(sender instanceof Player) {
             Player p = (Player) sender;
             if(!p.hasPermission("oh_the_dungeons.admin")) {
-                sender.sendMessage("You don't have permission to do that");
+                sender.sendMessage(I18n.instance.No_Permission);
                 return true;
             }
         }

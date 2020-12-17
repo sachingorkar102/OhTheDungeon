@@ -29,6 +29,16 @@ public class ChunkList {
     public static Set<String> chunk_set = new HashSet<>();
     public static Map<int[], List<int[]>> groups = new HashMap<>();
     
+    public static List<int[]> chunk_table;
+    public static void rebuildChunkMap() {
+        chunk_table = new ArrayList<>();
+        zonePos = new ZonePos();
+        for(int i = 0; i < 30; i++) {
+            int[] next = getNextZone();
+            chunk_table.add(next);
+        }
+    }
+    
     public static void clear() {
         ChunkList.chunks.clear();
         ChunkList.groups.clear();

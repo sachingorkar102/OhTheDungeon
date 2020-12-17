@@ -2128,7 +2128,7 @@ public class LevelBuilder {
                 Dungeons2.log.debug("Removing room for being outside level bounds -> {}", new Object[] {
                                     room
                                 });
-                System.out.println("Removing room for being outside level bounds -> " +  room);
+//                System.out.println("Removing room for being outside level bounds -> " +  room);
                 incrementLossToValidation(1);
             }
             

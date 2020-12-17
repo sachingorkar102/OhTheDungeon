@@ -378,6 +378,7 @@ public class I18n {
     public String Menu_create = "Create Dungeon Plot";
     public String Menu_create_lore = "If you want to create dungeon plot world";
     public String Current_Dungeon_Count = "Current Dungeon Count";
+    public String Creating_World = "World creating... You may see tps drop. Please standby";
     
     public String Must_Natural_Spawn = "You must open at least one dungeon's Natural Spawn";
     
@@ -385,6 +386,16 @@ public class I18n {
     public String Dungeon_Plot_Breaking = "Dungeon plot generation will break in 30s";
     
     public String Dungeon_Plot_In_Progress = "Dungeon plot is creating. It would finish in 10 minutes. You'll get the message once it's finished";
+    
+    public String Dungeon_Plot_User_Teleport = "Choose dungeon to visit:";
+    public String Click_To_Teleport = "Click to teleport";
+    public String Dungeon_Plot = "Dungeon Plot";
+    
+    public String Dungeon_Plot_Not_Ready = "Dungeon Plot World is not actived or it's still under generation. Contact the OPs for help";
+    
+    public String No_Permission = "You don't have permission to do that";
+    
+    public String Automatic_Diagnostic = "Automatic Diagnostic";
     
     public static final transient String configFileName = "lang.json";
     
@@ -488,7 +499,19 @@ public class I18n {
         I18n.instance.Dungeon_Plot_Not_Working = "Dungeon plot worker is not working";
         I18n.instance.Dungeon_Plot_Breaking = "Dungeon plot generation will break in 30s";
 
-        I18n.instance.Dungeon_Plot_In_Progress = "Dungeon plot is creating. You could choose waiting for its finishing, or use /otd_world_stop to stop (all created dungeons in plot would be kept)";
+        I18n.instance.Dungeon_Plot_In_Progress = "Dungeon plot is creating. Please wait for its finishing";
+        
+        I18n.instance.Creating_World = "World creating... You may see tps drop. Please standby";
+        
+        I18n.instance.Dungeon_Plot_User_Teleport = "Choose dungeon to visit:";
+        I18n.instance.Click_To_Teleport = "Click to teleport";
+        
+        I18n.instance.Dungeon_Plot = "Dungeon Plot";
+        I18n.instance.No_Permission = "You don't have permission to do that";
+        
+        I18n.instance.Dungeon_Plot_Not_Ready = "Dungeon Plot World is not actived or it's still under generation. Contact the OPs for help";
+        
+        I18n.instance.Automatic_Diagnostic = "Automatic Diagnostic";
         
         I18n.instance.lang_version = 14;
     }

@@ -32,6 +32,7 @@ import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import forge_sandbox.twilightforest.TFBukkitGenerator;
 import otd.world.DungeonWorld;
+import zhehe.util.I18n;
 
 public class Otd_Place implements TabExecutor {
     
@@ -66,7 +67,7 @@ public class Otd_Place implements TabExecutor {
         }
         Player p = (Player) sender;
         if(!p.hasPermission("oh_the_dungeons.admin")) {
-            sender.sendMessage("You don't have permission to do that");
+            sender.sendMessage(I18n.instance.No_Permission);
             return true;
         }
         String type;
@@ -80,11 +81,8 @@ public class Otd_Place implements TabExecutor {
             sender.sendMessage("Type command again in 10s to confirm");
             players.add(p);
             
-            Bukkit.getScheduler().runTaskLater(instance, new Runnable() {
-                @Override
-                public void run() {
-                    players.remove(p);
-                }
+            Bukkit.getScheduler().runTaskLater(instance, () -> {
+                players.remove(p);
             }, 20 * 10);
             
             return true;

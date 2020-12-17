@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package otd.util.gui;
+package otd.util.gui.dungeon_plot;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
@@ -17,8 +18,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import otd.Main;
 import otd.util.config.SimpleWorldConfig;
 import otd.util.config.WorldConfig;
+import otd.util.gui.Content;
+import otd.util.gui.WorldEditor;
 import otd.world.ChunkList;
 import otd.world.DungeonTask;
 import otd.world.DungeonWorld;
@@ -121,13 +125,17 @@ public class CreateDungeonWorld extends Content {
             } else {
                 if(!DungeonTask.isGenerating()) {
                     ChunkList.initChunksMap(WorldConfig.wc.dungeon_world);
-                    DungeonWorld.generateDungeonWorld();
-                    DungeonTask.start();
+                    p.closeInventory();
                     p.sendMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_In_Progress);
+                    p.sendMessage(ChatColor.BLUE + I18n.instance.Creating_World);
+                    Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                        DungeonWorld.generateDungeonWorld();
+                        DungeonTask.start();
+                    }, 1L);
                 } else {
                     p.sendMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_In_Progress);
+                    p.closeInventory();
                 }
-                p.closeInventory();
             }
         }
     }
