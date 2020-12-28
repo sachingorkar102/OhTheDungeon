@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import otd.Main;
-import zhehe.util.I18n;
+import otd.util.I18n;
 
 /**
  *

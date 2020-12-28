@@ -12,7 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import otd.Main;
 import otd.MultiVersion;
-import zhehe.util.FormatItem;
+import otd.util.FormatItem;
 import otd.util.nbt.JsonToNBT;
 //import net.minecraft.block.Block;
 //import net.minecraft.item.Item;

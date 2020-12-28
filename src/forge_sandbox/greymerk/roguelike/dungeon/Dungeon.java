@@ -30,8 +30,8 @@ import java.util.logging.Level;
 import otd.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 //
 public class Dungeon implements IDungeon{
         public static int count = 0;

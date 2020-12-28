@@ -16,9 +16,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import otd.util.config.LootNode;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.LootNode;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 import shadow_lib.async.AsyncWorldEditor;
 import shadow_lib.async.later.roguelike.Later;
 

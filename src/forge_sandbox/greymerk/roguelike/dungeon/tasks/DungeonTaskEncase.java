@@ -11,7 +11,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
 import forge_sandbox.greymerk.roguelike.worldgen.filter.Filter;
 import shadow_manager.DungeonWorldManager;
 //import forge_sandbox.greymerk.roguelike.worldgen.shapes.RectSolid;
-import otd.util.config.WorldConfig;
+import otd.config.WorldConfig;
 
 public class DungeonTaskEncase implements IDungeonTask{
 

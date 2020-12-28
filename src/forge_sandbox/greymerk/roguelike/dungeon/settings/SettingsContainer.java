@@ -2,7 +2,6 @@ package forge_sandbox.greymerk.roguelike.dungeon.settings;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,16 +18,17 @@ import forge_sandbox.greymerk.roguelike.dungeon.settings.base.SettingsSegments;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.base.SettingsTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsDesertTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsForestTheme;
-import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsGrasslandTheme;
+import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsBunkerTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsIceTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsJungleTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsMesaTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsMountainTheme;
-import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsMushroomTheme;
+import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsHouseTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsRareTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsRuinTheme;
 import forge_sandbox.greymerk.roguelike.dungeon.settings.builtin.SettingsSwampTheme;
 import java.io.File;
+import java.util.concurrent.ConcurrentHashMap;
 import otd.Main;
 
 public class SettingsContainer implements ISettingsContainer{
@@ -38,11 +38,11 @@ public class SettingsContainer implements ISettingsContainer{
         
     private static SettingsLootRules loot;
     
-    private Map<String, Map<String, DungeonSettings>> settingsByNamespace;
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, DungeonSettings>> settingsByNamespace;
     
-    public final static SettingsMushroomTheme mushroom = new SettingsMushroomTheme();
+    public final static SettingsHouseTheme house = new SettingsHouseTheme();
     public final static SettingsDesertTheme desert = new SettingsDesertTheme();
-    public final static SettingsGrasslandTheme grassland = new SettingsGrasslandTheme();
+    public final static SettingsBunkerTheme bunker = new SettingsBunkerTheme();
     public final static SettingsJungleTheme jungle = new SettingsJungleTheme();
     public final static SettingsSwampTheme swamp = new SettingsSwampTheme();
     public final static SettingsMountainTheme mountain = new SettingsMountainTheme();
@@ -53,7 +53,7 @@ public class SettingsContainer implements ISettingsContainer{
     public final static SettingsRareTheme rare = new SettingsRareTheme();
     
     public SettingsContainer(){
-        this.settingsByNamespace = new HashMap<>();
+        this.settingsByNamespace = new ConcurrentHashMap<>();
         
         this.put(new SettingsRooms());
         this.put(new SettingsSecrets());
@@ -66,9 +66,9 @@ public class SettingsContainer implements ISettingsContainer{
         this.put(loot);
         this.put(new SettingsBase());
     
-        this.put(mushroom); //HOUSE
+        this.put(house); //HOUSE
         this.put(desert); //PYRAMID
-        this.put(grassland); //BUNKER
+        this.put(bunker); //BUNKER
         this.put(jungle); //JUNGLE
         this.put(swamp); //WITCH
         this.put(mountain); //ENIKO
@@ -79,7 +79,7 @@ public class SettingsContainer implements ISettingsContainer{
         this.put(rare); //BUMBO
     }
         
-    public static final String configDirName = Main.instance.getDataFolder().toString() + File.separator + "forge_sandbox" + File.separator + "roguelike";
+    public static final String CONFIG_DIR_NAME = Main.instance.getDataFolder().toString() + File.separator + "forge_sandbox" + File.separator + "roguelike";
     public void parseCustomSettings(Map<String, String> files) throws Exception{
         for(String name : files.keySet()){
             DungeonSettings toAdd = null;
@@ -96,7 +96,7 @@ public class SettingsContainer implements ISettingsContainer{
         
         JsonParser jParser = new JsonParser();
         JsonObject root = null;
-        DungeonSettings toAdd = null;
+        DungeonSettings toAdd;
         
         try {
             root = (JsonObject)jParser.parse(content);
@@ -117,19 +117,20 @@ public class SettingsContainer implements ISettingsContainer{
         String name = setting.getName();
         
         if(!settingsByNamespace.containsKey(namespace)){
-            settingsByNamespace.put(namespace, new HashMap<>());
+            settingsByNamespace.put(namespace, new ConcurrentHashMap<>());
         }
         
         Map<String, DungeonSettings> settings = this.settingsByNamespace.get(namespace);
         settings.put(name, setting);
     }
     
+    @Override
     public Collection<DungeonSettings> getByNamespace(String namespace){
         if(!this.settingsByNamespace.containsKey(namespace)) return new ArrayList<>();
         return this.settingsByNamespace.get(namespace).values();
     }
     
-        @Override
+    @Override
     public Collection<DungeonSettings> getBuiltinSettings(){
         List<DungeonSettings> settings = new ArrayList<>();
         
@@ -154,20 +155,20 @@ public class SettingsContainer implements ISettingsContainer{
         return settings;
     }
     
+    @Override
     public DungeonSettings get(SettingIdentifier id){
         if(!contains(id)) return null;
         Map<String, DungeonSettings> settings = settingsByNamespace.get(id.getNamespace());
         return settings.get(id.getName());
     }
     
+    @Override
     public boolean contains(SettingIdentifier id){
         
         if(!settingsByNamespace.containsKey(id.getNamespace())) return false;
         
         Map<String, DungeonSettings> settings = settingsByNamespace.get(id.getNamespace());
-        if(!settings.containsKey(id.getName())) return false;
-        
-        return true;
+        return settings.containsKey(id.getName());
     }
     
     @Override

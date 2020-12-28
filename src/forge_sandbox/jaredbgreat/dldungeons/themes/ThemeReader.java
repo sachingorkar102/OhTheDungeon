@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import zhehe.util.BiomeDictionary.Type;
-import zhehe.util.Logging;
+import otd.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import otd.Main;

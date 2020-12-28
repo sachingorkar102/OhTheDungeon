@@ -18,10 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import otd.Main;
-import otd.event.Event;
+import otd.listener.MobListener;
 import static otd.util.Skull.applyHead;
-import otd.util.config.WorldConfig;
-import zhehe.util.I18n;
+import otd.config.WorldConfig;
 
 /**
  *
@@ -65,10 +64,10 @@ public class Roll {
     public static void roll(Player p) {
         String name = p.getName();
         Long stamp = System.currentTimeMillis() / 1000;
-        if(!Event.roll_cool_down.containsKey(name)) {
-            Event.roll_cool_down.put(name, 0L);
+        if(!MobListener.roll_cool_down.containsKey(name)) {
+            MobListener.roll_cool_down.put(name, 0L);
         }
-        long ts = Event.roll_cool_down.get(name);
+        long ts = MobListener.roll_cool_down.get(name);
         if(stamp - ts <= WorldConfig.wc.rollCoolDownInSecond) return;
         int range = WorldConfig.wc.rollRange;
         int r = random.nextInt(100);
@@ -80,6 +79,6 @@ public class Roll {
             }
         }
         p.sendMessage(str);
-        Event.roll_cool_down.put(name, stamp);
+        MobListener.roll_cool_down.put(name, stamp);
     }
 }

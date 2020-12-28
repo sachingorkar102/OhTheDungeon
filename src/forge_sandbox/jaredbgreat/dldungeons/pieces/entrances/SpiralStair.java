@@ -9,7 +9,7 @@ package forge_sandbox.jaredbgreat.dldungeons.pieces.entrances;
 import forge_sandbox.jaredbgreat.dldungeons.builder.DBlock;
 import forge_sandbox.jaredbgreat.dldungeons.planner.Dungeon;
 import org.bukkit.World;
-import static zhehe.util.Constant.*;
+import static forge_sandbox.jaredbgreat.dldungeons.Constant.*;
 //import net.minecraft.block.Block;
 //import net.minecraft.world.World;
 

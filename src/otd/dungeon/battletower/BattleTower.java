@@ -25,10 +25,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import otd.Main;
 import shadow_lib.api.SpawnerDecryAPI;
-import otd.util.config.EnumType.ChestType;
-import otd.util.config.LootNode;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.EnumType.ChestType;
+import otd.config.LootNode;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 
 public class BattleTower
 {

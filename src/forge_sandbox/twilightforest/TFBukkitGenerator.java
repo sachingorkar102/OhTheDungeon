@@ -26,7 +26,7 @@ import shadow_lib.async.io.papermc.lib.PaperLib;
 import shadow_lib.async.later.roguelike.Later;
 import shadow_lib.async.later.twilightforest.Art_Later;
 import forge_sandbox.twilightforest.structures.lichtower.StructureStartLichTower;
-import otd.util.config.WorldConfig;
+import otd.config.WorldConfig;
 
 /**
  *

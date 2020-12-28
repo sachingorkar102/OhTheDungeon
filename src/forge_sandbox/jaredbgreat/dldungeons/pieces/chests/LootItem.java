@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
-import zhehe.util.Logging;
+import otd.util.Logging;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

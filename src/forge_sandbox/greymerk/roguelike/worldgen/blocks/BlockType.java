@@ -5,7 +5,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.MetaBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import otd.util.config.WorldConfig;
+import otd.config.WorldConfig;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockBone;
 //import net.minecraft.block.BlockDirt;

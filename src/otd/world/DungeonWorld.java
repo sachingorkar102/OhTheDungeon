@@ -9,13 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 import org.bukkit.entity.Player;
-import otd.util.config.WorldConfig;
+import otd.config.WorldConfig;
+import otd.gui.dungeon_plot.UserTeleport;
 
 /**
  *
@@ -56,11 +56,7 @@ public class DungeonWorld {
         
         List<Player> ps = world.getPlayers();
         for(Player p : ps) {
-            Location loc = p.getBedSpawnLocation();
-            if(loc == null) {
-                loc = Bukkit.getWorlds().get(0).getSpawnLocation();
-            }
-            p.teleport(loc);
+            UserTeleport.teleportBed(p);
         }
         
         File fw = world.getWorldFolder();

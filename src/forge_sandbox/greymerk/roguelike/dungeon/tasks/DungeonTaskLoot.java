@@ -10,9 +10,9 @@ import forge_sandbox.greymerk.roguelike.util.WeightedRandomizer;
 import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
-import otd.util.config.RoguelikeLootNode;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.RoguelikeLootNode;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 
 public class DungeonTaskLoot implements IDungeonTask {
 

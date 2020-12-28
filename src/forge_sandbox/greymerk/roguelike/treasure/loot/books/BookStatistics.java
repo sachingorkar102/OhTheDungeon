@@ -10,7 +10,7 @@ import forge_sandbox.greymerk.roguelike.treasure.loot.BookBase;
 import forge_sandbox.greymerk.roguelike.worldgen.IWorldEditor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.StringUtils;
-import zhehe.util.FormatItem;
+import otd.util.FormatItem;
 //import net.minecraft.block.Block;
 
 public class BookStatistics extends BookBase{

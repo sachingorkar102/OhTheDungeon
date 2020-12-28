@@ -50,9 +50,9 @@ import otd.Main;
 import shadow_lib.ZoneWorld;
 import shadow_lib.async.io.papermc.lib.PaperLib;
 import shadow_lib.async.later.roguelike.Later;
-import zhehe.util.ProtectBlock;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.util.ProtectBlock;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 
 /**
  *

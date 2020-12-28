@@ -1,0 +1,121 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package otd.gui;
+
+import forge_sandbox.greymerk.roguelike.treasure.loot.PotionMixture;
+import forge_sandbox.greymerk.roguelike.treasure.loot.provider.ItemNovelty;
+import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import otd.util.Roll;
+import otd.util.I18n;
+
+/**
+ *
+ * @author shadow
+ */
+public class CreativeInventory extends Content {
+    
+    private final static int SLOT = 54;
+//    public final static CreativeInventory instance = new CreativeInventory();
+    
+    public CreativeInventory() {
+        super(I18n.instance.Creative_Inventory, SLOT);
+    }
+    
+    @EventHandler
+    @Override
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (!(e.getInventory().getHolder() instanceof CreativeInventory)) {
+            return;
+        }
+        if (e.getClick().equals(ClickType.NUMBER_KEY)){
+            kcancel(e);
+            return;
+        }
+
+        int slot = e.getRawSlot();
+        if(slot < SLOT) {
+            kcancel(e);
+            Player p = (Player) e.getWhoClicked();
+            CreativeInventory holder = (CreativeInventory) e.getInventory().getHolder();
+            if(holder == null) return;
+            
+            ItemStack is = this.inv.getItem(slot);
+            if(is != null && is.getType() != Material.AIR) {
+                p.setItemOnCursor(is.clone());
+            }
+        }
+    }
+    
+    private static class MaxRandom extends Random {
+        @Override
+        public int nextInt(int i) {
+            return i - 1;
+        }
+    }
+    
+    private static final MaxRandom random = new MaxRandom();
+    
+    @Override
+    public void init() {
+        List<ItemStack> list = new ArrayList<>();
+        list.add(Roll.getDice());
+        list.add(Lich.getLichHead());
+        list.add(ItemNovelty.getItem(ItemNovelty.AMLP));
+        list.add(ItemNovelty.getItem(ItemNovelty.ASHLEA));
+        list.add(ItemNovelty.getItem(ItemNovelty.AVIDYA));
+        list.add(ItemNovelty.getItem(ItemNovelty.BAJ));
+        list.add(ItemNovelty.getItem(ItemNovelty.BDOUBLEO));
+        list.add(ItemNovelty.getItem(ItemNovelty.CLEO));
+        list.add(ItemNovelty.getItem(ItemNovelty.DINNERBONE));
+        list.add(ItemNovelty.getItem(ItemNovelty.DOCM));
+        list.add(ItemNovelty.getItem(ItemNovelty.ENIKOBOW));
+        list.add(ItemNovelty.getItem(ItemNovelty.ENIKOSWORD));
+        list.add(ItemNovelty.getItem(ItemNovelty.ETHO));
+        list.add(ItemNovelty.getItem(ItemNovelty.FOURLES));
+        list.add(ItemNovelty.getItem(ItemNovelty.GENERIKB));
+        list.add(ItemNovelty.getItem(ItemNovelty.GINGER));
+        list.add(ItemNovelty.getItem(ItemNovelty.GREYMERK));
+        list.add(ItemNovelty.getItem(ItemNovelty.GRIM));
+        list.add(ItemNovelty.getItem(ItemNovelty.GUUDE));
+        list.add(ItemNovelty.getItem(ItemNovelty.KURT));
+        list.add(ItemNovelty.getItem(ItemNovelty.MANPANTS));
+        list.add(ItemNovelty.getItem(ItemNovelty.MMILLSS));
+        list.add(ItemNovelty.getItem(ItemNovelty.NEBRISCROWN));
+        list.add(ItemNovelty.getItem(ItemNovelty.NOTCH));
+        list.add(ItemNovelty.getItem(ItemNovelty.NULL));
+        list.add(ItemNovelty.getItem(ItemNovelty.QUANTUMLEAP));
+        list.add(ItemNovelty.getItem(ItemNovelty.RLEAHY));
+        list.add(ItemNovelty.getItem(ItemNovelty.VALANDRAH));
+        list.add(ItemNovelty.getItem(ItemNovelty.VECHS));
+        list.add(ItemNovelty.getItem(ItemNovelty.ZISTEAUSIGN));
+        list.add(PotionMixture.getPotion(random, PotionMixture.ABSINTHE));
+        list.add(PotionMixture.getPotion(random, PotionMixture.AURA));
+        list.add(PotionMixture.getPotion(random, PotionMixture.COFFEE));
+        list.add(PotionMixture.getPotion(random, PotionMixture.LAUDANUM));
+        list.add(PotionMixture.getPotion(random, PotionMixture.MOONSHINE));
+        list.add(PotionMixture.getPotion(random, PotionMixture.NECTAR));
+        list.add(PotionMixture.getPotion(random, PotionMixture.RAGE));
+        list.add(PotionMixture.getPotion(random, PotionMixture.STAMINA));
+        list.add(PotionMixture.getPotion(random, PotionMixture.STOUT));
+        list.add(PotionMixture.getPotion(random, PotionMixture.TEQUILA));
+        list.add(PotionMixture.getPotion(random, PotionMixture.VILE));
+        
+        int i = 0;
+        for(ItemStack is : list) {
+            addItem(i, is);
+            i++;
+        }
+    }
+}
