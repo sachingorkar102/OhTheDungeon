@@ -6,6 +6,7 @@
 package otd.commands;
 
 import forge_sandbox.com.someguyssoftware.dungeons2.BukkitDungeonGenerator;
+import forge_sandbox.greymerk.roguelike.dungeon.settings.SettingsContainer;
 import static forge_sandbox.jaredbgreat.dldungeons.builder.Builder.commandPlaceDungeon;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,15 +25,15 @@ import org.bukkit.entity.Player;
 import static otd.Main.instance;
 import otd.dungeon.aetherlegacy.AetherBukkitGenerator;
 import otd.dungeon.draylar.BattleTowerSchematics;
-import otd.generator.BattleTowerGenerator;
-import otd.generator.SmoofyDungeonGenerator;
+import otd.populator.BattleTowerPopulator;
+import otd.populator.SmoofyPopulator;
 import otd.util.ActualHeight;
 import shadow_lib.ExceptionRepoter;
 import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import forge_sandbox.twilightforest.TFBukkitGenerator;
 import otd.world.DungeonWorld;
-import zhehe.util.I18n;
+import otd.util.I18n;
 
 public class Otd_Place implements TabExecutor {
     
@@ -112,11 +113,11 @@ public class Otd_Place implements TabExecutor {
             if(!flag) sender.sendMessage("Fail: No theme available for this chunk...");
             sender.sendMessage("Done");
         } else if(type.equals("battletower")) {
-            BattleTowerGenerator g = new BattleTowerGenerator();
+            BattleTowerPopulator g = new BattleTowerPopulator();
             g.generateDungeon(world, new Random(), chunk);
             sender.sendMessage("Done");
         } else if(type.equals("smoofy")) {
-            SmoofyDungeonGenerator.halfAsyncGenerate(world, chunk, new Random());
+            SmoofyPopulator.halfAsyncGenerate(world, chunk, new Random());
             sender.sendMessage("Done");
         } else if(type.equals("draylar")) {
             Location location = p.getLocation();
@@ -143,7 +144,12 @@ public class Otd_Place implements TabExecutor {
             location = ActualHeight.getHeight(location);
             TFBukkitGenerator.generateLichTower(world, location, new Random());
         } else if(type.equals("test")) {
-            p.teleport(DungeonWorld.world.getSpawnLocation());
+            Random rand = new Random();
+            //IWorldEditor editor = new forge_sandbox.greymerk.roguelike.worldgen.WorldEditor(world);
+            AsyncWorldEditor editor = new AsyncWorldEditor(world);
+            boolean flag = AsyncRoguelikeDungeon.generateAsync(rand, editor, loc.getBlockX(), loc.getBlockZ(), null, SettingsContainer.mesa);
+            
+            if(!flag) sender.sendMessage("Fail: No theme available for this chunk...");
         } else return false;
         return true;
     }

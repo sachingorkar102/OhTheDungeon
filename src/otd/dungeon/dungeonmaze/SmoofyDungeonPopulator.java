@@ -18,7 +18,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import shadow_lib.async.io.papermc.lib.PaperLib;
-import zhehe.util.RandomCollection;
+import otd.util.RandomCollection;
 
 /**
  *

@@ -16,7 +16,7 @@ import forge_sandbox.greymerk.roguelike.worldgen.blocks.Quartz;
 import forge_sandbox.greymerk.roguelike.worldgen.shapes.IShape;
 import forge_sandbox.greymerk.roguelike.worldgen.shapes.RectSolid;
 import forge_sandbox.greymerk.roguelike.worldgen.spawners.Spawner;
-import otd.util.config.WorldConfig;
+import otd.config.WorldConfig;
 
 public class DungeonsEnder extends DungeonBase {
 

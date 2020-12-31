@@ -13,8 +13,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import otd.util.config.WorldConfig;
-import zhehe.util.I18n;
+import otd.config.WorldConfig;
+import otd.util.I18n;
 
 public class Otd_Cp implements TabExecutor {
     @Override

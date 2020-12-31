@@ -5,6 +5,8 @@
  */
 package otd;
 
+import otd.gui.*;
+import otd.gui.dungeon_plot.*;
 import forge_sandbox.com.someguyssoftware.dungeons2.config.ModConfig;
 import forge_sandbox.com.someguyssoftware.dungeons2.spawner.SpawnSheetLoader;
 import forge_sandbox.com.someguyssoftware.dungeons2.style.StyleSheetLoader;
@@ -37,42 +39,22 @@ import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import otd.dungeon.draylar.BattleTowerSchematics;
-import otd.event.Event;
-import otd.event.SpawnerEvent;
-import otd.generator.DungeonPopulator;
+import otd.listener.MobListener;
+import otd.listener.SpawnerListener;
+import otd.populator.DungeonPopulator;
 import otd.update.UpdateChecker;
 import otd.util.Diagnostic;
 import shadow_lib.async.io.papermc.lib.PaperLib;
 import shadow_lib.bstats.Metrics;
 import shadow_manager.DungeonWorldManager;
-import zhehe.util.I18n;
-import zhehe.util.Logging;
-import otd.util.config.PluginConfig;
-import otd.util.config.WorldConfig;
-import otd.util.gui.AetherDungeonConfig;
-import otd.util.gui.AntManDungeonConfig;
-import otd.util.gui.BattleTowerConfig;
-import otd.util.gui.BiomeSetting;
-import otd.util.gui.DoomlikeConfig;
-import otd.util.gui.DraylarBattleTowerConfig;
-import otd.util.gui.DungeonSpawnSetting;
-import otd.util.gui.LootItem;
-import otd.util.gui.LootManager;
-import otd.util.gui.RoguelikeConfig;
-import otd.util.gui.RoguelikeLootItem;
-import otd.util.gui.RoguelikeLootManager;
-import otd.util.gui.SmoofyConfig;
-import otd.util.gui.WorldEditor;
-import otd.util.gui.WorldManager;
-import otd.util.gui.WorldSpawnerManager;
+import otd.util.I18n;
+import otd.util.Logging;
+import otd.config.PluginConfig;
+import otd.config.WorldConfig;
 import otd.util.lang.LanguageUtil;
 import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
 import otd.commands.Otd_Tp;
-import otd.util.gui.dungeon_plot.CreateDungeonWorld;
-import otd.util.gui.LichTowerConfig;
-import otd.util.gui.MainMenu;
-import otd.util.gui.dungeon_plot.RemoveDungeonWorld;
-import otd.util.gui.dungeon_plot.UserTeleport;
+import otd.util.map.MapManager;
 import otd.world.ChunkList;
 import otd.world.DungeonWorld;
 import otd.world.WorldDefine;
@@ -123,6 +105,13 @@ public class Main extends JavaPlugin {
     
     @Override
     public void onEnable() {
+        try {
+            Class.forName("org.spigotmc.SpigotConfig");
+        } catch (ClassNotFoundException ex) {
+            getLogger().severe("[Oh The Dungeons You'll Go] requires Spigot (or a fork such as Paper) in order to run.");
+            throw new UnsupportedOperationException("Unsupported Server Type");
+        }
+        
         if(version == MultiVersion.Version.UNKNOWN) {
             Bukkit.getLogger().log(Level.SEVERE, "[Oh The Dungeons You'll Go] Unsupported MC Version");
             throw new UnsupportedOperationException("Unsupported MC Version");
@@ -132,6 +121,8 @@ public class Main extends JavaPlugin {
         disabled = false;
         
         Sandbox.mkdir();
+        BackupGUI.initBackupFolder();
+        
         I18n.init();
         WorldConfig.loadWorldConfig();
         
@@ -170,9 +161,11 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(RemoveDungeonWorld.instance, this);
         getServer().getPluginManager().registerEvents(CreateDungeonWorld.instance, this);
         getServer().getPluginManager().registerEvents(UserTeleport.instance, this);
+        getServer().getPluginManager().registerEvents(BackupGUI.instance, this);
+        getServer().getPluginManager().registerEvents(RogueLikeDungeonTower.instance, this);
         
-        getServer().getPluginManager().registerEvents(new Event(), this);
-        getServer().getPluginManager().registerEvents(new SpawnerEvent(), this);
+        getServer().getPluginManager().registerEvents(new MobListener(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerListener(), this);
         getServer().getPluginManager().registerEvents(new Lich(), this);
         getServer().getPluginManager().registerEvents(new WorldGenOptimization(), this);
 
@@ -226,6 +219,10 @@ public class Main extends JavaPlugin {
                 DungeonWorld.loadDungeonWorld();
             }
         }, 1L);
+        
+//        Bukkit.getScheduler().runTaskLater(this, () -> {
+//            MapManager.init();
+//        }, 1L);
     }
     
     private void loadAdvancement() {

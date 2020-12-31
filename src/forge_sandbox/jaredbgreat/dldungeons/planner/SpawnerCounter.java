@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import org.bukkit.World;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 //import forge_sandbox.jaredbgreat.dldungeons.ConfigHandler;
 
 

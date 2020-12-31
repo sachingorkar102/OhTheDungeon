@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import otd.Main;
-import zhehe.util.I18n;
+import otd.util.I18n;
 
 /**
  *

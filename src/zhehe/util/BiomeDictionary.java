@@ -169,7 +169,7 @@ public class BiomeDictionary
     private static class BiomeInfo
     {
 
-        private final Set<Type> types = new HashSet<Type>();
+        private final Set<Type> types = new HashSet<>();
         private final Set<Type> typesUn = Collections.unmodifiableSet(this.types);
 
     }
@@ -215,8 +215,8 @@ public class BiomeDictionary
                 || otd.Main.version == otd.MultiVersion.Version.V1_16_R3) {
             addTypes(Biome.valueOf("NETHER_WASTES"),     HOT,      DRY,        NETHER              );
             addTypes(Biome.valueOf("SOUL_SAND_VALLEY"),     HOT,      DRY,        NETHER              );
-            addTypes(Biome.valueOf("CRIMSON_FOREST"),     HOT,      DRY,        NETHER              );
-            addTypes(Biome.valueOf("WARPED_FOREST"),     HOT,      DRY,        NETHER              );
+            addTypes(Biome.valueOf("CRIMSON_FOREST"),     HOT,      DRY,        NETHER     , FOREST         );
+            addTypes(Biome.valueOf("WARPED_FOREST"),     HOT,      DRY,        NETHER      , FOREST        );
             addTypes(Biome.valueOf("BASALT_DELTAS"),     HOT,      DRY,        NETHER              );
         } else {
             addTypes(Biome.valueOf("NETHER"),     HOT,      DRY,        NETHER              );

@@ -13,7 +13,7 @@ import forge_sandbox.greymerk.roguelike.util.TextFormat;
 import forge_sandbox.greymerk.roguelike.util.WeightedChoice;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import zhehe.util.I18n;
+import otd.util.I18n;
 //import net.minecraft.init.Blocks;
 //import net.minecraft.init.Items;
 //import net.minecraft.item.ItemStack;

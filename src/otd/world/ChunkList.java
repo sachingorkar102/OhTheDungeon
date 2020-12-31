@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import otd.util.config.DungeonWorldConfig;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.DungeonWorldConfig;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
-import zhehe.util.RandomCollection;
+import otd.util.RandomCollection;
 
 /**
  *

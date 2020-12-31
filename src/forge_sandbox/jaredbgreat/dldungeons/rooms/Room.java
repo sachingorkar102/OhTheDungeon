@@ -30,8 +30,8 @@ import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeFlags;
 import forge_sandbox.jaredbgreat.dldungeons.themes.ThemeType;
 import java.util.ArrayList;
 import java.util.Collections;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 import shadow_lib.async.AsyncWorldEditor;
 
 

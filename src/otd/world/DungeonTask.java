@@ -13,23 +13,24 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import otd.Main;
-import otd.generator.AetherGenerator;
-import otd.generator.AntManGenerator;
-import otd.generator.BattleTowerGenerator;
-import otd.generator.DoomlikeGenerator;
-import otd.generator.DraylarBattleTowerGenerator;
-import otd.generator.IGenerator;
-import otd.generator.LichTowerGenerator;
-import otd.generator.RoguelikeGenerator;
-import otd.generator.SmoofyDungeonGenerator;
-import otd.util.config.WorldConfig;
+import otd.populator.AetherPopulator;
+import otd.populator.AntManPopulator;
+import otd.populator.BattleTowerPopulator;
+import otd.populator.DoomlikePopulator;
+import otd.populator.DraylarBattleTowerPopulator;
+import otd.populator.LichTowerPopulator;
+import otd.populator.RoguelikePopulator;
+import otd.populator.SmoofyPopulator;
+import otd.config.WorldConfig;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
 import shadow_lib.async.io.papermc.lib.PaperLib;
-import zhehe.util.I18n;
+import otd.util.I18n;
+import otd.populator.IPopulator;
 
 /**
  *
@@ -58,25 +59,25 @@ public class DungeonTask {
     }
     
     
-    private final static AetherGenerator aether;
-    private final static AntManGenerator antman;
-    private final static BattleTowerGenerator battle_tower;
-    private final static DoomlikeGenerator doomlike;
-    private final static DraylarBattleTowerGenerator draylar;
-    private final static LichTowerGenerator lich_tower;
-    private final static RoguelikeGenerator roguelike;
-    private final static SmoofyDungeonGenerator smoofy;
-    private final static Map<DungeonType, IGenerator> dict;
+    private final static AetherPopulator aether;
+    private final static AntManPopulator antman;
+    private final static BattleTowerPopulator battle_tower;
+    private final static DoomlikePopulator doomlike;
+    private final static DraylarBattleTowerPopulator draylar;
+    private final static LichTowerPopulator lich_tower;
+    private final static RoguelikePopulator roguelike;
+    private final static SmoofyPopulator smoofy;
+    private final static Map<DungeonType, IPopulator> dict;
     static {
         dict = new HashMap<>();
-        aether = new AetherGenerator();
-        antman = new AntManGenerator();
-        battle_tower = new BattleTowerGenerator();
-        doomlike = new DoomlikeGenerator();
-        draylar = new DraylarBattleTowerGenerator();
-        lich_tower = new LichTowerGenerator();
-        roguelike = new RoguelikeGenerator();
-        smoofy = new SmoofyDungeonGenerator();
+        aether = new AetherPopulator();
+        antman = new AntManPopulator();
+        battle_tower = new BattleTowerPopulator();
+        doomlike = new DoomlikePopulator();
+        draylar = new DraylarBattleTowerPopulator();
+        lich_tower = new LichTowerPopulator();
+        roguelike = new RoguelikePopulator();
+        smoofy = new SmoofyPopulator();
         
         dict.put(DungeonType.Aether, aether);
         dict.put(DungeonType.AntMan, antman);
@@ -90,19 +91,19 @@ public class DungeonTask {
     
     public static void placeAether(int x, int z) {
         Chunk chunk = DungeonWorld.world.getChunkAt(x, z);
-        
-        chunk.getBlock(8, 64, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(8, 65, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(8, 66, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(8, 67, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(8, 68, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(8, 69, 8).setType(Material.RED_WOOL);
-        
-        chunk.getBlock(7, 68, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(9, 68, 8).setType(Material.RED_WOOL);
-        
-        chunk.getBlock(6, 67, 8).setType(Material.RED_WOOL);
-        chunk.getBlock(10, 67, 8).setType(Material.RED_WOOL);
+//        
+//        chunk.getBlock(8, 64, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(8, 65, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(8, 66, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(8, 67, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(8, 68, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(8, 69, 8).setType(Material.RED_WOOL);
+//        
+//        chunk.getBlock(7, 68, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(9, 68, 8).setType(Material.RED_WOOL);
+//        
+//        chunk.getBlock(6, 67, 8).setType(Material.RED_WOOL);
+//        chunk.getBlock(10, 67, 8).setType(Material.RED_WOOL);
         
         aether.generateDungeon(DungeonWorld.world, random, chunk);
     }
@@ -139,7 +140,10 @@ public class DungeonTask {
         generating = true;
         breaking = false;
         
+        int dungeon_count = WorldConfig.wc.dungeon_world.dungeon_count;
+        
         BukkitRunnable r = new BukkitRunnable() {
+            int count = 0;
             @Override
             public void run() {
                 if(step == next) {
@@ -186,6 +190,13 @@ public class DungeonTask {
                             placeLichTower(chunkPos[0], chunkPos[1]);
                         } else {
                             placeRoguelike(chunkPos[0], chunkPos[1]);
+                        }
+                        
+                        count++;
+                        for(Player p : Bukkit.getOnlinePlayers()) {
+                            if(p.hasPermission("oh_the_dungeons.admin")) {
+                                p.sendMessage("Dungeon Plot: " + count + "/" + dungeon_count);
+                            }
                         }
                         
                         step += dungeon.getDelay();

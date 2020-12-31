@@ -38,7 +38,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 import otd.Main;
 import otd.util.Skull;
-import zhehe.util.I18n;
+import otd.util.I18n;
 
 /**
  *
@@ -49,7 +49,7 @@ public class Lich implements Listener {
     private final static String TEXTURES = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWFmYzlhOGFhMjhiNTBmZjM0MjlkMTUxZmJkNjhmNmY3NWVmNDlkNmQ0ODM5MDRhNDFhZDU3ODllMjA1M2Y3In19fQ==";
     public final static String BOSS_TAG = "otd_boss_lich";
     
-    private static ItemStack getLichHead() {
+    public static ItemStack getLichHead() {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         

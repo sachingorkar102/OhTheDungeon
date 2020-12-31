@@ -9,9 +9,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import otd.util.config.LootNode;
-import otd.util.config.SimpleWorldConfig;
-import otd.util.config.WorldConfig;
+import otd.config.LootNode;
+import otd.config.SimpleWorldConfig;
+import otd.config.WorldConfig;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ChestUtils {

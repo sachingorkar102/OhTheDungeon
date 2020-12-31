@@ -9,7 +9,7 @@ import java.util.Random;
 import forge_sandbox.greymerk.roguelike.util.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import zhehe.util.I18n;
+import otd.util.I18n;
 //import net.minecraft.init.Items;
 //import net.minecraft.item.ItemStack;
 
@@ -116,7 +116,7 @@ public enum PotionMixture {
 			PotionEffect.addCustomEffect(potion, PotionEffect.HASTE, 2, 600);
 			PotionEffect.addCustomEffect(potion, PotionEffect.SPEED, 1, 600);
 			potion = Loot.setItemNameNew(potion, I18n.instance.COFFEE.Name);
-			potion = Loot.setItemNameNew(potion, I18n.instance.COFFEE.Lore);
+			potion = Loot.setItemLoreNew(potion, I18n.instance.COFFEE.Lore);
 			ItemHideFlags.set(ItemHideFlags.EFFECTS, potion);
 			setColor(potion, DyeColor.RGBToColor(20, 20, 10));
 			return potion;
@@ -124,7 +124,7 @@ public enum PotionMixture {
 			potion = Potion.getSpecific(PotionForm.REGULAR, null, false, false);
 			PotionEffect.addCustomEffect(potion, PotionEffect.GLOWING, 1, 600);
 			potion = Loot.setItemNameNew(potion, I18n.instance.AURA.Name);
-			potion = Loot.setItemNameNew(potion, I18n.instance.AURA.Lore);
+			potion = Loot.setItemLoreNew(potion, I18n.instance.AURA.Lore);
 			ItemHideFlags.set(ItemHideFlags.EFFECTS, potion);
 			setColor(potion, DyeColor.RGBToColor(250, 250, 0));
 			return potion;

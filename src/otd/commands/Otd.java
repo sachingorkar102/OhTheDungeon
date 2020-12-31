@@ -11,7 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import otd.util.gui.MainMenu;
+import otd.gui.MainMenu;
 
 public class Otd implements TabExecutor {
     @Override

@@ -13,7 +13,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.spigotmc.SpigotConfig;
-import otd.generator.DungeonPopulator;
+import otd.populator.DungeonPopulator;
 import otd.world.WorldDefine;
 import shadow_lib.async.io.papermc.lib.PaperLib;
 import shadow_manager.DungeonWorldManager;

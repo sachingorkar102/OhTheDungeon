@@ -11,11 +11,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import otd.util.config.WorldConfig;
-import otd.util.gui.dungeon_plot.UserTeleport;
+import otd.config.WorldConfig;
+import otd.gui.dungeon_plot.UserTeleport;
 import otd.world.DungeonTask;
 import otd.world.DungeonWorld;
-import zhehe.util.I18n;
+import otd.util.I18n;
 
 /**
  *

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import forge_sandbox.greymerk.roguelike.dungeon.DungeonStage;
-import zhehe.util.DungeonDelayTask;
+import otd.util.DungeonDelayTask;
 
 public class DungeonTaskRegistry implements IDungeonTaskRegistry{
 

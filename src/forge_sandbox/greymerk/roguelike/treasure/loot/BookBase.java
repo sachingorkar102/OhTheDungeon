@@ -38,7 +38,7 @@ public class BookBase implements IBook{
 		this.title = title;
 	}
 	
-	public void addPage(String page){
+	public final void addPage(String page){
 		this.pages.add(page);
 	}
 	

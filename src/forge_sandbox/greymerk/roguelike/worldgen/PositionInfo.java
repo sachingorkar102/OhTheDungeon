@@ -2,9 +2,9 @@ package forge_sandbox.greymerk.roguelike.worldgen;
 
 //import net.minecraft.world.World;
 
+import forge_sandbox.BlockPos;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import zhehe.util.BlockPos;
 
 //import net.minecraft.world.biome.Biome;
 

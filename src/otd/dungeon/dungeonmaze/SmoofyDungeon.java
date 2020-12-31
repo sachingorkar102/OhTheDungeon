@@ -46,7 +46,7 @@ import otd.dungeon.dungeonmaze.populator.maze.decoration.PoolPopulator;
 import otd.dungeon.dungeonmaze.populator.maze.decoration.LanternPopulator;
 import otd.dungeon.dungeonmaze.populator.maze.MazeLayerBlockPopulator;
 import otd.dungeon.dungeonmaze.populator.maze.MazeRoomBlockPopulator;
-import zhehe.util.RandomCollection;
+import otd.util.RandomCollection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
