@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.util;
 
@@ -48,7 +59,7 @@ public class I18n {
         }
     }
     
-    public int lang_version = 15;
+    public int lang_version = 16;
     
     public SpecialItem GREYMERK = new SpecialItem("Greymerk's Hatchet","Pointlessly sharp");
     public SpecialItem NEBRISCROWN = new SpecialItem("Nebrian Crown of Justice", "Adorned with precious gemstones");
@@ -432,6 +443,24 @@ public class I18n {
     public String Roguelike_Dungeon_Tower_Warn = "At least one theme should be enabled";
     public String Roguelike_Dungeon_Tower_Lore = "Select the theme of dungeon tower";
     
+    public String Schematic_Select = "Select Schematic";
+    public String Schematic_Select_Lore = "Support *.schem/*.schematic/*.nbt";
+    public String Schematic_File = "Current file";
+    public String Get_Schematic = "Get some sample schematics";
+    public String Custom_Dungeon = "Custom Dungeon";
+    public String Custom_Dungeon_Editor = "Custom Dungeon Editor";
+    public String Dungeon_Status = "Dungeon Status";
+    public String Custom_Dungeon_Chest_Lore = "Chests in schematic will be set to these content";
+    public String Custom_Dungeon_Type = "Custom Dungeon Type";
+    public String Custom_Dungeon_Spawn_Offset = "Custom Dungeon Spawn Offset";
+    public String Mob_Select = "Mob Select";
+    public String Mob_Select_Lore = "Spawners in schematic will be set to these mobs";
+    public String Custom_Dungeon_List = "Custom Dungeon List";
+    public String World_Custom_Dungeon = "World Custom Dungeon Cfg";
+    public String Require_WorldEdit = "Require WorldEdit";
+    public String Add_Custom_Dungeon = "Add Custom Dungeon";
+    public String Custom_Dungeon_Err_Msg = "You must select a schematic file";
+    
     public static final transient String configFileName = "lang.json";
     
     public static void init() {
@@ -506,6 +535,31 @@ public class I18n {
         if(I18n.instance.lang_version == 14) {
             update14();
         }
+        if(I18n.instance.lang_version == 15) {
+            update15();
+        }
+    }
+    
+    public static void update15() {
+        I18n.instance.Schematic_Select = "Select Schematic";
+        I18n.instance.Schematic_Select_Lore = "Support *.schem/*.schematic/*.nbt";
+        I18n.instance.Schematic_File = "Current file";
+        I18n.instance.Get_Schematic = "Get some sample schematics";
+        I18n.instance.Custom_Dungeon = "Custom Dungeon";
+        I18n.instance.Custom_Dungeon_Editor = "Custom Dungeon Editor";
+        I18n.instance.Dungeon_Status = "Dungeon Status";
+        I18n.instance.Custom_Dungeon_Chest_Lore = "Chests in schematic will be set to these content";
+        I18n.instance.Custom_Dungeon_Type = "Custom Dungeon Type";
+        I18n.instance.Custom_Dungeon_Spawn_Offset = "Custom Dungeon Spawn Offset";
+        I18n.instance.Mob_Select = "Mob Select";
+        I18n.instance.Mob_Select_Lore = "Spawners in schematic will be set to these mobs";
+        I18n.instance.Custom_Dungeon_List = "Custom Dungeon List";
+        I18n.instance.World_Custom_Dungeon = "World Custom Dungeon Cfg";
+        I18n.instance.Require_WorldEdit = "Require WorldEdit";
+        I18n.instance.Add_Custom_Dungeon = "Add Custom Dungeon";
+        I18n.instance.Custom_Dungeon_Err_Msg = "You must select a schematic file";
+
+        I18n.instance.lang_version = 16;
     }
     
     public static void update14() {

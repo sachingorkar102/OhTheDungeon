@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.world;
 
@@ -12,7 +23,7 @@ import java.util.logging.Level;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import otd.Main;
@@ -25,12 +36,14 @@ import otd.populator.LichTowerPopulator;
 import otd.populator.RoguelikePopulator;
 import otd.populator.SmoofyPopulator;
 import otd.config.WorldConfig;
+import otd.config.WorldConfig.CustomDungeon;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
 import shadow_lib.async.io.papermc.lib.PaperLib;
 import otd.util.I18n;
 import otd.populator.IPopulator;
+import otd.struct.SchematicLoader;
 
 /**
  *
@@ -128,6 +141,16 @@ public class DungeonTask {
     public static void placeRoguelike(int x, int z) {
         roguelike.generateDungeonWithRandomTheme(DungeonWorld.world, random, DungeonWorld.world.getChunkAt(x, z));
     }
+    public static void placeCustom(int x, int z) {
+        x = x * 16 + 7;
+        z = z * 16 + 7;
+        
+        Location loc = DungeonWorld.world.getHighestBlockAt(x, z).getLocation();
+        CustomDungeon dungeon = SchematicLoader.getRandomDungeon(DungeonWorld.world);
+        
+        if(dungeon == null) return;
+        SchematicLoader.createInWorldAsync(dungeon, DungeonWorld.world, x, z, random);
+    }
     
     public static void globalMessage() {
         Bukkit.broadcastMessage(ChatColor.BLUE + I18n.instance.Dungeon_Plot_Finish);
@@ -188,6 +211,8 @@ public class DungeonTask {
                             placeSmoofy(chunkPos[0], chunkPos[1]);
                         } else if(dungeon.dungeon == DungeonType.Lich) {
                             placeLichTower(chunkPos[0], chunkPos[1]);
+                        } else if(dungeon.dungeon == DungeonType.CustomDungeon) {
+                            placeCustom(chunkPos[0], chunkPos[1]);
                         } else {
                             placeRoguelike(chunkPos[0], chunkPos[1]);
                         }

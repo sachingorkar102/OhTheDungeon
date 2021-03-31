@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.gui;
 
@@ -43,29 +54,29 @@ public class LootEditor extends Content {
         
     @Override
     public void init() {
-			ItemStack item = new ItemStack(Material.GOLDEN_HELMET);
-			item = Loot.setItemNameNew(item, I18n.instance.NEBRISCROWN.Name, null);
-			item = Loot.setItemLoreNew(item, I18n.instance.NEBRISCROWN.Lore, TextFormat.DARKGREEN);
-			item.addUnsafeEnchantment(Enchant.getEnchant(Enchant.PROTECTION), 4);
-			item.addUnsafeEnchantment(Enchant.getEnchant(Enchant.UNBREAKING), 3);
-                        
-                        ItemMeta im = item.getItemMeta();
-                        List<String> lores = im.getLore();
-                        lores.add(0, "Click to Edit or Disable");
-                        im.setLore(lores);
-                        item.setItemMeta(im);
-                        addItem(0, item);
-                        Random r = new Random();
-                        for(int i = 1; i < 27; i++) {
-                            Material m = Material.POTION;
-                            int k = r.nextInt(9);
-                            if(k == 0) m = Material.WOODEN_HOE;
-                            if(k == 1) m = Material.DIAMOND_BOOTS;
-                            if(k == 2) m = Material.STICK;
-                            if(k == 3) m = Material.GOLDEN_SWORD;
-                            if(k == 4) m = Material.GOLDEN_APPLE;
-                            if(k == 5) m = Material.LEATHER_BOOTS;
-                            addItem(i, new ItemStack(m));
-                        }
+	ItemStack item = new ItemStack(Material.GOLDEN_HELMET);
+	item = Loot.setItemNameNew(item, I18n.instance.NEBRISCROWN.Name, null);
+	item = Loot.setItemLoreNew(item, I18n.instance.NEBRISCROWN.Lore, TextFormat.DARKGREEN);
+	item.addUnsafeEnchantment(Enchant.getEnchant(Enchant.PROTECTION), 4);
+	item.addUnsafeEnchantment(Enchant.getEnchant(Enchant.UNBREAKING), 3);
+        
+        ItemMeta im = item.getItemMeta();
+        List<String> lores = im.getLore();
+        lores.add(0, "Click to Edit or Disable");
+        im.setLore(lores);
+        item.setItemMeta(im);
+        addItem(0, item);
+        Random r = new Random();
+        for(int i = 1; i < 27; i++) {
+            Material m = Material.POTION;
+            int k = r.nextInt(9);
+            if(k == 0) m = Material.WOODEN_HOE;
+            if(k == 1) m = Material.DIAMOND_BOOTS;
+            if(k == 2) m = Material.STICK;
+            if(k == 3) m = Material.GOLDEN_SWORD;
+            if(k == 4) m = Material.GOLDEN_APPLE;
+            if(k == 5) m = Material.LEATHER_BOOTS;
+            addItem(i, new ItemStack(m));
+        }
     }
 }

@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.populator;
 
@@ -15,6 +26,7 @@ import shadow_manager.DungeonWorldManager;
 import otd.util.RandomCollection;
 import otd.config.SimpleWorldConfig;
 import otd.config.WorldConfig;
+import otd.integration.WorldEdit;
 
 /**
  *
@@ -65,11 +77,11 @@ public class DungeonPopulator extends BlockPopulator{
         if(swc.lich_tower.doNaturalSpawn) {
             generator.add(swc.lich_weight, new LichTowerPopulator());
         }
+        if(WorldEdit.isReady() && !swc.custom_dungeons.isEmpty()) {
+            generator.add(swc.custom_dungeon_weight, new CustomDungeonPopulator());
+        }
         
-        boolean r = swc.roguelike.doNaturalSpawn || swc.doomlike.doNaturalSpawn
-                || swc.battletower.doNaturalSpawn || swc.smoofydungeon.doNaturalSpawn
-                || swc.draylar_battletower.doNaturalSpawn || swc.ant_man_dungeon.doNaturalSpawn 
-                || swc.aether_dungeon.doNaturalSpawn || swc.lich_tower.doNaturalSpawn;
+        boolean r = isDungeonEnabled(swc);
         
         if(!r) return;
         
@@ -83,5 +95,13 @@ public class DungeonPopulator extends BlockPopulator{
         if(biomes.contains(world.getBiome(rx, rz).toString())) return;
         
         choose.generateDungeon(world, random, source);
+    }
+    
+    public static boolean isDungeonEnabled(SimpleWorldConfig swc) {
+        return swc.roguelike.doNaturalSpawn || swc.doomlike.doNaturalSpawn
+                || swc.battletower.doNaturalSpawn || swc.smoofydungeon.doNaturalSpawn
+                || swc.draylar_battletower.doNaturalSpawn || swc.ant_man_dungeon.doNaturalSpawn 
+                || swc.aether_dungeon.doNaturalSpawn || swc.lich_tower.doNaturalSpawn
+                || (WorldEdit.isReady() && !swc.custom_dungeons.isEmpty());
     }
 }

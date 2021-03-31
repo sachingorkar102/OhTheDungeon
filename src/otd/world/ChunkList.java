@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.world;
 
@@ -15,6 +26,7 @@ import java.util.Set;
 import otd.config.DungeonWorldConfig;
 import otd.config.SimpleWorldConfig;
 import otd.config.WorldConfig;
+import otd.integration.WorldEdit;
 import otd.world.task.DungeonChunkTask;
 import otd.world.task.DungeonPlaceTask;
 import otd.world.task.DungeonWorldTask;
@@ -75,6 +87,7 @@ public class ChunkList {
         if(swc.ant_man_dungeon.doNaturalSpawn) r.add(swc.antman_weight, DungeonType.AntMan);
         if(swc.aether_dungeon.doNaturalSpawn) r.add(swc.aether_weight, DungeonType.Aether);
         if(swc.lich_tower.doNaturalSpawn) r.add(swc.lich_weight, DungeonType.Lich);
+        if(WorldEdit.isReady() && !swc.custom_dungeons.isEmpty()) r.add(swc.custom_dungeon_weight, DungeonType.CustomDungeon);
         
         if(r.isEmpty()) return;
         zonePos = new ZonePos();

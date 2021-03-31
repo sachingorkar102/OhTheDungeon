@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.config;
 
@@ -14,10 +25,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import otd.Main;
 import otd.util.I18n;
@@ -37,7 +59,7 @@ public class WorldConfig {
     public boolean rogueSpawners = true;
     public boolean disableAPI = false;
     public boolean noMobChanges = false;
-    public int version = 11;
+    public int version = 12;
     
     public int map_house = -1;
     public int map_desert = -1;
@@ -51,13 +73,65 @@ public class WorldConfig {
     public int map_ruin = -1;
     public int map_cactus = -1;
     
-    public int rollCoolDownInSecond = 10;
+    public int rollCoolDownInSecond = 11;
     public int rollRange = 15;
     
     public String diceUUID = "afbe4c67-a6a5-4559-ad06-78a6ed2ab4e9";
     public String diceTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTE1ZjdjMzEzYmNhOWMyZjk1OGU2OGFiMTRhYjM5Mzg2N2Q2NzUwM2FmZmZmOGYyMGNiMTNmYmU5MTdmZDMxIn19fQ==";
     
     public DungeonWorldConfig dungeon_world = new DungeonWorldConfig();
+    
+    public static class CustomDungeon {
+        public UUID id = UUID.randomUUID();
+        public String file = "";
+        
+        public List<LootNode> loots = new ArrayList<>();
+        public Set<String> biomeExclusions = new HashSet<>();
+        public Set<String> mobs = new HashSet<>();
+        
+        public CustomDungeonType type = CustomDungeonType.ground;
+        public int sky_spawn_height = 180;
+        public int[] offset = {0, 0, 0};
+        public int weight = 10;
+        
+        public CustomDungeon() {
+            mobs.add(EntityType.ZOMBIE.toString());
+        }
+        
+        public List<String> getLores() {
+            List<String> lores = new ArrayList<>();
+            lores.add(ChatColor.BLUE + file);
+            lores.add(type.toString());
+            lores.add(I18n.instance.Weight + " : " + Integer.toString(weight));
+            return lores;
+        }
+        
+        public ItemStack getIcon() {
+            ItemStack is = new ItemStack(Material.STRUCTURE_BLOCK);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(id.toString());
+            im.setLore(getLores());
+            is.setItemMeta(im);
+            
+            return is;
+        }
+        
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof CustomDungeon)) return false;
+            CustomDungeon d = (CustomDungeon) obj;
+            return d.id.equals(this.id);
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 67 * hash + Objects.hashCode(this.id);
+            return hash;
+        }
+    }
+    
+    public HashMap<UUID, CustomDungeon> custom_dungeon = new HashMap<>();
     
     public static WorldConfig wc;
     static {
@@ -253,6 +327,16 @@ public class WorldConfig {
             
             wc.version = 11;
             saves = true;
+        }
+        if(wc.version == 11) {
+            wc.custom_dungeon = new HashMap<>();
+            for(Map.Entry<String, SimpleWorldConfig> entry : wc.dict.entrySet()) {
+                entry.getValue().initCustomDungeon();
+                entry.getValue().custom_dungeon_weight = 3;
+                
+                wc.version = 12;
+                saves = true;
+            }
         }
         if(addDungeonPlotConfig()) {
             saves = true;

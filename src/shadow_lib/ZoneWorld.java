@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package shadow_lib;
 
@@ -27,6 +38,16 @@ public class ZoneWorld {
     public final static Set<Material> SPECIAL_BLOCKS = new HashSet<>();
     public List<Later> later_task = new ArrayList<>();
     public Material default_state = Material.STONE;
+    
+    public final static Set<Material> PHY_BLOCKS;
+    static {
+        PHY_BLOCKS = new HashSet<>();
+        for(Material mat : Material.values()) {
+            String tmp = mat.toString().toUpperCase();
+            if(tmp.contains("FENCE") && !tmp.contains("FENCE_GATE")) PHY_BLOCKS.add(mat);
+            if(tmp.contains("GLASS_PANE")) PHY_BLOCKS.add(mat);
+        }
+    }
     
     public static void registerSpecialBlock(Material material) {
         SPECIAL_BLOCKS.add(material);

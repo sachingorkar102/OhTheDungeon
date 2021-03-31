@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.gui.dungeon_plot;
 
@@ -23,6 +34,7 @@ import otd.config.SimpleWorldConfig;
 import otd.config.WorldConfig;
 import otd.gui.Content;
 import otd.gui.WorldEditor;
+import otd.populator.DungeonPopulator;
 import otd.world.ChunkList;
 import otd.world.DungeonTask;
 import otd.world.DungeonWorld;
@@ -143,13 +155,6 @@ public class CreateDungeonWorld extends Content {
     private static boolean checkEnabled() {
         SimpleWorldConfig swc = WorldConfig.wc.dict.get(WorldDefine.WORLD_NAME);
         
-        return swc.aether_dungeon.doNaturalSpawn ||
-                swc.ant_man_dungeon.doNaturalSpawn ||
-                swc.battletower.doNaturalSpawn ||
-                swc.doomlike.doNaturalSpawn ||
-                swc.draylar_battletower.doNaturalSpawn ||
-                swc.lich_tower.doNaturalSpawn ||
-                swc.roguelike.doNaturalSpawn ||
-                swc.smoofydungeon.doNaturalSpawn;
+        return DungeonPopulator.isDungeonEnabled(swc);
     }
 }

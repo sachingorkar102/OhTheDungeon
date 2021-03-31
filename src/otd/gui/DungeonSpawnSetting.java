@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.gui;
 
@@ -37,6 +48,7 @@ public class DungeonSpawnSetting extends Content {
     private int ant;
     private int aether;
     private int lich;
+    private int custom;
     private int distance;
     private double rate;
     
@@ -48,6 +60,7 @@ public class DungeonSpawnSetting extends Content {
     private final static Material ANT = Material.END_PORTAL_FRAME;
     private final static Material AETHER = Material.GLOWSTONE;
     private final static Material LICH = Material.PAINTING;
+    private final static Material CUSTOM = Material.STRUCTURE_BLOCK;
     
     private DungeonSpawnSetting() {
         super("", SLOT);
@@ -78,6 +91,7 @@ public class DungeonSpawnSetting extends Content {
         this.ant = swc.antman_weight;
         this.aether = swc.aether_weight;
         this.lich = swc.lich_weight;
+        this.custom = swc.custom_dungeon_weight;
         this.distance = swc.distance;
         this.rate = swc.spawner_rejection_rate;
     }
@@ -178,6 +192,16 @@ public class DungeonSpawnSetting extends Content {
                 holder.init();
             }
         }
+        if(slot == 17) {
+            if(type == ClickType.LEFT) {
+                holder.custom++;
+                holder.init();
+            }
+            if(type == ClickType.RIGHT) {
+                holder.custom--;
+                holder.init();
+            }
+        }
         if(slot == 18) {
             if(!holder.world.equalsIgnoreCase(WorldDefine.WORLD_NAME)) {
                 if(type == ClickType.LEFT) {
@@ -216,6 +240,7 @@ public class DungeonSpawnSetting extends Content {
                 swc.antman_weight = holder.ant;
                 swc.aether_weight = holder.aether;
                 swc.lich_weight = holder.lich;
+                swc.custom_dungeon_weight = holder.custom;
                 swc.distance = holder.distance;
                 swc.spawner_rejection_rate = holder.rate;
                 WorldConfig.save();
@@ -236,6 +261,7 @@ public class DungeonSpawnSetting extends Content {
         if(this.ant < 0) this.ant = 0;
         if(this.aether < 0) this.aether = 0;
         if(this.lich < 0) this.lich = 0;
+        if(this.custom < 0) this.custom = 0;
         inv.clear();
         {
             ItemStack is = new ItemStack(Material.OAK_SIGN);
@@ -244,7 +270,7 @@ public class DungeonSpawnSetting extends Content {
             is.setItemMeta(im);
             addItem(0, 0, is);
         }
-        int total = this.battle + this.doomlike + this.roguelike + this.smoofy + this.draylar + this.ant + this.aether + this.lich;
+        int total = this.battle + this.doomlike + this.roguelike + this.smoofy + this.draylar + this.ant + this.aether + this.lich + this.custom;
         {
             ItemStack is = new ItemStack(ROGUELIKE);
             ItemMeta im = is.getItemMeta();
@@ -341,6 +367,18 @@ public class DungeonSpawnSetting extends Content {
             is.setItemMeta(im);
             addItem(1, 7, is);
         }
+        {
+            ItemStack is = new ItemStack(CUSTOM);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.Custom_Dungeon);
+            List<String> lores = new ArrayList<>();
+            lores.add(Integer.toString(this.custom) + " / " + Integer.toString(total));
+            lores.add(I18n.instance.Amount_Item_Tip1);
+            lores.add(I18n.instance.Amount_Item_Tip2);
+            im.setLore(lores);
+            is.setItemMeta(im);
+            addItem(1, 8, is);
+        }
         if(!this.world.equalsIgnoreCase(WorldDefine.WORLD_NAME)) {
             ItemStack is = new ItemStack(Material.MAP);
             ItemMeta im = is.getItemMeta();
@@ -378,6 +416,5 @@ public class DungeonSpawnSetting extends Content {
             
             addItem(2, 8, is);
         }
-
     }
 }

@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.gui;
 
@@ -15,10 +26,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import otd.util.Diagnostic;
 import otd.config.WorldConfig;
+import otd.gui.customstruct.CustomDungeonList;
+import otd.integration.WorldEdit;
 import otd.world.DungeonTask;
 import otd.util.I18n;
 
@@ -31,7 +45,7 @@ public class MainMenu extends Content {
     public final static MainMenu instance = new MainMenu();
     
     public MainMenu() {
-        super(I18n.instance.Main_Menu, 9);
+        super(I18n.instance.Main_Menu, InventoryType.DISPENSER);
     }
     
     @Override
@@ -99,6 +113,20 @@ public class MainMenu extends Content {
             
             addItem(4, is);
         }
+        {
+            ItemStack is = new ItemStack(WorldEdit.isReady() ? Material.STRUCTURE_BLOCK : Material.BARRIER);
+            ItemMeta im = is.getItemMeta();
+            
+            im.setDisplayName(I18n.instance.Custom_Dungeon);
+            
+            List<String> lores = new ArrayList<>();
+            lores.add(I18n.instance.Require_WorldEdit);
+            
+            is.setItemMeta(im);
+            is.setLore(lores);
+            
+            addItem(5, is);
+        }
     }
     
     @EventHandler
@@ -145,6 +173,11 @@ public class MainMenu extends Content {
         }
         if(slot == 4) {
             CreativeInventory ci = new CreativeInventory();
+            ci.openInventory(p);
+        }
+        if(slot == 5) {
+            if(!WorldEdit.isReady()) return;
+            CustomDungeonList ci = new CustomDungeonList(this);
             ci.openInventory(p);
         }
     }

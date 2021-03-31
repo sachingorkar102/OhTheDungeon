@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd;
 
@@ -51,10 +62,18 @@ import otd.util.I18n;
 import otd.util.Logging;
 import otd.config.PluginConfig;
 import otd.config.WorldConfig;
-import otd.util.lang.LanguageUtil;
+import otd.util.LanguageUtil;
 import forge_sandbox.twilightforest.structures.lichtower.boss.Lich;
 import otd.commands.Otd_Tp;
-import otd.util.map.MapManager;
+import otd.gui.customstruct.CustomDungeonEditor;
+import otd.gui.customstruct.CustomDungeonList;
+import otd.gui.customstruct.CustomDungeonPlaceSelect;
+import otd.gui.customstruct.CustomDungeonSelect;
+import otd.gui.customstruct.MobSelect;
+import otd.gui.customstruct.SchematicSelect;
+import otd.gui.customstruct.WorldCustomDungeon;
+import otd.integration.WorldEdit;
+import otd.struct.SchematicLoader;
 import otd.world.ChunkList;
 import otd.world.DungeonWorld;
 import otd.world.WorldDefine;
@@ -124,6 +143,11 @@ public class Main extends JavaPlugin {
         BackupGUI.initBackupFolder();
         
         I18n.init();
+        {
+            (new File(this.getDataFolder(), "schematics")).mkdirs();
+            if(WorldEdit.isReady()) SchematicLoader.initDir(this);
+        }
+        
         WorldConfig.loadWorldConfig();
         
         ThemeReader.setConfigDir();
@@ -163,6 +187,13 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(UserTeleport.instance, this);
         getServer().getPluginManager().registerEvents(BackupGUI.instance, this);
         getServer().getPluginManager().registerEvents(RogueLikeDungeonTower.instance, this);
+        getServer().getPluginManager().registerEvents(CustomDungeonEditor.instance, this);
+        getServer().getPluginManager().registerEvents(CustomDungeonList.instance, this);
+        getServer().getPluginManager().registerEvents(CustomDungeonSelect.instance, this);
+        getServer().getPluginManager().registerEvents(MobSelect.instance, this);
+        getServer().getPluginManager().registerEvents(SchematicSelect.instance, this);
+        getServer().getPluginManager().registerEvents(WorldCustomDungeon.instance, this);
+        getServer().getPluginManager().registerEvents(CustomDungeonPlaceSelect.instance, this);
         
         getServer().getPluginManager().registerEvents(new MobListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListener(), this);

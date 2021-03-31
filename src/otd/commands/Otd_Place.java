@@ -1,12 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.commands;
 
 import forge_sandbox.com.someguyssoftware.dungeons2.BukkitDungeonGenerator;
-import forge_sandbox.greymerk.roguelike.dungeon.settings.SettingsContainer;
 import static forge_sandbox.jaredbgreat.dldungeons.builder.Builder.commandPlaceDungeon;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,7 +42,12 @@ import shadow_lib.ExceptionRepoter;
 import shadow_lib.async.AsyncRoguelikeDungeon;
 import shadow_lib.async.AsyncWorldEditor;
 import forge_sandbox.twilightforest.TFBukkitGenerator;
-import otd.world.DungeonWorld;
+import java.util.Map;
+import java.util.UUID;
+import otd.config.WorldConfig;
+import otd.config.WorldConfig.CustomDungeon;
+import otd.gui.customstruct.CustomDungeonPlaceSelect;
+import otd.struct.SchematicLoader;
 import otd.util.I18n;
 
 public class Otd_Place implements TabExecutor {
@@ -54,6 +69,7 @@ public class Otd_Place implements TabExecutor {
                 res.add("antman");
                 res.add("aether");
                 res.add("lich");
+                res.add("custom");
             }
         }
         return res;
@@ -79,12 +95,12 @@ public class Otd_Place implements TabExecutor {
         
         if(!players.contains(p)) {
             sender.sendMessage("Make sure you want to do that");
-            sender.sendMessage("Type command again in 10s to confirm");
+            sender.sendMessage("Type command again in 20s to confirm");
             players.add(p);
             
             Bukkit.getScheduler().runTaskLater(instance, () -> {
                 players.remove(p);
-            }, 20 * 10);
+            }, 20 * 20);
             
             return true;
         }
@@ -143,13 +159,19 @@ public class Otd_Place implements TabExecutor {
             location = location.getWorld().getHighestBlockAt(location).getLocation();
             location = ActualHeight.getHeight(location);
             TFBukkitGenerator.generateLichTower(world, location, new Random());
+        } else if(type.equals("custom")) {
+            CustomDungeonPlaceSelect gui = new CustomDungeonPlaceSelect();
+            gui.openInventory(p);
         } else if(type.equals("test")) {
-            Random rand = new Random();
-            //IWorldEditor editor = new forge_sandbox.greymerk.roguelike.worldgen.WorldEditor(world);
-            AsyncWorldEditor editor = new AsyncWorldEditor(world);
-            boolean flag = AsyncRoguelikeDungeon.generateAsync(rand, editor, loc.getBlockX(), loc.getBlockZ(), null, SettingsContainer.mesa);
-            
-            if(!flag) sender.sendMessage("Fail: No theme available for this chunk...");
+            CustomDungeon dungeon = null;
+            for(Map.Entry<UUID, CustomDungeon> entry : WorldConfig.wc.custom_dungeon.entrySet()) {
+                dungeon = entry.getValue();
+                break;
+            }
+            if(dungeon != null) {
+                Location location = world.getHighestBlockAt(p.getLocation()).getLocation();
+                SchematicLoader.createInWorldAsync(dungeon, location, new Random());
+            }
         } else return false;
         return true;
     }

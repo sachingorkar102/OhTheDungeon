@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2021 shadow
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package otd.gui;
 
@@ -19,6 +30,8 @@ import shadow_manager.DungeonWorldManager;
 import otd.util.I18n;
 import otd.config.SimpleWorldConfig;
 import otd.config.WorldConfig;
+import otd.gui.customstruct.WorldCustomDungeon;
+import otd.integration.WorldEdit;
 
 /**
  *
@@ -115,6 +128,12 @@ public class WorldEditor extends Content {
             if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
             LichTowerConfig ad = new LichTowerConfig(holder.world, holder);
             ad.openInventory(p);
+        }
+        if(slot == 17) {
+            if(holder.world.equals(DungeonWorldManager.WORLD_NAME)) return;
+            if(!WorldEdit.isReady()) return;
+            WorldCustomDungeon wcd = new WorldCustomDungeon(holder.world, holder);
+            wcd.openInventory(p);
         }
         if(slot == 18) {
             DungeonSpawnSetting dss = new DungeonSpawnSetting(holder.world, holder);
@@ -424,6 +443,28 @@ public class WorldEditor extends Content {
             is.setItemMeta(im);
             
             addItem(1, 7, is);
+        }
+        
+        if(world.equals(DungeonWorldManager.WORLD_NAME)) {
+            ItemStack is = new ItemStack(Material.BARRIER);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.Custom_Dungeon);
+            List<String> lores = new ArrayList<>();
+            lores.add(I18n.instance.PPDI_WORLD_LORE);
+            im.setLore(lores);
+            is.setItemMeta(im);
+            
+            addItem(1, 8, is);
+        } else {
+            ItemStack is = new ItemStack(WorldEdit.isReady() ? Material.STRUCTURE_BLOCK : Material.BARRIER);
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName(I18n.instance.Custom_Dungeon);
+            List<String> lores = new ArrayList<>();
+            lores.add(I18n.instance.Require_WorldEdit);
+            im.setLore(lores);
+            is.setItemMeta(im);
+            
+            addItem(1, 8, is);
         }
         
         {
